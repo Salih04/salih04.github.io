@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/
+
+# Build / dependency artifacts
+node_modules/
+dist/
+build/
+
+# Python artifacts
+__pycache__/
+*.pyc
+
+# Sensitive personal documents (do not publish)
+cv/
+transcript/
+certificates/
+
+# Local backups
+*.backup

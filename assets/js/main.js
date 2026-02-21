@@ -361,17 +361,13 @@ class FormValidator {
 }
 
 // ============================================
-// Download CV Function
+// Request CV Function
 // ============================================
 
 function downloadCV() {
-    // Create a link element
-    const link = document.createElement('a');
-    link.href = 'cv/SalihCamci_CV.pdf';
-    link.download = 'Salih_Camci_CV.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const subject = encodeURIComponent('CV Request - Portfolio Website');
+    const body = encodeURIComponent('Hi Salih,\n\nI found your portfolio and would like to request your CV.\n\nBest regards,');
+    window.location.href = `mailto:salih.camci@bahcesehir.edu.tr?subject=${subject}&body=${body}`;
 }
 
 // ============================================
