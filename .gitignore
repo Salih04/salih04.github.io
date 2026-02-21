@@ -26,5 +26,9 @@ cv/
 transcript/
 certificates/
 
+# Public CV used by portfolio site
+!assets/CV/
+!assets/CV/*.pdf
+
 # Local backups
 *.backup
