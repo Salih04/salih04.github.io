@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Salih Camcı - Software Engineer and Full Stack Developer. Building intelligent systems with Python, React, and machine learning. Bahçeşehir University student with expertise in enterprise software development.">
+    <meta name="keywords" content="Software Engineer, Full Stack Developer, Machine Learning, Python, React, Portfolio">
+    <meta name="author" content="Salih Camcı">
+    
+    <title>Salih Camcı - Software Engineer Portfolio</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">Salih Camcı</a>
+            
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="experiences.html" class="nav-link">Experience</a></li>
+                <li><a href="projects.html" class="nav-link">Projects</a></li>
+                <li><a href="skills.html" class="nav-link">Skills</a></li>
+                <li><a href="education.html" class="nav-link">Education</a></li>
+                <li><a href="activities.html" class="nav-link">Activities</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+        </div>
+        
+        <div class="mobile-nav">
+            <a href="#home" class="mobile-nav-link">Home</a>
+            <a href="#about" class="mobile-nav-link">About</a>
+            <a href="experiences.html" class="mobile-nav-link">Experience</a>
+            <a href="projects.html" class="mobile-nav-link">Projects</a>
+            <a href="skills.html" class="mobile-nav-link">Skills</a>
+            <a href="education.html" class="mobile-nav-link">Education</a>
+            <a href="activities.html" class="mobile-nav-link">Activities</a>
+            <a href="#contact" class="mobile-nav-link">Contact</a>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content fade-in">
+                <p class="hero-subtitle">👋 Welcome to my portfolio</p>
+                <h1 class="hero-title">
+                    Hi, I'm <span class="highlight">Salih Camcı</span><br>
+                    <span class="typing-text"></span>
+                </h1>
+                <p class="hero-description">
+                    Quality Assurance Engineer specializing in backend development and system validation. 
+                    Final-year Software Engineering student (GPA 3.20) with hands-on experience in 
+                    enterprise ERP/CRM development, functional QA, and workflow-driven architectures.
+                </p>
+                
+                <div class="hero-badges">
+                    <div class="badge">
+                        <span class="badge-dot green"></span>
+                        <span>Available for opportunities</span>
+                    </div>
+                    <div class="badge">
+                        <span class="badge-dot blue"></span>
+                        <span>Bahçeşehir University</span>
+                    </div>
+                    <div class="badge">
+                        <span class="badge-dot blue"></span>
+                        <span>Crytek QA Intern</span>
+                    </div>
+                </div>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="window.portfolioFunctions.scrollToSection('projects')">
+                        View Projects
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.portfolioFunctions.downloadCV()">
+                        Download CV
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hero-image fade-in">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80" alt="Modern developer workspace with code on screen" style="border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);">
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="section bg-white">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <p class="section-subtitle">Get to know me</p>
+                <h2 class="section-title">About Me</h2>
+                <p class="section-description">
+                    Passionate software engineer with a focus on building scalable solutions and 
+                    exploring the frontiers of machine learning and artificial intelligence.
+                </p>
+            </div>
+            
+            <div class="grid grid-2" style="gap: 4rem; align-items: center;">
+                <div class="fade-in">
+                    <img src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=600&q=80" alt="Professional workspace" style="border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                </div>
+                
+                <div class="fade-in">
+                    <h3 style="font-size: 1.75rem; margin-bottom: 1.5rem;">Quality Assurance & Backend Development</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.8;">
+                        I'm a senior Software Engineering student at Bahçeşehir University with a GPA of 3.20, 
+                        currently working as a Quality Assurance Intern at Crytek. My expertise lies in functional 
+                        testing, system validation, and backend development for enterprise systems.
+                    </p>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.8;">
+                        Previously at PKF Teknoloji, I developed 6+ production ERP/CRM modules used by 200+ users, 
+                        focusing on workflow-driven architectures, database design (MSSQL), and data validation. 
+                        I combine hands-on development experience (C#, Python, SQL) with QA skills (regression testing, 
+                        defect tracking).
+                    </p>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8;">
+                        My technical focus includes functional testing, backend systems, database optimization, and 
+                        ensuring reliability in large-scale software environments. I'm passionate about building quality 
+                        software that meets real business needs.
+                    </p>
+                    
+                    <div class="grid grid-2" style="gap: 1rem;">
+                        <div class="card" style="padding: 1.5rem;">
+                            <h4 style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 0.5rem;">6+</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.95rem;">Modules Developed</p>
+                        </div>
+                        <div class="card" style="padding: 1.5rem;">
+                            <h4 style="font-size: 2rem; color: var(--success); margin-bottom: 0.5rem;">200+</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.95rem;">Enterprise Users</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Highlights Section -->
+    <section id="experience" class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 55%, #2b1d6e 100%); position: relative; overflow: hidden;">
+        <div style="position: absolute; inset: 0; background: radial-gradient(circle at 20% 50%, rgba(45,108,223,0.15) 0%, transparent 55%), radial-gradient(circle at 80% 30%, rgba(139,92,246,0.1) 0%, transparent 55%); pointer-events: none;"></div>
+        <div class="section-container" style="position: relative; z-index: 1;">
+            <div class="section-header fade-in">
+                <p style="display: inline-block; background: rgba(45,108,223,0.2); color: #93c5fd; border: 1px solid rgba(45,108,223,0.35); padding: 0.35rem 1.1rem; border-radius: 50px; font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;">My career</p>
+                <h2 class="section-title" style="color: white; margin-top: 0;">Professional Experience</h2>
+                <p class="section-description" style="color: rgba(255,255,255,0.65);">
+                    4 companies &nbsp;·&nbsp; 2+ years building enterprise software, game QA, healthcare systems, and freelance projects.
+                </p>
+            </div>
+
+            <div class="grid grid-2 fade-in" style="gap: 1.25rem; margin-bottom: 3rem;">
+                <!-- Crytek -->
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--primary-blue); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div>
+                            <div style="font-size: 0.73rem; color: #93c5fd; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Feb 2026 – Present</div>
+                            <h3 style="color: white; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem;">Quality Assurance Intern</h3>
+                            <p style="color: #60a5fa; font-weight: 600; font-size: 0.9rem;">Crytek</p>
+                        </div>
+                        <span class="tag tag-green" style="font-size: 0.73rem;">Current</span>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.65;">Functional &amp; exploratory game testing, regression scenarios, defect tracking and root-cause analysis with dev teams.</p>
+                    <div class="card-tags" style="margin-top: 0.85rem;"><span class="tag tag-blue">QA</span><span class="tag tag-gray">Game Testing</span><span class="tag tag-green">Regression</span></div>
+                </div>
+
+                <!-- PKF Teknoloji -->
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--success); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div>
+                            <div style="font-size: 0.73rem; color: #6ee7b7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Aug 2025 – Feb 2026 &middot; 6 months</div>
+                            <h3 style="color: white; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem;">Software Developer Intern</h3>
+                            <p style="color: #34d399; font-weight: 600; font-size: 0.9rem;">PKF Teknoloji</p>
+                        </div>
+                        <span class="tag tag-gray" style="font-size: 0.73rem;">6 Months</span>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.65;">Built 6+ ERP/CRM modules for 200+ users in C#, MSSQL. Workflow pipelines, relational DB design, audit trails.</p>
+                    <div class="card-tags" style="margin-top: 0.85rem;"><span class="tag tag-blue">C#</span><span class="tag tag-green">MSSQL</span><span class="tag tag-purple">ASP.NET</span></div>
+                </div>
+
+                <!-- BizMED -->
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid #0d9488; border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div>
+                            <div style="font-size: 0.73rem; color: #6ee7b7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Jul 2025 – Aug 2025 &middot; 1 month</div>
+                            <h3 style="color: white; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem;">Software Engineering Intern</h3>
+                            <p style="color: #2dd4bf; font-weight: 600; font-size: 0.9rem;">BizMED Sinerji Bilişim</p>
+                        </div>
+                        <span class="tag tag-gray" style="font-size: 0.73rem;">1 Month</span>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.65;">Delphi VCL Nurse Medication Form using MVVM; Oracle PL/SQL optimization for 20% query speed gain.</p>
+                    <div class="card-tags" style="margin-top: 0.85rem;"><span class="tag tag-blue">Delphi</span><span class="tag tag-green">Oracle</span><span class="tag tag-purple">MVVM</span></div>
+                </div>
+
+                <!-- afesys -->
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--purple); border-radius: 12px; padding: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div>
+                            <div style="font-size: 0.73rem; color: #c4b5fd; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">Oct 2024 – Present &middot; Freelance</div>
+                            <h3 style="color: white; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem;">WordPress Developer</h3>
+                            <p style="color: #a78bfa; font-weight: 600; font-size: 0.9rem;">afesys.com</p>
+                        </div>
+                        <span class="tag tag-purple" style="font-size: 0.73rem;">Freelance</span>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.65;">Custom WordPress themes, plugins and SEO optimizations for client websites.</p>
+                    <div class="card-tags" style="margin-top: 0.85rem;"><span class="tag tag-purple">WordPress</span><span class="tag tag-blue">PHP</span><span class="tag tag-gray">SEO</span></div>
+                </div>
+            </div>
+
+            <div style="text-align: center;" class="fade-in">
+                <a href="experiences.html" class="btn btn-primary">
+                    View Full Experience
+                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section id="projects" class="section bg-subtle">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <p class="section-subtitle">My work</p>
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-description">
+                    A selection of projects showcasing my expertise in software development, 
+                    machine learning, and full-stack engineering.
+                </p>
+            </div>
+            
+            <div class="grid grid-3">
+                <!-- Project 1: Applied Reinforcement Learning Highway -->
+                <div class="card card-flex fade-in">
+                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80" class="card-image" alt="Reinforcement Learning Highway">
+                    <h3 class="card-title">Applied RL Highway</h3>
+                    <p class="card-description">
+                        Reinforcement learning agent trained to navigate highway traffic scenarios using 
+                        deep Q-learning and policy optimization techniques.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag tag-purple">Python</span>
+                        <span class="tag tag-blue">Reinforcement Learning</span>
+                        <span class="tag tag-gray">OpenAI Gym</span>
+                    </div>
+                    <a href="https://github.com/Salih04/Applied-Reinforcement-Learning-Highway" target="_blank" class="btn btn-primary btn-bottom" style="width: 100%;">View on GitHub</a>
+                </div>
+                
+                <!-- Project 2: GPT Model Implementation -->
+                <div class="card card-flex fade-in">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80" class="card-image" alt="GPT Model Implementation">
+                    <h3 class="card-title">GPT Model (nanoGPT)</h3>
+                    <p class="card-description">
+                        Mini GPT implementation from scratch achieving 92% perplexity match vs nanoGPT 
+                        on TinyShakespeare dataset.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag tag-purple">Python</span>
+                        <span class="tag tag-blue">PyTorch</span>
+                        <span class="tag tag-gray">Transformers</span>
+                    </div>
+                    <a href="https://github.com/Saliho4/GPT_Model_Implementation_nanoGPT" target="_blank" class="btn btn-primary btn-bottom" style="width: 100%;">View on GitHub</a>
+                </div>
+                
+                <!-- Project 3: Face Mask Detection YOLOv8 -->
+                <div class="card card-flex fade-in">
+                    <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80" class="card-image" alt="Face Mask Detection YOLOV8">
+                    <h3 class="card-title">Face Mask Detection (YOLOv8)</h3>
+                    <p class="card-description">
+                        Advanced face mask detection achieving 92% mAP with YOLOv8, delivering &gt;25 FPS 
+                        real-time inference performance.
+                    </p>
+                    <div class="card-tags">
+                        <span class="tag tag-purple">Python</span>
+                        <span class="tag tag-blue">YOLOv8</span>
+                        <span class="tag tag-green">Real-time</span>
+                    </div>
+                    <a href="https://github.com/SalihO4/Face_Mask_Detection_YOLOV8" target="_blank" class="btn btn-primary btn-bottom" style="width: 100%;">View on GitHub</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;" class="fade-in">
+                <a href="projects.html" class="btn btn-secondary">
+                    View All Projects
+                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Overview Section -->
+    <section id="skills" class="section bg-white">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <p class="section-subtitle">What I know</p>
+                <h2 class="section-title">Technical Skills</h2>
+                <p class="section-description">
+                    Proficient in modern technologies and frameworks with hands-on project experience 
+                    and continuous learning.
+                </p>
+            </div>
+            
+            <div class="grid grid-3">
+                <!-- Programming Languages -->
+                <div class="card fade-in">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <svg style="width: 32px; height: 32px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Programming Languages</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.875rem; font-weight: 500;">Python</span>
+                                <span style="font-size: 0.875rem; color: var(--text-secondary);">90%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: var(--bg-gray); border-radius: 10px; overflow: hidden;">
+                                <div class="skill-progress" data-width="90" style="height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark)); width: 0; transition: width 1s ease;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.875rem; font-weight: 500;">JavaScript</span>
+                                <span style="font-size: 0.875rem; color: var(--text-secondary);">85%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: var(--bg-gray); border-radius: 10px; overflow: hidden;">
+                                <div class="skill-progress" data-width="85" style="height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark)); width: 0; transition: width 1s ease;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.875rem; font-weight: 500;">Java</span>
+                                <span style="font-size: 0.875rem; color: var(--text-secondary);">80%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: var(--bg-gray); border-radius: 10px; overflow: hidden;">
+                                <div class="skill-progress" data-width="80" style="height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark)); width: 0; transition: width 1s ease;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.875rem; font-weight: 500;">C#</span>
+                                <span style="font-size: 0.875rem; color: var(--text-secondary);">75%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: var(--bg-gray); border-radius: 10px; overflow: hidden;">
+                                <div class="skill-progress" data-width="75" style="height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--primary-dark)); width: 0; transition: width 1s ease;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Frameworks & Libraries -->
+                <div class="card fade-in">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--success), #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <svg style="width: 32px; height: 32px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Frameworks & Libraries</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="tag tag-blue">React</span>
+                        <span class="tag tag-purple">PyTorch</span>
+                        <span class="tag tag-blue">TensorFlow</span>
+                        <span class="tag tag-green">Node.js</span>
+                        <span class="tag tag-purple">OpenCV</span>
+                        <span class="tag tag-gray">scikit-learn</span>
+                        <span class="tag tag-blue">ASP.NET</span>
+                        <span class="tag tag-green">Express.js</span>
+                    </div>
+                </div>
+                
+                <!-- Tools & Technologies -->
+                <div class="card fade-in">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--purple), #7C3AED); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <svg style="width: 32px; height: 32px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Tools & Technologies</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="tag tag-gray">Git</span>
+                        <span class="tag tag-blue">AWS</span>
+                        <span class="tag tag-green">MongoDB</span>
+                        <span class="tag tag-purple">MSSQL</span>
+                        <span class="tag tag-gray">Linux</span>
+                        <span class="tag tag-blue">Docker</span>
+                        <span class="tag tag-purple">Figma</span>
+                        <span class="tag tag-gray">VS Code</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;" class="fade-in">
+                <a href="skills.html" class="btn btn-secondary">
+                    View All Skills
+                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-subtle">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <p class="section-subtitle">Get in touch</p>
+                <h2 class="section-title">Let's Work Together</h2>
+                <p class="section-description">
+                    I'm currently looking for new opportunities. Whether you have a question or just want 
+                    to say hi, I'll try my best to get back to you!
+                </p>
+            </div>
+            
+            <div class="grid grid-2" style="gap: 4rem; max-width: 900px; margin: 0 auto;">
+                <!-- Contact Info -->
+                <div class="fade-in">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Contact Information</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="card" style="padding: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div style="width: 48px; height: 48px; background: var(--primary-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg style="width: 24px; height: 24px; color: white;" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem; font-size: 1rem;">Email</h4>
+                                    <a href="mailto:salih.camci@bahcesehir.edu.tr" style="color: var(--primary-blue);">salih.camci@bahcesehir.edu.tr</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="padding: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div style="width: 48px; height: 48px; background: #0077B5; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg style="width: 24px; height: 24px; color: white;" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem; font-size: 1rem;">LinkedIn</h4>
+                                    <a href="https://linkedin.com/in/salih-c-9536b820b" target="_blank" style="color: var(--primary-blue);">linkedin.com/in/salih-c-9536b820b</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="padding: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div style="width: 48px; height: 48px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg style="width: 24px; height: 24px; color: white;" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom: 0.25rem; font-size: 1rem;">GitHub</h4>
+                                    <a href="https://github.com/Salih04" target="_blank" style="color: var(--primary-blue);">github.com/Salih04</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="fade-in">
+                    <form id="contact-form" class="card">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Send Message</h3>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.95rem;">Name</label>
+                            <input type="text" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-gray); border-radius: 8px; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.95rem;">Email</label>
+                            <input type="email" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-gray); border-radius: 8px; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.95rem;">Message</label>
+                            <textarea required rows="5" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-gray); border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Send Message
+                            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Salih Camcı</h3>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+                        Software Engineer passionate about building intelligent systems and efficient software.
+                    </p>
+                    <div class="social-links" style="margin-top: 1rem;">
+                        <a href="https://github.com/Salih04" target="_blank" class="social-link" aria-label="GitHub">
+                            <svg style="width: 20px; height: 20px; color: white;" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                            </svg>
+                        </a>
+                        <a href="https://linkedin.com/in/salih-c-9536b820b" target="_blank" class="social-link" aria-label="LinkedIn">
+                            <svg style="width: 20px; height: 20px; color: white;" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                            </svg>
+                        </a>
+                        <a href="mailto:salih.camci@bahcesehir.edu.tr" class="social-link" aria-label="Email">
+                            <svg style="width: 20px; height: 20px; color: white;" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#about" class="footer-link">About</a></li>
+                        <li><a href="#projects" class="footer-link">Projects</a></li>
+                        <li><a href="experiences.html" class="footer-link">Experience</a></li>
+                        <li><a href="education.html" class="footer-link">Education</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>More Pages</h3>
+                    <ul class="footer-links">
+                        <li><a href="projects.html" class="footer-link">All Projects</a></li>
+                        <li><a href="skills.html" class="footer-link">Technical Skills</a></li>
+                        <li><a href="activities.html" class="footer-link">Activities</a></li>
+                        <li><a href="#contact" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year">2026</span> Salih Camcı. All rights reserved. Built with passion and code.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top" style="position: fixed; bottom: 2rem; right: 2rem; width: 50px; height: 50px; background: var(--primary-blue); color: white; border: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); transition: all 0.3s ease; z-index: 999;" aria-label="Back to top">
+        <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+    
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
