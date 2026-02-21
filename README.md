@@ -45,18 +45,6 @@ If you use a repository named `<username>.github.io`, the site URL becomes:
 
 - `https://<username>.github.io/`
 
-## Privacy & Security Notes
-
-Sensitive personal files are intentionally excluded from public hosting:
-
-- `cv/`
-- `transcript/`
-- `certificates/`
-
-These paths are listed in `.gitignore` and should not be committed.
-
-Instead of direct file hosting, the portfolio uses contact/request links for CV and certificates.
-
 ## License
 
 For personal portfolio use.
