@@ -31,6 +31,113 @@ function isInViewport(element) {
     return rect.top <= windowHeight * 0.92 && rect.bottom >= 0;
 }
 
+const TRANSLATIONS = {
+    en: {
+        'nav.home': 'Home',
+        'nav.about': 'About',
+        'nav.experience': 'Experience',
+        'nav.projects': 'Projects',
+        'nav.skills': 'Skills',
+        'nav.education': 'Education',
+        'nav.activities': 'Activities',
+        'nav.contact': 'Contact',
+        'cta.viewProjects': 'View Projects',
+        'cta.requestCv': 'Request CV'
+    },
+    tr: {
+        'nav.home': 'Ana Sayfa',
+        'nav.about': 'Hakkımda',
+        'nav.experience': 'Deneyim',
+        'nav.projects': 'Projeler',
+        'nav.skills': 'Yetenekler',
+        'nav.education': 'Eğitim',
+        'nav.activities': 'Etkinlikler',
+        'nav.contact': 'İletişim',
+        'cta.viewProjects': 'Projeleri Gör',
+        'cta.requestCv': 'CV Talep Et'
+    }
+};
+
+const LANGUAGE_STORAGE_KEY = 'portfolioLanguage';
+
+function getLanguageFromPath() {
+    return window.location.pathname.split('/').includes('tr') ? 'tr' : 'en';
+}
+
+function getPreferredLanguage() {
+    return getLanguageFromPath();
+}
+
+function resolveTargetLanguagePath(targetLanguage) {
+    const desiredLanguage = targetLanguage === 'tr' ? 'tr' : 'en';
+    const pathname = window.location.pathname;
+    const hash = window.location.hash || '';
+    const segments = pathname.split('/').filter(Boolean);
+    const isCurrentTr = segments.includes('tr');
+    const currentLeaf = segments[segments.length - 1] || '';
+    const hasFile = currentLeaf.includes('.html');
+    const fileName = hasFile ? currentLeaf : 'index.html';
+    const safeFileName = fileName.endsWith('.html') ? fileName : 'index.html';
+
+    if (desiredLanguage === 'tr') {
+        const target = isCurrentTr ? safeFileName : `tr/${safeFileName}`;
+        return safeFileName === 'index.html' ? `${target}${hash}` : target;
+    }
+
+    const target = isCurrentTr ? `../${safeFileName}` : safeFileName;
+    return safeFileName === 'index.html' ? `${target}${hash}` : target;
+}
+
+function getTypingTexts(language) {
+    return language === 'tr'
+        ? ['Yazılım Mühendisi', 'Full Stack Geliştirici', 'Makine Öğrenmesi Meraklısı']
+        : ['Software Engineer', 'Full Stack Developer', 'Machine Learning Enthusiast'];
+}
+
+function applyLanguage(language) {
+    const selectedLanguage = language === 'tr' ? 'tr' : 'en';
+    const translationSet = TRANSLATIONS[selectedLanguage];
+
+    document.documentElement.lang = selectedLanguage;
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, selectedLanguage);
+
+    document.querySelectorAll('[data-i18n-key]').forEach((element) => {
+        const key = element.getAttribute('data-i18n-key');
+        if (key && translationSet[key]) {
+            element.textContent = translationSet[key];
+        }
+    });
+
+    document.querySelectorAll('[data-lang-switch]').forEach((button) => {
+        button.classList.toggle('active', button.getAttribute('data-lang-switch') === selectedLanguage);
+    });
+
+    if (window.portfolioState?.typingElement) {
+        window.portfolioState.typingEffect?.stop();
+        window.portfolioState.typingElement.textContent = '';
+        window.portfolioState.typingEffect = new TypingEffect(
+            window.portfolioState.typingElement,
+            getTypingTexts(selectedLanguage),
+            100
+        );
+    }
+}
+
+function initLanguageSwitcher() {
+    const buttons = document.querySelectorAll('[data-lang-switch]');
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const language = button.getAttribute('data-lang-switch') || 'en';
+            const selectedLanguage = language === 'tr' ? 'tr' : 'en';
+            localStorage.setItem(LANGUAGE_STORAGE_KEY, selectedLanguage);
+
+            const targetPath = resolveTargetLanguagePath(selectedLanguage) || (selectedLanguage === 'tr' ? 'tr/index.html' : 'index.html');
+            window.location.href = targetPath;
+        });
+    });
+}
+
 // ============================================
 // Navigation
 // ============================================
@@ -222,6 +329,7 @@ class TypingEffect {
         this.textIndex = 0;
         this.charIndex = 0;
         this.isDeleting = false;
+        this.timeoutId = null;
         
         if (this.element) {
             this.type();
@@ -254,7 +362,14 @@ class TypingEffect {
             typeSpeed = 500;
         }
         
-        setTimeout(() => this.type(), typeSpeed);
+        this.timeoutId = setTimeout(() => this.type(), typeSpeed);
+    }
+
+    stop() {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+            this.timeoutId = null;
+        }
     }
 }
 
@@ -365,8 +480,13 @@ class FormValidator {
 // ============================================
 
 function downloadCV() {
-    const subject = encodeURIComponent('CV Request - Portfolio Website');
-    const body = encodeURIComponent('Hi Salih,\n\nI found your portfolio and would like to request your CV.\n\nBest regards,');
+    const isTurkish = document.documentElement.lang === 'tr';
+    const subject = encodeURIComponent(isTurkish ? 'CV Talebi - Portfolyo Web Sitesi' : 'CV Request - Portfolio Website');
+    const body = encodeURIComponent(
+        isTurkish
+            ? 'Merhaba Salih,\n\nPortfolyonu inceledim ve CV\'ni talep etmek istiyorum.\n\nİyi çalışmalar,'
+            : 'Hi Salih,\n\nI found your portfolio and would like to request your CV.\n\nBest regards,'
+    );
     window.location.href = `mailto:salih.camci@bahcesehir.edu.tr?subject=${subject}&body=${body}`;
 }
 
@@ -413,8 +533,13 @@ class BackToTop {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    const selectedLanguage = getLanguageFromPath();
+
     // Initialize navigation
     new Navigation();
+
+    // Initialize language switcher
+    initLanguageSwitcher();
     
     // Initialize scroll animations
     new ScrollAnimations();
@@ -431,13 +556,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize typing effect if present
     const typingElement = document.querySelector('.typing-text');
+    window.portfolioState = { typingElement: null, typingEffect: null };
+
     if (typingElement) {
-        new TypingEffect(
+        window.portfolioState.typingElement = typingElement;
+        window.portfolioState.typingEffect = new TypingEffect(
             typingElement,
-            ['Software Engineer', 'Full Stack Developer', 'Machine Learning Enthusiast'],
+            getTypingTexts(selectedLanguage),
             100
         );
     }
+
+    applyLanguage(selectedLanguage);
     
     // Initialize form validation if contact form exists
     if (document.getElementById('contact-form')) {
@@ -460,5 +590,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.portfolioFunctions = {
     downloadCV,
-    scrollToSection
+    scrollToSection,
+    applyLanguage
 };
