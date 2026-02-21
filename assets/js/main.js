@@ -42,7 +42,7 @@ const TRANSLATIONS = {
         'nav.activities': 'Activities',
         'nav.contact': 'Contact',
         'cta.viewProjects': 'View Projects',
-        'cta.requestCv': 'Request CV'
+        'cta.requestCv': 'Get CV'
     },
     tr: {
         'nav.home': 'Ana Sayfa',
@@ -54,7 +54,7 @@ const TRANSLATIONS = {
         'nav.activities': 'Etkinlikler',
         'nav.contact': 'İletişim',
         'cta.viewProjects': 'Projeleri Gör',
-        'cta.requestCv': 'CV Talep Et'
+        'cta.requestCv': 'CV Al'
     }
 };
 
@@ -476,18 +476,12 @@ class FormValidator {
 }
 
 // ============================================
-// Request CV Function
+// Download CV Function
 // ============================================
 
 function downloadCV() {
-    const isTurkish = document.documentElement.lang === 'tr';
-    const subject = encodeURIComponent(isTurkish ? 'CV Talebi - Portfolyo Web Sitesi' : 'CV Request - Portfolio Website');
-    const body = encodeURIComponent(
-        isTurkish
-            ? 'Merhaba Salih,\n\nPortfolyonu inceledim ve CV\'ni talep etmek istiyorum.\n\nİyi çalışmalar,'
-            : 'Hi Salih,\n\nI found your portfolio and would like to request your CV.\n\nBest regards,'
-    );
-    window.location.href = `mailto:salih.camci@bahcesehir.edu.tr?subject=${subject}&body=${body}`;
+    const cvPath = '/assets/CV/SalihCamci_CV.pdf.pdf';
+    window.open(cvPath, '_blank');
 }
 
 // ============================================
