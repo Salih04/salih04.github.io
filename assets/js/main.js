@@ -480,7 +480,10 @@ class FormValidator {
 // ============================================
 
 function downloadCV() {
-    const cvPath = '/assets/CV/SalihCamci_CV.pdf.pdf';
+    const isTurkishPath = window.location.pathname.split('/').includes('tr');
+    const cvPath = isTurkishPath
+        ? '../assets/CV/SalihCamci_CV.pdf'
+        : 'assets/CV/SalihCamci_CV.pdf';
     window.open(cvPath, '_blank');
 }
 
