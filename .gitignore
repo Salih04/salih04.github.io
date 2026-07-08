@@ -32,3 +32,9 @@ certificates/
 
 # Local backups
 *.backup
+
+# Local agent operating layer
+CLAUDE.md
+PRD.md
+REPO_MAP.md
+TASK.md
