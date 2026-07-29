@@ -75,10 +75,25 @@ The linked PDF is stale, one page, and identified as a Canva export. The reposit
 
 ## Deployment
 
-Pending completion.
+- Commit `c6da462b9c69c3ca70e192b30ccd58ef445f0f91` (`Correct completed Crytek internship status`) was pushed to `origin/main`.
+- GitHub Pages workflow `pages build and deployment` run `30466589289` completed successfully: build 31 seconds; deployment 1 minute 3 seconds.
+- Live pages checked with unique-query fresh loads and browser reloads:
+  - `https://salih04.github.io/`
+  - `https://salih04.github.io/projects.html`
+  - `https://salih04.github.io/experiences.html`
+  - `https://salih04.github.io/tr/`
+  - `https://salih04.github.io/tr/projects.html`
+  - `https://salih04.github.io/tr/experiences.html`
+  - `https://salih04.github.io/assets/CV/SalihCamci_CV.pdf`
+- All checked HTML pages returned HTTP 200 at desktop and mobile widths. Required EN/TR former/completed wording and date ranges were present; no Crytek current-employment wording, console errors, page errors, local request failures, or horizontal overflow was found.
+- The live public CV returned HTTP 200 as a 267,561-byte PDF and remains stale.
+- The connected Vercel account has no project for this portfolio repository. The GitHub push therefore did not trigger a Vercel build. No Vercel project, integration, setting, domain, secret, or deployment configuration was created or changed.
+- The four approved LinkedIn networking record files were updated only to record the corrected website wording, verified live deployment, continuing Featured ineligibility due to the stale CV, deferred University of Basel Education entry, and that no LinkedIn action was performed.
 
 ## Remaining blockers and Featured eligibility
 
 - Blocker: stale linked public CV with no editable source in the repository.
-- LinkedIn Featured eligibility: pending rendered-site and live-deployment checks; the stale public CV is expected to keep the portfolio ineligible until corrected through its authoritative source.
+- LinkedIn Featured eligibility: **ineligible** until the authoritative CV source is corrected, the public PDF is regenerated, and the live link is reverified.
+- LinkedIn first-five-connections readiness: **not ready**; the networking record continues to classify the profile as `READY AFTER MANUAL PROFILE EDITS`.
+- Vercel build: not available through an existing portfolio project or integration.
 - No LinkedIn action was performed.
