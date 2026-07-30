@@ -53,3 +53,7 @@ The site has exactly 12 pages: 6 English pages at the repository root and 6 Turk
 3. `git diff --check` for whitespace errors.
 4. Local static server (`python3 -m http.server`) — HTTP 200 for all 18 pages; verified relative asset paths (`../assets/...`) resolve correctly from `de/`.
 5. Manual review of every new/changed file's diff before commit.
+
+## Closure (2026-07-30, merge pass)
+
+All items above passed on independent re-review before merge. PR #1 was squash-merged into `main` at commit `706353c6643df1c0cbcc2ea50d7a30ce4c18e199`; GitHub Pages redeployed successfully (run `30532139639`); all 18 live pages return HTTP 200 and the stale CV path returns HTTP 404. See `docs/PORTFOLIO_GERMAN_EXPANSION_IMPLEMENTATION_2026-07-30.md` for the full closure record.
