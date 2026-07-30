@@ -1,19 +1,27 @@
 (() => {
-  const isTurkish = () => window.location.pathname.split('/').includes('tr');
+  const currentLanguage = () => {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    if (segments.includes('tr')) return 'tr';
+    if (segments.includes('de')) return 'de';
+    return 'en';
+  };
 
   function targetLanguagePath(language) {
     const segments = window.location.pathname.split('/').filter(Boolean);
     const currentLeaf = segments.at(-1) || 'index.html';
     const fileName = currentLeaf.endsWith('.html') ? currentLeaf : 'index.html';
     const hash = fileName === 'index.html' ? window.location.hash : '';
-    if (language === 'tr') return (isTurkish() ? fileName : `tr/${fileName}`) + hash;
-    return (isTurkish() ? `../${fileName}` : fileName) + hash;
+    const from = currentLanguage();
+    if (language === from) return fileName + hash;
+    const fromPrefix = from === 'en' ? '' : '../';
+    const toPrefix = language === 'en' ? '' : `${language}/`;
+    return `${fromPrefix}${toPrefix}${fileName}${hash}`;
   }
 
   function initLanguageSwitcher() {
     document.querySelectorAll('[data-lang-switch]').forEach((button) => {
       button.addEventListener('click', () => {
-        const language = button.dataset.langSwitch === 'tr' ? 'tr' : 'en';
+        const language = ['tr', 'de'].includes(button.dataset.langSwitch) ? button.dataset.langSwitch : 'en';
         window.location.href = targetLanguagePath(language);
       });
     });
