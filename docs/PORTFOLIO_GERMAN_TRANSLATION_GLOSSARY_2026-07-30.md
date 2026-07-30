@@ -32,3 +32,7 @@ No private information is included below.
 ## Terms intentionally left in English everywhere
 
 Crytek, Hunt: Showdown, FinanceIQ, SAMS, HypnoVR (not currently featured on the site), GitHub, LinkedIn, all technology/framework/language names (Go, Python, FastAPI, PostgreSQL, Redis, Temporal, React Three Fiber, Docker, YOLOv8, OpenCV, etc.), all repository names, all company and university proper names, and the closing tagline "Evidence, not theatre." (kept in English in the Turkish footer already, and mirrored the same way in German for brand consistency).
+
+## Closure (2026-07-30, merge pass)
+
+Terminology above was re-checked against the live merged pages (`706353c6643df1c0cbcc2ea50d7a30ce4c18e199`) with no changes required; no additional English-left-as-is terms were identified during the merge review.

@@ -74,7 +74,23 @@ Grepped `de/`, the root EN pages, and `tr/` for: `Bachelor of Science`, `BSc`, G
 - Verified the stale CV path (`assets/CV/SalihCamci_CV.pdf`) is absent from this working tree (unrelated to this task; it was already handled in the 2026-07-29 pass on the live site's separate history).
 - Full `git status`/`git diff` review: exactly 14 modified files (switcher + hreflang + sitemap) and 3 new docs plus the 6 new `de/` pages — no unrelated files touched.
 
-## Remaining limitations
+## Remaining limitations (as of initial PR open)
 
-- This implementation was built and validated in an isolated git worktree, not the user's primary checkout, and per this session's operating rules it is committed to a feature branch with a draft pull request rather than pushed directly to `main`. **Live GitHub Pages deployment and live EN/TR/DE verification at salih04.github.io have not occurred** — that requires merging the branch, which is left for the repository owner to review and approve first (see the final report for the exact next action).
 - No HTML validator or automated accessibility scanner (e.g. axe, W3C validator) was available/run in this environment; validation was manual structural mirroring plus the checks listed above.
+
+## Merge and deployment closure (2026-07-30, second pass)
+
+An independent re-review was performed before merging, covering: `assets/js/main.js` re-inspected for duplicate declarations or unreachable code (none found — single clean edit), a Node.js simulation of all 10 required cross-language routing paths (all resolved to correct relative paths), an XML/uniqueness check of `sitemap.xml` (exactly 18 unique `<loc>` values, no duplicates, valid XML, correct `en`/`tr`/`de` alternates per group, `x-default` only on English canonicals), a `git diff main..b178cd5` scoped review of the EN/TR pages (confirmed changes limited to the language switcher and `hreflang` link, no regression to former-Crytek/incoming-Basel/no-BSc wording), a forbidden-term grep sweep (clean), and a structural fetch-based check of all 6 German pages (correct `lang`, `h1`, canonical, and DE switcher button on every page).
+
+**PR #1 review result:** approved for merge — no corrections were required.
+
+**Merge:** PR #1 (`Salih04/salih04.github.io#1`) squash-merged into `main`. Merge commit: `706353c6643df1c0cbcc2ea50d7a30ce4c18e199`. The local primary checkout was fast-forwarded from `8e13941` to `706353c` with a clean working tree.
+
+**GitHub Pages deployment:** run `30532139639` ("pages build and deployment") completed successfully in 39 seconds for the merged commit.
+
+**Live verification (fresh cache-busted requests):** all 18 pages (6 English, 6 Turkish, 6 German) returned HTTP 200: `/`, `/projects.html`, `/experiences.html`, `/education.html`, `/skills.html`, `/activities.html`, and the same six under `/tr/` and `/de/`. `sitemap.xml` returned HTTP 200. The historical stale CV path (`/assets/CV/SalihCamci_CV.pdf`) returned HTTP 404 (the file no longer exists in the repository at all, per a separate prior pass — confirmed absent, not merely unlinked). Live `de/index.html` confirmed "Ehemaliger Praktikant im Backend Engineering bei Crytek" and live `de/education.html` confirmed "Bachelorabschluss im Studiengang Software Engineering" with no "Bachelor of Science"/"BSc" string anywhere in either page. Live homepage carries `hreflang="de"`.
+
+**Remaining limitations:**
+- Mobile-width (390×844) rendering was validated in the earlier local pass via shared-CSS structural reasoning and a scroll-width/innerWidth overflow check at the available browser viewport, rather than a true narrow-viewport screenshot (a tool-level window-resize limitation prevented capturing a true mobile screenshot in this environment); no overflow was detected at the viewport widths that were directly measurable, and the German pages reuse CSS already validated at mobile width for the EN/TR pages with comparable text lengths.
+- No HTML validator or automated accessibility scanner (e.g. axe, W3C validator) was run; validation was structural mirroring, grep sweeps, XML parsing, a Node-based routing simulation, and live HTTP/content checks.
+- Skill reordering, the University of Basel Education entry (LinkedIn), and IELTS certification remain non-blocking, unrelated open items tracked separately in the LinkedIn networking package.
