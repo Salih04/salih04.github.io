@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@500;600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/styles.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "CreativeWork", "name": "FinanceIQ", "url": "https://github.com/Salih04/capstone-financeIQ", "description": "Leakage-safe T+1 equity research system with a transparent negative result; Stage 2 negative-control implementation is in progress."}, {"@type": "CreativeWork", "name": "SAMS", "description": "Private advanced prototype for spatial multi-agent orchestration led by a two-person engineering team."}, {"@type": "CreativeWork", "name": "Parking Lot Detection System", "url": "https://github.com/Salih04/ParkingLot_Detection_System_Using_YoloV8"}, {"@type": "SoftwareSourceCode", "name": "CLI Task Queue with Priority Rules", "codeRepository": "https://github.com/Salih04/CLI-Task-Queue-with-Priority-Rules", "programmingLanguage": "Go"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "CreativeWork", "name": "FinanceIQ", "url": "https://github.com/Salih04/capstone-financeIQ", "description": "Governed leakage-safe T+1 equity research platform with calibrated measurement controls; Stage 2 implementation is in progress and no scientific Stage 2 run exists yet."}, {"@type": "CreativeWork", "name": "SAMS", "description": "Private, substantially matured in-progress agent platform for tenant-aware orchestration, explicit authorization, and resumable events, led by a two-person engineering team."}, {"@type": "CreativeWork", "name": "Parking Lot Detection System", "url": "https://github.com/Salih04/ParkingLot_Detection_System_Using_YoloV8"}, {"@type": "SoftwareSourceCode", "name": "CLI Task Queue with Priority Rules", "codeRepository": "https://github.com/Salih04/CLI-Task-Queue-with-Priority-Rules", "programmingLanguage": "Go"}]}</script>
 <script defer src="../assets/js/main.js">
 </script>
 </head>
@@ -111,27 +111,31 @@
 </section>
 <section class="section">
 <div class="container">
-<p class="project-note">Numaralandırma kronolojiyi değil kanıt derinliği ve olgunluğu kodlar: geliştirmesi süren tekrar üretilebilir araştırma → aktif teknik liderlikle yürüyen SAMS → uygulamalı ML sistemi → kompakt öğrenme aracı.</p>
+<p class="project-note">Numaralandırma kronolojiyi değil kanıt derinliği ve olgunluğu kodlar: yönetişimli tekrar üretilebilir araştırma → aktif teknik liderlikle yürüyen SAMS → uygulamalı ML sistemi → kompakt öğrenme aracı.</p>
 <div class="project-list">
 <article class="project-case">
 <div class="project-index">
 <span class="project-number">01</span>
-<span class="status ">Bitirme projesi · Stage 2 sürüyor</span>
+<span class="status ">Araştırma platformu · Stage 2 sürüyor</span>
 </div>
 <div class="project-main">
 <h3>FinanceIQ</h3>
 <div class="case-rows">
 <div class="case-row">
 <span class="case-label">Araştırma sorusu</span>
-<p>Veri sızıntısına kapalı bir T+1 pipeline, BIST şirketlerinde güvenilir sinyal bulabilir mi?</p>
+<p>Veri sızıntısına kapalı bir T+1 pipeline güvenilir sinyal üretebilir mi; ölçüm aparatı bunu gerçekten kanıtlayabilir mi?</p>
 </div>
 <div class="case-row">
 <span class="case-label">Yaklaşım</span>
-<p>40+ doğrulanmış feature, walk-forward değerlendirme, FastAPI + React + Docker ve yalnızca doğrulanmış yapısal veriyi sorgulayan sınırlı LLM katmanı.</p>
+<p>40+ doğrulanmış feature, walk-forward değerlendirme, frozen protocol, provenance kontrolleri, FastAPI + React + Docker ve yalnızca doğrulanmış yapısal veriye bağlı LLM katmanı.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Bulgular</span>
+<p>Stage 1, pozitif kontrol beklenen hassasiyeti yakalayamadığı için FAILED AS WRITTEN — INFORMATIVE olarak kapandı. Stage 1b kalibrasyonu yaklaşık .10'u yakalayamadı, .20'yi zayıf, .30'u ~%61, .35'i ~%87 ve .40'ı ~%96 oranında yakaladı. Theta=0 arka plan association'ı ve target-linked missingness ölçüm aparatı kaynaklı confounding'i ortaya çıkardı; fail-open non-finite/degenerate-statistic yolu tarihsel sonuçlar yeniden çalıştırılmadan fail-closed düzeltildi.</p>
 </div>
 <div class="case-row">
 <span class="case-label">Sonuç</span>
-<p>Genişletilmiş 81 hisselik evrende Stage 1/1b kanıtı zayıf ve sıfıra yakın kaldı. Stage 2 ana dala önkayıtlı; uygulaması PR #37'de açık. Henüz Stage 2 bilimsel çalıştırması veya sonucu yok.</p>
+<p>Stage 2 ana dala önkayıtlı; uygulaması bağımsız inceleme ve temiz yerel 1314/1314 suite sonrasında PR #37'de açık. Henüz bilimsel Stage 2 çalıştırması veya sonucu yok.</p>
 </div>
 </div>
 </div>
@@ -174,11 +178,11 @@
 </div>
 <div class="case-row">
 <span class="case-label">Yaklaşım</span>
-<p>FastAPI, Temporal, Redis, PostgreSQL ve ajanları gezilebilir bir 3D ofis olarak gösteren React Three Fiber arayüzü.</p>
+<p>Tenant-aware authorization, FastAPI, Temporal, Redis, PostgreSQL, immutable execution-room snapshot'ları ve resumable WebSocket event protokolü; React Three Fiber mekânsal arayüzü sağlıyor.</p>
 </div>
 <div class="case-row">
 <span class="case-label">Sonuç</span>
-<p>İleri düzeyde, aktif geliştirilen bir orkestrasyon sistemi. İki kişilik bir ekibe liderlik ediyor, sınırları belirlenmiş görevleri dağıtıyor, PR'ları ve doğrulama kanıtlarını inceliyor, kabul ve entegrasyonu koordine ediyorum. Repo özeldir.</p>
+<p>Tenant izolasyonu, açık authorization ve resumable event temelleri olan, önemli ölçüde olgunlaşmış bir agent platformu. EVENT-REPLAY-3 frontend correctness çalışması aktif; rollout doğrulama tamamlanana kadar kapalı ve gerçek Redis recovery kanıtı bekliyor. İki kişilik bir ekibe liderlik ediyor, sınırları belirlenmiş görevleri dağıtıyor, PR'ları ve doğrulama kanıtlarını inceliyor, kabul ve entegrasyonu koordine ediyorum. Repo özeldir.</p>
 </div>
 </div>
 </div>
