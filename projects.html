@@ -1,30 +1,400 @@
-<!doctype html><html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projects — Salih Camcı</title><meta name="description" content="Case studies in leakage-safe data science, Go systems, applied ML, and multi-agent orchestration, with honest results and explicit maturity labels.">
-<meta name="keywords" content="Data Science, Go, Backend Engineering, Machine Learning Signal Systems, FastAPI, PostgreSQL, Agentic AI"><meta name="author" content="Salih Camcı">
-<link rel="canonical" href="https://salih04.github.io/projects.html"><link rel="alternate" hreflang="en" href="https://salih04.github.io/projects.html"><link rel="alternate" hreflang="tr" href="https://salih04.github.io/tr/projects.html"><link rel="alternate" hreflang="de" href="https://salih04.github.io/de/projects.html"><link rel="alternate" hreflang="x-default" href="https://salih04.github.io/projects.html">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Salih Camcı"><meta property="og:title" content="Projects — Salih Camcı"><meta property="og:description" content="Case studies in leakage-safe data science, Go systems, applied ML, and multi-agent orchestration, with honest results and explicit maturity labels."><meta property="og:url" content="https://salih04.github.io/projects.html"><meta property="og:image" content="https://salih04.github.io/assets/images/social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Salih Camcı — backend engineering and data science portfolio">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Projects — Salih Camcı"><meta name="twitter:description" content="Case studies in leakage-safe data science, Go systems, applied ML, and multi-agent orchestration, with honest results and explicit maturity labels."><meta name="twitter:image" content="https://salih04.github.io/assets/images/social-preview.png">
-<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@500;600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css"><script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "CreativeWork", "name": "FinanceIQ", "url": "https://github.com/Salih04/capstone-financeIQ", "description": "Leakage-safe T+1 equity research system with a transparent negative result."}, {"@type": "CreativeWork", "name": "SAMS", "description": "Private advanced prototype for spatial multi-agent orchestration."}, {"@type": "CreativeWork", "name": "Parking Lot Detection System", "url": "https://github.com/Salih04/ParkingLot_Detection_System_Using_YoloV8"}, {"@type": "SoftwareSourceCode", "name": "CLI Task Queue with Priority Rules", "codeRepository": "https://github.com/Salih04/CLI-Task-Queue-with-Priority-Rules", "programmingLanguage": "Go"}]}</script><script defer src="assets/js/main.js"></script></head><body><a class="skip-link" href="#main-content">Skip to content</a>
-<header class="site-header"><div class="container navbar">
-  <a class="brand" href="index.html" aria-label="Salih Camcı — Home"><span class="brand-mark">SC</span><span>Salih Camcı</span></a>
-  <ul class="nav-menu"><li><a href="index.html">Home</a></li><li><a href="index.html#about">About</a></li><li><a href="experiences.html">Experience</a></li><li><a href="projects.html" aria-current="page">Projects</a></li><li><a href="skills.html">Skills</a></li><li><a href="education.html">Education</a></li><li><a href="activities.html">Activities</a></li></ul>
-  <div class="nav-actions"><div class="lang-switcher" role="group" aria-label="Language switcher">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Salih Camcı</title>
+<meta name="description" content="Case studies in leakage-safe data science, Go systems, applied ML, and multi-agent orchestration, with honest results and explicit maturity labels.">
+<meta name="keywords" content="Data Science, Go, Backend Engineering, Machine Learning Signal Systems, FastAPI, PostgreSQL, Agentic AI">
+<meta name="author" content="Salih Camcı">
+<link rel="canonical" href="https://salih04.github.io/projects.html">
+<link rel="alternate" hreflang="en" href="https://salih04.github.io/projects.html">
+<link rel="alternate" hreflang="tr" href="https://salih04.github.io/tr/projects.html">
+<link rel="alternate" hreflang="de" href="https://salih04.github.io/de/projects.html">
+<link rel="alternate" hreflang="x-default" href="https://salih04.github.io/projects.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Salih Camcı">
+<meta property="og:title" content="Projects — Salih Camcı">
+<meta property="og:description" content="Case studies in leakage-safe data science, Go systems, applied ML, and multi-agent orchestration, with honest results and explicit maturity labels.">
+<meta property="og:url" content="https://salih04.github.io/projects.html">
+<meta property="og:image" content="https://salih04.github.io/assets/images/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Salih Camcı — backend engineering and data science portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Projects — Salih Camcı">
+<meta name="twitter:description" content="Case studies in leakage-safe data science, Go systems, applied ML, and multi-agent orchestration, with honest results and explicit maturity labels.">
+<meta name="twitter:image" content="https://salih04.github.io/assets/images/social-preview.png">
+<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@500;600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "CreativeWork", "name": "FinanceIQ", "url": "https://github.com/Salih04/capstone-financeIQ", "description": "Leakage-safe T+1 equity research system with a transparent negative result; Stage 2 negative-control implementation is in progress."}, {"@type": "CreativeWork", "name": "SAMS", "description": "Private advanced prototype for spatial multi-agent orchestration led by a two-person engineering team."}, {"@type": "CreativeWork", "name": "Parking Lot Detection System", "url": "https://github.com/Salih04/ParkingLot_Detection_System_Using_YoloV8"}, {"@type": "SoftwareSourceCode", "name": "CLI Task Queue with Priority Rules", "codeRepository": "https://github.com/Salih04/CLI-Task-Queue-with-Priority-Rules", "programmingLanguage": "Go"}]}</script>
+<script defer src="assets/js/main.js">
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+<div class="container navbar">
+  <a class="brand" href="index.html" aria-label="Salih Camcı — Home">
+<span class="brand-mark">SC</span>
+<span>Salih Camcı</span>
+</a>
+  <ul class="nav-menu">
+<li>
+<a href="index.html">Home</a>
+</li>
+<li>
+<a href="index.html#about">About</a>
+</li>
+<li>
+<a href="experiences.html">Experience</a>
+</li>
+<li>
+<a href="projects.html" aria-current="page">Projects</a>
+</li>
+<li>
+<a href="skills.html">Skills</a>
+</li>
+<li>
+<a href="education.html">Education</a>
+</li>
+<li>
+<a href="activities.html">Activities</a>
+</li>
+</ul>
+  <div class="nav-actions">
+<div class="lang-switcher" role="group" aria-label="Language switcher">
     <button class="lang-btn" type="button" data-lang-switch="en" aria-pressed="true" aria-current="true" aria-label="English">EN</button>
     <button class="lang-btn" type="button" data-lang-switch="tr" aria-pressed="false" aria-label="Türkçe">TR</button>
     <button class="lang-btn" type="button" data-lang-switch="de" aria-pressed="false" aria-label="Deutsch">DE</button>
-  </div><button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="mobile-menu" aria-expanded="false">☰</button></div>
-</div><nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation"><a href="index.html">Home</a><a href="index.html#about">About</a><a href="experiences.html">Experience</a><a href="projects.html" aria-current="page">Projects</a><a href="skills.html">Skills</a><a href="education.html">Education</a><a href="activities.html">Activities</a><a href="index.html#contact">Contact</a></nav></header><main id="main-content"><section class="page-hero"><div class="container page-hero-grid"><div><div class="eyebrow">Research & technical work</div><h1>Projects</h1><p>Short case studies that separate the problem, approach, result, and maturity of each system.</p></div><aside class="page-ledger"><div class="ledger-row"><span>ORDER</span><strong>Evidence depth</strong></div><div class="ledger-row"><span>PUBLIC</span><strong>7 repositories</strong></div><div class="ledger-row"><span>PRIVATE</span><strong>SAMS</strong></div></aside></div></section><section class="section"><div class="container"><p class="project-note">Numbering encodes evidence depth and maturity, not chronology: completed reproducible research → advanced prototype → applied ML system → compact learning tool.</p><div class="project-list"><article class="project-case"><div class="project-index"><span class="project-number">01</span><span class="status ">Completed capstone</span></div>
-<div class="project-main"><h3>FinanceIQ</h3><div class="case-rows"><div class="case-row"><span class="case-label">Research question</span><p>Can a leakage-safe T+1 pipeline find a reliable signal across BIST-listed companies?</p></div><div class="case-row"><span class="case-label">Approach</span><p>40+ validated features, walk-forward evaluation, FastAPI + React + Docker, and an LLM constrained to verified structured data.</p></div><div class="case-row"><span class="case-label">Result</span><p>The expanded 81-ticker training universe still produced weak, unstable walk-forward IC near zero. The negative result is reported, not hidden.</p></div></div></div>
-<aside class="project-aside"><div class="project-diagram"><svg viewBox="0 0 260 130" aria-hidden="true"><path class="diagram-line" d="M25 72C58 46 86 88 118 62S174 45 235 70"/><path class="diagram-line" opacity=".35" d="M25 86H235M25 56H235"/></svg></div><div class="stack"><span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>React</span><span>Docker</span><span>LLM</span></div><a class="project-link" href="https://github.com/Salih04/capstone-financeIQ" target="_blank" rel="noopener noreferrer"><span>Repository</span><span aria-hidden="true">↗</span></a></aside></article><article class="project-case"><div class="project-index"><span class="project-number">02</span><span class="status status-violet">Advanced prototype</span></div>
-<div class="project-main"><h3>SAMS</h3><div class="case-rows"><div class="case-row"><span class="case-label">Problem</span><p>Agent workflows are difficult to inspect when orchestration, model routing, and human approval live in separate tools.</p></div><div class="case-row"><span class="case-label">Approach</span><p>FastAPI, Temporal, Redis, PostgreSQL, and a React Three Fiber office that renders agents as navigable spatial work.</p></div><div class="case-row"><span class="case-label">Result</span><p>A serious in-progress orchestration system with config-driven model routing and human-in-the-loop control. Repository remains private.</p></div></div></div>
-<aside class="project-aside"><div class="project-diagram"><svg viewBox="0 0 260 130" aria-hidden="true"><path class="diagram-line" d="M40 65H95M125 65H180M110 50V25M110 80V105"/><circle class="diagram-node" cx="30" cy="65" r="14"/><rect class="diagram-node" x="95" y="50" width="30" height="30" rx="8"/><circle class="diagram-node" cx="195" cy="65" r="14"/><circle class="diagram-node" cx="110" cy="18" r="10"/><circle class="diagram-node" cx="110" cy="112" r="10"/></svg></div><div class="stack"><span>FastAPI</span><span>Temporal</span><span>Redis</span><span>PostgreSQL</span><span>R3F</span></div><div class="project-link"><span>Private repository</span><span aria-hidden="true">—</span></div></aside></article><article class="project-case"><div class="project-index"><span class="project-number">03</span><span class="status status-ochre">Applied ML system</span></div>
-<div class="project-main"><h3>Parking Lot Detection</h3><div class="case-rows"><div class="case-row"><span class="case-label">Problem</span><p>Parking-space occupancy needs stable per-space classification rather than generic full-frame vehicle detection.</p></div><div class="case-row"><span class="case-label">Approach</span><p>YOLOv8 classification on cropped parking-space polygons with stream processing, debounce, and occupancy tracking.</p></div><div class="case-row"><span class="case-label">Result</span><p>A public applied-computer-vision system supporting image, video, webcam, and stream inputs without inventing accuracy claims here.</p></div></div></div>
-<aside class="project-aside"><div class="project-diagram"><svg viewBox="0 0 260 130" aria-hidden="true"><path class="diagram-line" d="M32 20V110M82 20V110M132 20V110M182 20V110M232 20V110M20 20H242M20 110H242"/><rect class="diagram-node" x="39" y="43" width="36" height="45" rx="8"/><rect class="diagram-node" x="139" y="43" width="36" height="45" rx="8"/></svg></div><div class="stack"><span>Python</span><span>YOLOv8</span><span>OpenCV</span><span>Classification</span></div><a class="project-link" href="https://github.com/Salih04/ParkingLot_Detection_System_Using_YoloV8" target="_blank" rel="noopener noreferrer"><span>Repository</span><span aria-hidden="true">↗</span></a></aside></article><article class="project-case"><div class="project-index"><span class="project-number">04</span><span class="status status-ochre">Learning tool</span></div>
-<div class="project-main"><h3>CLI Task Queue</h3><div class="case-rows"><div class="case-row"><span class="case-label">Problem</span><p>Personal agentic coding sessions need explicit priority, dependency, and failure rules.</p></div><div class="case-row"><span class="case-label">Approach</span><p>A Go CLI using a priority heap, dependency checks, skip rules, goroutines, and WaitGroup coordination.</p></div><div class="case-row"><span class="case-label">Result</span><p>A compact public learning tool for reasoning about queue state and concurrent execution.</p></div></div></div>
-<aside class="project-aside"><div class="project-diagram"><svg viewBox="0 0 260 130" aria-hidden="true"><path class="diagram-line" d="M30 32H195M30 65H225M30 98H165"/><circle class="diagram-node" cx="205" cy="32" r="10"/><circle class="diagram-node" cx="235" cy="65" r="10"/><circle class="diagram-node" cx="175" cy="98" r="10"/></svg></div><div class="stack"><span>Go</span><span>Goroutines</span><span>Priority Queue</span><span>Rules</span></div><a class="project-link" href="https://github.com/Salih04/CLI-Task-Queue-with-Priority-Rules" target="_blank" rel="noopener noreferrer"><span>Repository</span><span aria-hidden="true">↗</span></a></aside></article></div></div></section><section class="section surface"><div class="container"><div class="section-head"><div class="section-label">EARLIER WORK</div><div><h2 class="section-title">Kept, but not inflated.</h2><p class="section-intro">These projects remain useful evidence of range. They are intentionally unnumbered because they do not belong to the maturity order above.</p></div></div><div class="compact-projects"><article class="compact-card"><div class="utility">Feb 2025</div><h3>GPT Implementation (nanoGPT)</h3><p>Attention, tokenization, and positional encoding implemented from scratch; perplexity within 8% of the reference on TinyShakespeare.</p><div class="project-link"><span>Repository archived / private</span><span>—</span></div></article><article class="compact-card"><div class="utility">Earlier project</div><h3>Face Mask Detection (YOLOv8)</h3><p>Real-time OpenCV inference pipeline for mask detection; retained without unverified performance claims.</p><a class="project-link" href="https://github.com/Salih04/Face_Mask_Detection_YOLOV8" target="_blank" rel="noopener noreferrer"><span>Repository</span><span>↗</span></a></article><article class="compact-card"><div class="utility">Earlier project</div><h3>Face Mask Detection (SSD)</h3><p>Single Shot Detector implementation for mask classification and real-time inference.</p><a class="project-link" href="https://github.com/Salih04/Face_Mask_Detection_SSD" target="_blank" rel="noopener noreferrer"><span>Repository</span><span>↗</span></a></article><article class="compact-card"><div class="utility">Coursework project</div><h3>Applied RL Highway</h3><p>Deep reinforcement-learning experiments in simulated highway traffic.</p><a class="project-link" href="https://github.com/Salih04/Applied-Reinforcement-Learning-Highway" target="_blank" rel="noopener noreferrer"><span>Repository</span><span>↗</span></a></article><article class="compact-card"><div class="utility">Earlier project</div><h3>Movie Recommendation System</h3><p>Content-based recommendation implementations in Python and C++.</p><a class="project-link" href="https://github.com/Salih04/Movie_Recommendation_System" target="_blank" rel="noopener noreferrer"><span>Repository</span><span>↗</span></a></article><article class="compact-card"><div class="utility">Earlier tool</div><h3>Local QR Code Generator</h3><p>Local QR generation with export and logo embedding; repository currently unavailable.</p><div class="project-link"><span>Repository unavailable</span><span>—</span></div></article><article class="compact-card"><div class="utility">Earlier project</div><h3>Slot Machine JavaScript</h3><p>Browser-based JavaScript coursework project; repository currently unavailable.</p><div class="project-link"><span>Repository unavailable</span><span>—</span></div></article></div></div></section></main><footer class="site-footer"><div class="container">
-  <div class="footer-grid"><div><div class="footer-brand">Salih Camcı</div><p class="footer-copy">Backend systems, leakage-safe research, and agentic software — built carefully and described without spin.</p></div>
-  <nav class="footer-links" aria-label="Footer"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="experiences.html">Experience</a><a href="education.html">Education</a><a href="skills.html">Skills</a><a href="activities.html">Activities</a><a href="mailto:salihcamci04@gmail.com">Email</a><a href="https://www.linkedin.com/in/salih-camci" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://github.com/Salih04" target="_blank" rel="noopener noreferrer">GitHub</a></nav></div>
-  <div class="footer-bottom"><span>© <span class="current-year">2026</span> Salih Camcı. All rights reserved.</span><span>Evidence, not theatre.</span></div>
-</div></footer></body></html>
+  </div>
+<button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="mobile-menu" aria-expanded="false">☰</button>
+</div>
+</div>
+<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
+<a href="index.html">Home</a>
+<a href="index.html#about">About</a>
+<a href="experiences.html">Experience</a>
+<a href="projects.html" aria-current="page">Projects</a>
+<a href="skills.html">Skills</a>
+<a href="education.html">Education</a>
+<a href="activities.html">Activities</a>
+<a href="index.html#contact">Contact</a>
+</nav>
+</header>
+<main id="main-content">
+<section class="page-hero">
+<div class="container page-hero-grid">
+<div>
+<div class="eyebrow">Research & technical work</div>
+<h1>Projects</h1>
+<p>Short case studies that separate the problem, approach, result, and maturity of each system.</p>
+</div>
+<aside class="page-ledger">
+<div class="ledger-row">
+<span>ORDER</span>
+<strong>Evidence depth</strong>
+</div>
+<div class="ledger-row">
+<span>PUBLIC</span>
+<strong>7 featured repositories</strong>
+</div>
+<div class="ledger-row">
+<span>TEAM</span>
+<strong>2 people · SAMS</strong>
+</div>
+</aside>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<p class="project-note">Numbering encodes evidence depth and maturity, not chronology: reproducible research in progress → SAMS under active engineering leadership → applied ML system → compact learning tool.</p>
+<div class="project-list">
+<article class="project-case">
+<div class="project-index">
+<span class="project-number">01</span>
+<span class="status ">Capstone · Stage 2 in progress</span>
+</div>
+<div class="project-main">
+<h3>FinanceIQ</h3>
+<div class="case-rows">
+<div class="case-row">
+<span class="case-label">Research question</span>
+<p>Can a leakage-safe T+1 pipeline find a reliable signal across BIST-listed companies?</p>
+</div>
+<div class="case-row">
+<span class="case-label">Approach</span>
+<p>40+ validated features, walk-forward evaluation, FastAPI + React + Docker, and an LLM constrained to verified structured data.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Result</span>
+<p>Stage 1/1b evidence remains weak and near zero on the expanded 81-ticker universe. Stage 2 is preregistered on main; its implementation is open in PR #37. No Stage 2 scientific run or outcome exists yet.</p>
+</div>
+</div>
+</div>
+<aside class="project-aside">
+<div class="project-diagram">
+<svg viewBox="0 0 260 130" aria-hidden="true">
+<path class="diagram-line" d="M25 72C58 46 86 88 118 62S174 45 235 70"/>
+<path class="diagram-line" opacity=".35" d="M25 86H235M25 56H235"/>
+</svg>
+</div>
+<div class="stack">
+<span>Python</span>
+<span>FastAPI</span>
+<span>PostgreSQL</span>
+<span>React</span>
+<span>Docker</span>
+<span>LLM</span>
+</div>
+<a class="project-link" href="https://github.com/Salih04/capstone-financeIQ" target="_blank" rel="noopener noreferrer">
+<span>Repository</span>
+<span aria-hidden="true">↗</span>
+</a>
+<a class="project-link" href="https://github.com/Salih04/capstone-financeIQ/pull/37" target="_blank" rel="noopener noreferrer">
+<span>Stage 2 PR</span>
+<span aria-hidden="true">↗</span>
+</a>
+</aside>
+</article>
+<article class="project-case">
+<div class="project-index">
+<span class="project-number">02</span>
+<span class="status status-violet">Active engineering lead</span>
+</div>
+<div class="project-main">
+<h3>SAMS</h3>
+<div class="case-rows">
+<div class="case-row">
+<span class="case-label">Problem</span>
+<p>Agent workflows are difficult to inspect when orchestration, model routing, and human approval live in separate tools.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Approach</span>
+<p>FastAPI, Temporal, Redis, PostgreSQL, and a React Three Fiber office that renders agents as navigable spatial work.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Result</span>
+<p>An advanced in-progress orchestration system. I lead a two-person team, assign bounded tasks, review pull requests and validation evidence, and coordinate acceptance and integration. The repository remains private.</p>
+</div>
+</div>
+</div>
+<aside class="project-aside">
+<div class="project-diagram">
+<svg viewBox="0 0 260 130" aria-hidden="true">
+<path class="diagram-line" d="M40 65H95M125 65H180M110 50V25M110 80V105"/>
+<circle class="diagram-node" cx="30" cy="65" r="14"/>
+<rect class="diagram-node" x="95" y="50" width="30" height="30" rx="8"/>
+<circle class="diagram-node" cx="195" cy="65" r="14"/>
+<circle class="diagram-node" cx="110" cy="18" r="10"/>
+<circle class="diagram-node" cx="110" cy="112" r="10"/>
+</svg>
+</div>
+<div class="stack">
+<span>FastAPI</span>
+<span>Temporal</span>
+<span>Redis</span>
+<span>PostgreSQL</span>
+<span>R3F</span>
+</div>
+<div class="project-link">
+<span>Private repository</span>
+<span aria-hidden="true">—</span>
+</div>
+</aside>
+</article>
+<article class="project-case">
+<div class="project-index">
+<span class="project-number">03</span>
+<span class="status status-ochre">Applied ML system</span>
+</div>
+<div class="project-main">
+<h3>Parking Lot Detection</h3>
+<div class="case-rows">
+<div class="case-row">
+<span class="case-label">Problem</span>
+<p>Parking-space occupancy needs stable per-space classification rather than generic full-frame vehicle detection.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Approach</span>
+<p>YOLOv8 classification on cropped parking-space polygons with stream processing, debounce, and occupancy tracking.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Result</span>
+<p>A public applied-computer-vision system supporting image, video, webcam, and stream inputs without inventing accuracy claims here.</p>
+</div>
+</div>
+</div>
+<aside class="project-aside">
+<div class="project-diagram">
+<svg viewBox="0 0 260 130" aria-hidden="true">
+<path class="diagram-line" d="M32 20V110M82 20V110M132 20V110M182 20V110M232 20V110M20 20H242M20 110H242"/>
+<rect class="diagram-node" x="39" y="43" width="36" height="45" rx="8"/>
+<rect class="diagram-node" x="139" y="43" width="36" height="45" rx="8"/>
+</svg>
+</div>
+<div class="stack">
+<span>Python</span>
+<span>YOLOv8</span>
+<span>OpenCV</span>
+<span>Classification</span>
+</div>
+<a class="project-link" href="https://github.com/Salih04/ParkingLot_Detection_System_Using_YoloV8" target="_blank" rel="noopener noreferrer">
+<span>Repository</span>
+<span aria-hidden="true">↗</span>
+</a>
+</aside>
+</article>
+<article class="project-case">
+<div class="project-index">
+<span class="project-number">04</span>
+<span class="status status-ochre">Learning tool</span>
+</div>
+<div class="project-main">
+<h3>CLI Task Queue</h3>
+<div class="case-rows">
+<div class="case-row">
+<span class="case-label">Problem</span>
+<p>Personal agentic coding sessions need explicit priority, dependency, and failure rules.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Approach</span>
+<p>A Go CLI using a priority heap, dependency checks, skip rules, goroutines, and WaitGroup coordination.</p>
+</div>
+<div class="case-row">
+<span class="case-label">Result</span>
+<p>A compact public learning tool for reasoning about queue state and concurrent execution.</p>
+</div>
+</div>
+</div>
+<aside class="project-aside">
+<div class="project-diagram">
+<svg viewBox="0 0 260 130" aria-hidden="true">
+<path class="diagram-line" d="M30 32H195M30 65H225M30 98H165"/>
+<circle class="diagram-node" cx="205" cy="32" r="10"/>
+<circle class="diagram-node" cx="235" cy="65" r="10"/>
+<circle class="diagram-node" cx="175" cy="98" r="10"/>
+</svg>
+</div>
+<div class="stack">
+<span>Go</span>
+<span>Goroutines</span>
+<span>Priority Queue</span>
+<span>Rules</span>
+</div>
+<a class="project-link" href="https://github.com/Salih04/CLI-Task-Queue-with-Priority-Rules" target="_blank" rel="noopener noreferrer">
+<span>Repository</span>
+<span aria-hidden="true">↗</span>
+</a>
+</aside>
+</article>
+</div>
+</div>
+</section>
+<section class="section surface">
+<div class="container">
+<div class="section-head">
+<div class="section-label">EARLIER WORK</div>
+<div>
+<h2 class="section-title">Kept, but not inflated.</h2>
+<p class="section-intro">These projects remain useful evidence of range. They are intentionally unnumbered because they do not belong to the maturity order above.</p>
+</div>
+</div>
+<div class="compact-projects">
+<article class="compact-card">
+<div class="utility">Feb 2025</div>
+<h3>GPT Implementation (nanoGPT)</h3>
+<p>Attention, tokenization, and positional encoding implemented from scratch; perplexity within 8% of the reference on TinyShakespeare.</p>
+<div class="project-link">
+<span>Repository archived / private</span>
+<span>—</span>
+</div>
+</article>
+<article class="compact-card">
+<div class="utility">Earlier project</div>
+<h3>Face Mask Detection (YOLOv8)</h3>
+<p>Real-time OpenCV inference pipeline for mask detection; retained without unverified performance claims.</p>
+<a class="project-link" href="https://github.com/Salih04/Face_Mask_Detection_YOLOV8" target="_blank" rel="noopener noreferrer">
+<span>Repository</span>
+<span>↗</span>
+</a>
+</article>
+<article class="compact-card">
+<div class="utility">Earlier project</div>
+<h3>Face Mask Detection (SSD)</h3>
+<p>Single Shot Detector implementation for mask classification and real-time inference.</p>
+<a class="project-link" href="https://github.com/Salih04/Face_Mask_Detection_SSD" target="_blank" rel="noopener noreferrer">
+<span>Repository</span>
+<span>↗</span>
+</a>
+</article>
+<article class="compact-card">
+<div class="utility">Coursework project</div>
+<h3>Applied RL Highway</h3>
+<p>Deep reinforcement-learning experiments in simulated highway traffic.</p>
+<a class="project-link" href="https://github.com/Salih04/Applied-Reinforcement-Learning-Highway" target="_blank" rel="noopener noreferrer">
+<span>Repository</span>
+<span>↗</span>
+</a>
+</article>
+<article class="compact-card">
+<div class="utility">Earlier project</div>
+<h3>Movie Recommendation System</h3>
+<p>Content-based recommendation implementations in Python and C++.</p>
+<a class="project-link" href="https://github.com/Salih04/Movie_Recommendation_System" target="_blank" rel="noopener noreferrer">
+<span>Repository</span>
+<span>↗</span>
+</a>
+</article>
+<article class="compact-card">
+<div class="utility">Earlier tool</div>
+<h3>Local QR Code Generator</h3>
+<p>Local QR generation with export and logo embedding; repository currently unavailable.</p>
+<div class="project-link">
+<span>Repository unavailable</span>
+<span>—</span>
+</div>
+</article>
+<article class="compact-card">
+<div class="utility">Earlier project</div>
+<h3>Slot Machine JavaScript</h3>
+<p>Browser-based JavaScript coursework project; repository currently unavailable.</p>
+<div class="project-link">
+<span>Repository unavailable</span>
+<span>—</span>
+</div>
+</article>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container">
+  <div class="footer-grid">
+<div>
+<div class="footer-brand">Salih Camcı</div>
+<p class="footer-copy">Backend systems, leakage-safe research, and agentic software — built carefully and described without spin.</p>
+</div>
+  <nav class="footer-links" aria-label="Footer">
+<a href="index.html">Home</a>
+<a href="projects.html">Projects</a>
+<a href="experiences.html">Experience</a>
+<a href="education.html">Education</a>
+<a href="skills.html">Skills</a>
+<a href="activities.html">Activities</a>
+<a href="mailto:salihcamci04@gmail.com">Email</a>
+<a href="https://www.linkedin.com/in/salih-camci" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+<a href="https://github.com/Salih04" target="_blank" rel="noopener noreferrer">GitHub</a>
+</nav>
+</div>
+  <div class="footer-bottom">
+<span>© <span class="current-year">2026</span> Salih Camcı. All rights reserved.</span>
+<span>Evidence, not theatre.</span>
+</div>
+</div>
+</footer>
+</body>
+</html>
