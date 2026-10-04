@@ -228,90 +228,6 @@
   align-items: start;
 }
 
-.arch__diagram {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 170px;
-  gap: 20px;
-}
-
-.arch__stack {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.arch__layer {
-  position: relative;
-  display: grid;
-  gap: 6px;
-  padding-bottom: 24px;
-}
-
-.arch__layer:last-child {
-  padding-bottom: 0;
-}
-
-.arch__layer-label {
-  font-size: var(--fs-label);
-  color: var(--text-faint);
-}
-
-.arch__layer-nodes,
-.arch__cross-nodes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.arch__flow {
-  position: absolute;
-  left: 50%;
-  bottom: 4px;
-  width: 1px;
-  height: 16px;
-  background: var(--line-strong);
-}
-
-.arch__node {
-  flex: 1;
-  min-height: 42px;
-  padding: 8px 14px;
-  border: 1px solid var(--line-strong);
-  border-radius: 2px;
-  background: var(--panel);
-  font-family: var(--font-mono);
-  font-size: 13.5px;
-  color: var(--text);
-  text-align: center;
-  cursor: pointer;
-  transition:
-    border-color var(--dur-fast) var(--ease),
-    background-color var(--dur-fast) var(--ease);
-}
-
-.arch__node:hover {
-  border-color: var(--signal-line);
-}
-
-.arch__node[aria-pressed="true"] {
-  border-color: var(--signal);
-  background: #10292a;
-  color: #e9fffe;
-}
-
-.arch__node[data-layer="crosscutting"] {
-  flex-basis: 100%;
-  border-style: dashed;
-}
-
-.arch__cross {
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  padding-left: 18px;
-  border-left: 1px dashed var(--line-strong);
-}
-
 .arch__detail {
   position: sticky;
   top: calc(var(--topbar-h) + 20px);
@@ -354,14 +270,6 @@
 
 .arch__text {
   grid-column: 1 / -1;
-}
-
-.arch--compact {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.arch--compact .arch__detail {
-  position: static;
 }
 
 /* ==========================================================================
@@ -999,20 +907,6 @@
 }
 
 @media (max-width: 640px) {
-  .arch__diagram {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .arch__cross {
-    padding: 14px 0 0;
-    border-left: 0;
-    border-top: 1px dashed var(--line-strong);
-  }
-
-  .arch__node[data-layer="crosscutting"] {
-    flex-basis: calc(50% - 4px);
-  }
-
   .pipeline__stages {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

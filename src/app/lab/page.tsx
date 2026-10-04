@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FacilityDirectory, FacilityMap, type Room } from "@/components/lab/FacilityMap";
 import { LabLink } from "@/components/shell/LabLink";
+import { countLabel } from "@/lib/count";
 import { notes } from "@/content/notes";
 import { vault } from "@/content/vault";
 
@@ -9,13 +10,14 @@ export const metadata: Metadata = {
   description: "The S//LAB control room: navigation hub for SAMS, FinanceIQ, the Engineering Archive, the Experiment Vault and Lab Notes.",
 };
 
-// Statuses describe the interface, never production telemetry.
+// Statuses describe the interface, never production telemetry. Counts are
+// derived from the content records, never typed in.
 const rooms: Room[] = [
   { id: "sams", index: "02", area: "Agent Systems Lab", title: "SAMS", href: "/sams/", status: "Simulation ready", tone: "signal" },
   { id: "financeiq", index: "03", area: "Market Data Research Lab", title: "FinanceIQ", href: "/financeiq/", status: "In progress", tone: "research" },
   { id: "archive", index: "04", area: "Engineering Archive", title: "Archive", href: "/archive/", status: "Open", tone: "neutral" },
-  { id: "vault", index: "05", area: "Experiment Vault", title: "Vault", href: "/vault/", status: `${vault.length} specimens`, tone: "neutral" },
-  { id: "notes", index: "06", area: "Lab Notes", title: "Notes", href: "/notes/", status: `${notes.length} drafts`, tone: "neutral" },
+  { id: "vault", index: "05", area: "Experiment Vault", title: "Vault", href: "/vault/", status: countLabel(vault.length, "specimen"), tone: "neutral" },
+  { id: "notes", index: "06", area: "Lab Notes", title: "Notes", href: "/notes/", status: countLabel(notes.filter((n) => n.status === "Draft").length, "draft"), tone: "neutral" },
 ];
 
 const index = [

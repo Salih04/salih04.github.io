@@ -27,7 +27,13 @@ export const resume = {
       role: "Backend Engineering Intern",
       organisation: "Crytek",
       period: "May–Jul 2026",
-      points: ["Go services for the live game backend of Hunt: Showdown"],
+      points: ["Go services for the live game backend of Hunt: Showdown", "Telemetry and automated testing"],
+    },
+    {
+      role: "QA Intern",
+      organisation: "Crytek",
+      period: "Feb–Apr 2026",
+      points: [],
     },
     {
       role: "Technical Lead / Maintainer — SAMS",

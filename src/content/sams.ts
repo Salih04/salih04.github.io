@@ -62,6 +62,22 @@ export type EventType =
   | "TASK_COMPLETED"
   | "WORKFLOW_RESUMED";
 
+/**
+ * Concise display labels for narrow screens. The canonical identifier stays
+ * in the accessible name and the row's title; simulation semantics do not change.
+ */
+export const eventShortLabel: Record<EventType, string> = {
+  TASK_ACCEPTED: "TASK ACCEPTED",
+  WORKFLOW_STARTED: "WORKFLOW START",
+  PLAN_CREATED: "PLAN CREATED",
+  STEP_COMPLETED: "STEP COMPLETE",
+  APPROVAL_REQUESTED: "APPROVAL REQUEST",
+  APPROVAL_RECORDED: "APPROVAL RECORDED",
+  STATE_UPDATED: "STATE UPDATE",
+  TASK_COMPLETED: "TASK COMPLETE",
+  WORKFLOW_RESUMED: "WORKFLOW RESUME",
+};
+
 export interface ScriptEvent {
   type: EventType;
   node: NodeId;
@@ -95,6 +111,8 @@ export interface ArchComponent {
   label: string;
   layer: "client" | "api" | "orchestration" | "workers" | "state" | "crosscutting";
   why: string;
+  /** One line for the architecture path: what this component owns or does. Restates `responsibilities`. */
+  owns: string;
   responsibilities: string[];
   tradeoff: string;
   /** Present when details are intentionally withheld from the public portfolio. */
@@ -107,6 +125,7 @@ export const architecture: ArchComponent[] = [
     label: "Client",
     layer: "client",
     why: "People watch long-running agent work as it happens, including after a refresh or a dropped connection.",
+    owns: "Remembers the last event it applied",
     responsibilities: ["Render task and agent state", "Remember the last event it applied", "Resume from that position after reconnecting"],
     tradeoff: "The client keeps its own projection instead of re-fetching everything, so it has to detect and handle gaps.",
   },
@@ -115,6 +134,7 @@ export const architecture: ArchComponent[] = [
     label: "FastAPI",
     layer: "api",
     why: "A thin, typed boundary. Requests start work; they never wait for it to finish.",
+    owns: "Starts work and returns at once",
     responsibilities: ["Validate and authorize requests", "Start workflows and return immediately", "Serve state and event history"],
     tradeoff: "A thin API moves complexity into the workflow layer, where it can be retried and observed.",
   },
@@ -123,6 +143,7 @@ export const architecture: ArchComponent[] = [
     label: "WebSockets",
     layer: "api",
     why: "Agent progress is pushed, not polled. A reconnecting client states where it stopped.",
+    owns: "Pushes events; accepts a resume position",
     responsibilities: ["Push events to subscribed clients", "Accept a resume position on reconnect", "Hand off from replay to live delivery"],
     tradeoff: "Connections drop, so reconnecting has to be a normal path in the protocol rather than an exception.",
   },
@@ -131,6 +152,7 @@ export const architecture: ArchComponent[] = [
     label: "Temporal",
     layer: "orchestration",
     why: "Long-running work cannot depend on one process staying alive. A lost worker must not lose a half-finished workflow.",
+    owns: "Owns durable work",
     responsibilities: ["Durable workflow coordination", "Retry semantics", "Resumption after worker loss"],
     tradeoff: "An extra service, and workflow code must be deterministic, so non-deterministic agent calls run as activities.",
   },
@@ -139,6 +161,7 @@ export const architecture: ArchComponent[] = [
     label: "Agent workers",
     layer: "workers",
     why: "Agent steps call models and tools. They are slow, can fail, and must be isolated from the deterministic workflow logic.",
+    owns: "Run agent steps; safe to retry",
     responsibilities: ["Execute plan steps as activities", "Report results back to the workflow"],
     tradeoff: "Workers can disappear at any time, so steps must be safe to retry.",
   },
@@ -147,6 +170,7 @@ export const architecture: ArchComponent[] = [
     label: "PostgreSQL",
     layer: "state",
     why: "Durable state for tasks, ownership, sessions and human decisions, with transactions where correctness matters.",
+    owns: "Owns durable state: tasks · ownership · decisions",
     responsibilities: ["Persist durable task and decision state", "Arbitrate concurrent decisions to one outcome", "Hold ownership records"],
     tradeoff: "Writing decisions durably first costs latency in exchange for one source of truth.",
   },
@@ -155,6 +179,7 @@ export const architecture: ArchComponent[] = [
     label: "Redis",
     layer: "state",
     why: "Ordered event streams carry delivery state between the system and its clients.",
+    owns: "Distributes events: ordered streams, retained history",
     responsibilities: ["Append events in order", "Serve a missed interval to a reconnecting client", "Make a history reset detectable"],
     tradeoff: "Delivery state is transient. When history cannot be proven complete, resume reports an explicit gap instead of a partial replay.",
   },
@@ -163,6 +188,7 @@ export const architecture: ArchComponent[] = [
     label: "Tenant boundary",
     layer: "crosscutting",
     why: "Several organisations share one system. An event claiming a tenant is not proof of ownership.",
+    owns: "Ownership from trusted state; fails closed",
     responsibilities: ["Resolve ownership from trusted stored state", "Withhold delivery when ownership is unknown"],
     tradeoff: "Failing closed can hide a legitimate event until ownership is resolved, which is preferable to delivering it to the wrong tenant.",
     boundary: "Enforcement mechanics are intentionally not published.",
@@ -172,19 +198,53 @@ export const architecture: ArchComponent[] = [
     label: "Authentication",
     layer: "crosscutting",
     why: "Every request and every socket has to be tied to an identity before it can do anything.",
+    owns: "Identity for every request and socket",
     responsibilities: ["Establish identity", "Bind identity to tenant scope"],
     tradeoff: "Sockets need the same guarantees as requests, which complicates reconnecting.",
     boundary: "Authentication internals are intentionally not published.",
   },
 ];
 
-export const archLayers: { id: ArchComponent["layer"]; label: string }[] = [
-  { id: "client", label: "Client" },
-  { id: "api", label: "API and event gateway" },
-  { id: "orchestration", label: "Workflow coordination" },
-  { id: "workers", label: "Agent steps" },
-  { id: "state", label: "Durable state and event delivery" },
-];
+/** One step on an architecture path: a component, the role it plays there, and the edge into the next step. */
+export interface PathStep {
+  id: string;
+  role: string;
+  /** Label of the edge from this step to the next one. */
+  edge?: string;
+}
+
+/**
+ * The architecture as two paths, shared by the lab's Architecture tab and the
+ * case study's figure so the two can never disagree. Every step names a
+ * component above; the labels restate its published role, nothing more.
+ */
+export const architecturePaths = {
+  /** Request / workflow path: from the client into durable work and durable state. */
+  request: [
+    { id: "client", role: "Client", edge: "request" },
+    { id: "api", role: "API boundary", edge: "start workflow" },
+    { id: "temporal", role: "Durable workflow", edge: "task and decision state" },
+    { id: "postgres", role: "Durable state" },
+  ] as const satisfies readonly PathStep[],
+  /** Agent steps hang off the workflow as activities. */
+  activities: { id: "workers", role: "Activities", edge: "runs agent steps as activities" } satisfies PathStep,
+  /** The one crossing between the paths. */
+  crossing: "appends events, in order",
+  /** Event delivery path: from retained event history back to the client. */
+  delivery: [
+    { id: "redis", role: "Event delivery", edge: "push" },
+    { id: "websockets", role: "Event gateway", edge: "events" },
+    { id: "client", role: "Client" },
+  ] as const satisfies readonly PathStep[],
+  /** Reconnect, as the delivery contract states it. */
+  reconnect: [
+    { k: "last_seq", text: "The client states its last_seq: the last event it applied." },
+    { k: "replay", text: "When retained history provably covers the interval, the missed events are replayed, then delivery goes live." },
+    { k: "gap", text: "Otherwise the client is told about an explicit gap, never given a partial replay." },
+  ],
+  /** Cross-cutting concerns drawn on the system boundary. */
+  boundary: ["auth", "tenancy"],
+};
 
 /* ---- Decision records -------------------------------------------------- */
 

@@ -3,7 +3,7 @@ import { engineeringRecords } from "@/content/archive";
 import { about, resume } from "@/content/about";
 import { financeCaseStudy, financeDecisions, financeSources, negativeResults } from "@/content/financeiq";
 import { notes } from "@/content/notes";
-import { samsCaseStudy, samsDecisions } from "@/content/sams";
+import { eventShortLabel, replayScript, samsCaseStudy, samsDecisions } from "@/content/sams";
 import { primaryNav, site } from "@/content/site";
 import { vault } from "@/content/vault";
 
@@ -77,4 +77,25 @@ describe("content guards against invented history", () => {
     // Lab Notes stay drafts and sit quiet in navigation.
     expect(primaryNav.find((n) => n.href === "/notes/")?.quiet).toBe("draft");
   });
+
+  it("applies the final-polish content decisions", () => {
+    expect(financeCaseStudy.glance.problem).toBe(
+      "How can we ensure a historical experiment only uses information that was actually knowable at each simulated date?",
+    );
+    // Archive: approved high-level areas only; the QA record stays minimal (no invented responsibilities).
+    const [backend, qa] = engineeringRecords;
+    expect(backend?.role).toBe("Backend Engineering Intern");
+    expect(backend?.area).toEqual(["Backend services", "Telemetry", "Automated testing"]);
+    expect(backend?.basis.link?.href).toBe("https://github.com/Salih04");
+    expect(qa).toMatchObject({ organisation: "Crytek", role: "QA Intern", period: "Feb–Apr 2026" });
+    expect(qa?.summary ?? qa?.area ?? qa?.tech ?? qa?.context).toBeUndefined();
+    for (const s of strings(engineeringRecords)) expect(s, s).not.toMatch(/\bBackend Engineer\b/);
+    // Every event has a concise mobile label; the canonical identifier is unchanged.
+    for (const e of replayScript) {
+      const short = eventShortLabel[e.type];
+      expect(short.length).toBeLessThanOrEqual(17);
+      expect(short.split(" ")[0]).toBe(e.type.split("_")[0]);
+    }
+  });
 });
+

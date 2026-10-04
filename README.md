@@ -21,7 +21,7 @@ The same content can be read two ways:
 | `/financeiq` | FinanceIQ: **Point-in-time reconstruction** (default), Experiment bench, Validation, Data pipeline, Results |
 | `/financeiq/case-study` | FinanceIQ case study |
 | `/case-studies` | Case study index |
-| `/archive` | Engineering Archive (Crytek record) |
+| `/archive` | Engineering Archive (Crytek records: backend internship, QA internship) |
 | `/vault` | Experiment Vault |
 | `/notes`, `/notes/[slug]` | Lab Notes |
 | `/about`, `/resume`, `/contact` | About, printable resume, contact |

@@ -15,14 +15,23 @@
   overflow: hidden;
 }
 
-/* A quiet pool of light behind the panel; the rest of the facility stays dark. */
-.entry::before {
+/* Depth: one restrained pool of light falls on the instrument; the room
+   around it falls off into darkness toward the edges. No glow, no colour. */
+.entry::before,
+.entry::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(ellipse 60% 55% at 46% 58%, rgb(120 150 170 / 0.06), transparent 70%);
   pointer-events: none;
+}
+
+.entry::before {
+  background: radial-gradient(ellipse 56% 42% at 58% 60%, rgb(150 170 190 / 0.06), transparent 72%);
+}
+
+.entry::after {
+  background: radial-gradient(ellipse 85% 80% at 55% 55%, transparent 55%, rgb(0 0 0 / 0.38) 100%);
 }
 
 .entry__panel {
@@ -198,11 +207,31 @@
   position: absolute;
   right: 0;
   top: 50%;
-  width: 12px;
+  width: 16px;
   height: 1px;
   background: var(--line-strong);
+  transition: background-color var(--dur) var(--ease);
 }
 
+.trace__key--sams::after {
+  background: var(--signal-line);
+}
+
+.trace__key--fiq::after {
+  background: var(--research-line);
+}
+
+.trace__key--sams:is(:hover, :focus-visible)::after {
+  background: var(--signal);
+}
+
+.trace__key--fiq:is(:hover, :focus-visible)::after {
+  background: var(--research);
+}
+
+/* The instrument plane: one surface step lighter than the room, lit from
+   "now", with the oldest history falling off into the dark. It hides the
+   facility grid behind it, so it reads as an object in front of the room. */
 .trace__field {
   position: relative;
   grid-column: 2;
@@ -210,7 +239,21 @@
   display: grid;
   grid-template-rows: var(--band) var(--axis) var(--band);
   border-left: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse 46% 120% at 72% 50%, rgb(190 205 220 / 0.045), transparent 72%),
+    linear-gradient(to bottom, #0c0f13, #0d1115 50%, #0c0f13);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.035);
   overflow: hidden;
+}
+
+.trace__field::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 1;
+  width: 16%;
+  background: linear-gradient(to right, rgb(12 15 19 / 0.75), transparent);
+  pointer-events: none;
 }
 
 /* Focus: hovering one project quiets the other trace. */
@@ -233,6 +276,7 @@
 
 .trace__band-k {
   position: absolute;
+  z-index: 2;
   left: 14px;
   font-family: var(--font-mono);
   font-size: var(--fs-meta);
@@ -249,23 +293,39 @@
   bottom: 10px;
 }
 
-/* The axis: one line with measurement marks, shared by both traces. */
+/* The axis: the visual anchor. One line with measurement marks (a major
+   mark every four), shared by both traces. */
 .trace__axis {
   position: relative;
+  z-index: 1;
   background:
-    linear-gradient(var(--line-strong), var(--line-strong)) 0 50% / 100% 1px no-repeat,
+    linear-gradient(rgb(150 165 180 / 0.6), rgb(150 165 180 / 0.6)) 0 50% / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, rgb(150 165 180 / 0.5) 0 1px, transparent 1px 13%) 0 50% / 100% 11px no-repeat,
     repeating-linear-gradient(90deg, var(--line-strong) 0 1px, transparent 1px 3.25%) 0 50% / 100% 7px no-repeat;
 }
 
+.trace__axis-k,
 .trace__axis-t {
   position: absolute;
-  right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  padding-left: 6px;
-  background: var(--bg);
+  font-family: var(--font-mono);
   font-size: var(--fs-meta);
   color: var(--text-faint);
+  background: #0d1115;
+}
+
+.trace__axis-k {
+  left: 10px;
+  padding: 0 8px 0 4px;
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+}
+
+.trace__axis-t {
+  right: 8px;
+  padding-left: 6px;
+  color: var(--text-dim);
 }
 
 /* SAMS: numbered events standing on the axis. */
@@ -332,8 +392,17 @@
   transition: left 900ms var(--ease);
 }
 
+/* The server cursor marks the head of the log, beside its number; the
+   client cursor marks the last applied event, down by the axis. */
 .trace__cur--server {
-  display: none;
+  bottom: auto;
+  top: calc(38% - 1px);
+  transform: translateX(26px);
+  color: var(--signal);
+}
+
+.trace__cur--server::before {
+  content: "◂ ";
 }
 
 .trace__cur--client {
@@ -377,9 +446,32 @@
   stroke-width: 1;
 }
 
+/* Before publication the result exists but is not yet known (dashed);
+   from publication on it is known (solid). */
+.trace__wait {
+  stroke: var(--text-faint);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
 .trace__lag {
-  stroke: var(--research-line);
+  stroke: var(--research);
+  stroke-opacity: 0.75;
   stroke-width: 1.5;
+}
+
+.trace__seg {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 5px));
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  white-space: nowrap;
+  color: var(--text-faint);
+}
+
+.trace__seg--known {
+  color: var(--research);
+  opacity: 0.85;
 }
 
 .trace__later {
@@ -470,8 +562,19 @@
   top: 0;
   bottom: 0;
   right: 0;
-  background: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.028) 0 1px, transparent 1px 7px);
+  background: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.042) 0 1px, transparent 1px 7px);
   pointer-events: none;
+}
+
+.trace__future-k {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 .trace__caption {
@@ -564,18 +667,33 @@
 :root[data-transition="enter"] .trace__caption,
 :root[data-transition="enter"] .trace__key {
   opacity: 0;
-  transform: translateY(-6px);
+  transform: translateY(-8px);
   transition:
-    opacity 220ms var(--ease),
-    transform 280ms var(--ease);
+    opacity 180ms var(--ease),
+    transform 200ms var(--ease);
 }
 
 :root[data-transition="enter"] .trace__band {
   opacity: 0;
   transform: scaleY(0.04);
   transition:
-    transform 280ms cubic-bezier(0.6, 0, 0.3, 1),
-    opacity 280ms var(--ease);
+    transform 200ms cubic-bezier(0.6, 0, 0.3, 1),
+    opacity 200ms var(--ease);
+}
+
+/* The bridge layer now carries the axis and rules; the originals step aside. */
+:root[data-transition="enter"] .trace__axis,
+:root[data-transition="enter"] .trace__now,
+:root[data-transition="enter"] .trace__future,
+:root[data-transition="enter"] .trace__field::before {
+  opacity: 0;
+  transition: opacity 120ms var(--ease);
+}
+
+:root[data-transition="enter"] .trace__field {
+  background: transparent;
+  box-shadow: none;
+  transition: background-color 200ms var(--ease);
 }
 
 :root[data-transition="enter"] .trace__band--sams {
@@ -586,9 +704,9 @@
   transform-origin: top;
 }
 
-:root[data-transition="enter"] .trace__grid {
+:root[data-transition="enter"] .trace__grid,
+:root[data-transition="enter"] .trace__field {
   border-color: transparent;
-  transition: border-color 200ms var(--ease);
 }
 
 /* ---- Below desktop ----------------------------------------------------- */
@@ -670,7 +788,10 @@
 
   .trace__band-k,
   .trace__pt--period span,
-  .trace__pt--rev span {
+  .trace__pt--rev span,
+  .trace__seg,
+  .trace__axis-k,
+  .trace__future-k {
     display: none;
   }
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CaseStudy } from "@/components/casestudy/CaseStudy";
-import { ArchitectureView } from "@/components/sams/ArchitectureView";
+import { ArchitectureFigure } from "@/components/sams/ArchitectureFigure";
 import { samsCaseStudy } from "@/content/sams";
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default function SamsCaseStudyPage() {
       study={samsCaseStudy}
       labHref="/sams/"
       decisionKind="Engineering decision"
-      architecture={<ArchitectureView compact fig="1" />}
+      architecture={<ArchitectureFigure fig="1" />}
     />
   );
 }

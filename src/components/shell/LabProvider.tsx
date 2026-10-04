@@ -6,6 +6,7 @@ import { modeForRoute, normalizePath, pairFor } from "@/lib/paths";
 import { playCue, type Cue } from "@/lib/sound";
 import { readPref, writePref } from "@/lib/storage";
 import { prefersReducedMotion } from "@/lib/useReducedMotion";
+import { BRIDGE, landBridge, removeBridge, startBridge } from "./facilityBridge";
 
 export type Mode = "lab" | "case";
 
@@ -30,9 +31,13 @@ const LabContext = createContext<LabContextValue | null>(null);
 const SOUND_KEY = "slab:sound";
 const OUT_MS = 160;
 const IN_MS = 240;
-/** Entry exit (trace folds to a line), then the Control Room floor opens. */
-const ENTER_OUT_MS = 280;
-const ARRIVE_MS = 900;
+/**
+ * Entry exit: the hero recedes and the instrument folds onto its time axis,
+ * which is lifted into a bridge layer that survives the route change. The
+ * bridge then travels to the Control Room's corridor and opens with the floor.
+ */
+const ENTER_OUT_MS = BRIDGE.fold;
+const ARRIVE_MS = BRIDGE.travel + BRIDGE.open + 240;
 
 function setTransition(phase: "out" | "in" | "enter" | null) {
   const root = document.documentElement;
@@ -80,6 +85,7 @@ export function LabProvider({ children }: { children: ReactNode }) {
       setTransition(null);
       const root = document.documentElement;
       root.dataset.arrive = "facility";
+      requestAnimationFrame(landBridge);
       later(() => delete root.dataset.arrive, ARRIVE_MS);
     }
   }, [pathname]);
@@ -117,9 +123,13 @@ export function LabProvider({ children }: { children: ReactNode }) {
       }
       arriving.current = true;
       setTransition("enter");
+      startBridge();
       later(() => router.push(href), ENTER_OUT_MS);
       later(() => {
-        if (document.documentElement.dataset.transition === "enter") setTransition(null);
+        if (document.documentElement.dataset.transition === "enter") {
+          setTransition(null);
+          removeBridge();
+        }
       }, 2500);
     },
     [router],

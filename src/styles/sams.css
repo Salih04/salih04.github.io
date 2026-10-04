@@ -495,6 +495,12 @@
   white-space: nowrap;
 }
 
+/* Canonical identifiers on wide screens; concise labels on phones (the
+   identifier stays in the accessible name and the title). */
+.evlog__type-short {
+  display: none;
+}
+
 .evlog__dur {
   display: inline-flex;
   align-items: center;
@@ -1027,6 +1033,19 @@
     font-size: 12px;
   }
 
+  .evlog__type-id {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .evlog__type-short {
+    display: inline;
+  }
+
   .instrument__log {
     padding: 8px 12px 12px;
   }
@@ -1037,5 +1056,565 @@
 
   .machine__system {
     padding: 12px;
+  }
+}
+
+/* ==========================================================================
+   SAMS — architecture as paths (lab tab).
+   Left: the request path into durable work and durable state. Right: the
+   event delivery path back to the client. Around both: the system boundary.
+   Cyan marks the event path only, as in the failure demo.
+   ========================================================================== */
+
+.arch--path {
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr);
+}
+
+.apath {
+  --mark-x: 15px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 116px minmax(0, 1fr);
+  align-content: start;
+  padding: 12px 16px 18px;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(circle, rgb(255 255 255 / 0.04) 1px, transparent 1.2px) 0 0 / 18px 18px,
+    var(--bg-raised);
+}
+
+.apath__head {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 14px;
+}
+
+.apath__legend {
+  display: flex;
+  gap: 16px;
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.apath__legend span::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 0;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-top: 1px solid var(--text-faint);
+}
+
+.apath__legend [data-k="delivery"]::before {
+  border-top-color: var(--signal);
+}
+
+/* ---- Nodes ------------------------------------------------------------ */
+
+.apath__node {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: baseline;
+  width: 100%;
+  padding: 7px 10px 8px 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: var(--bg);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.apath__node:hover {
+  border-color: var(--text-faint);
+}
+
+.apath__node[aria-pressed="true"] {
+  border-color: var(--signal);
+  background: #0f1f21;
+}
+
+.apath__mark {
+  grid-row: 1 / span 3;
+  align-self: start;
+  justify-self: center;
+  position: relative;
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+}
+
+.apath__role {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.apath__name {
+  grid-column: 2;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.apath__owns {
+  grid-column: 2;
+  margin-top: 2px;
+  font-size: var(--fs-label);
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+/* Marks encode role, in the failure demo's grammar. */
+.apath__node[data-id="client"] .apath__mark {
+  width: 9px;
+  height: 9px;
+  margin-top: 6px;
+  border: 1.5px solid var(--signal);
+  transform: rotate(45deg);
+}
+
+.apath__node[data-id="api"] .apath__mark {
+  width: 9px;
+  height: 9px;
+  margin-top: 6px;
+  border-top: 1.5px solid var(--text-dim);
+  border-right: 1.5px solid var(--text-dim);
+  transform: rotate(45deg);
+}
+
+.apath__node[data-id="temporal"] {
+  border-width: 1px;
+  outline: 1px solid var(--line-strong);
+  outline-offset: 2px;
+}
+
+.apath__node[data-id="temporal"][aria-pressed="true"] {
+  outline-color: var(--signal-line);
+}
+
+.apath__node[data-id="temporal"] .apath__mark {
+  border: 3px double var(--text-dim);
+}
+
+.apath__node[data-id="workers"] .apath__mark {
+  width: 18px;
+  height: 6px;
+  margin-top: 7px;
+  background:
+    radial-gradient(circle at 3px 3px, var(--text-dim) 2.2px, transparent 2.6px),
+    radial-gradient(circle at 9px 3px, var(--text-dim) 2.2px, transparent 2.6px),
+    radial-gradient(circle at 15px 3px, var(--text-dim) 2.2px, transparent 2.6px);
+}
+
+.apath__node[data-id="postgres"] .apath__mark {
+  width: 16px;
+  height: 6px;
+  margin-top: 7px;
+  background: var(--text-dim);
+}
+
+.apath__node[data-id="redis"] .apath__mark,
+.apath__node[data-id="websockets"] .apath__mark {
+  width: 16px;
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--signal) 0 2px, transparent 2px 5px);
+}
+
+.apath__node[data-id="websockets"] .apath__mark {
+  width: 12px;
+  background: none;
+  border: 1.5px solid var(--signal);
+  border-radius: 50%;
+}
+
+.apath__node[data-id="postgres"] {
+  border-bottom-width: 3px;
+}
+
+/* ---- Edges: a rail at the mark column, with a label beside it --------- */
+
+.apath__edge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+  margin: 0;
+  padding: 4px 0 4px 32px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  line-height: 1.35;
+  color: var(--text-faint);
+}
+
+.apath__edge::before {
+  content: "";
+  position: absolute;
+  left: var(--mark-x);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.apath__edge::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--mark-x) - 3.5px);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.apath__edge--down::after {
+  bottom: 0;
+  border-top: 6px solid var(--line-strong);
+}
+
+.apath__edge--up::after {
+  top: 0;
+  border-bottom: 6px solid var(--signal-line);
+}
+
+.apath__edge--up {
+  color: var(--signal);
+}
+
+.apath__edge--up::before {
+  background: var(--signal-line);
+}
+
+.apath__resume {
+  margin-left: 8px;
+  color: var(--text-dim);
+}
+
+/* ---- Placement -------------------------------------------------------- */
+
+.apath__client {
+  grid-column: 1 / -1;
+}
+
+.apath__edge--request {
+  grid-column: 1;
+}
+
+.apath__edge--push {
+  grid-column: 3;
+}
+
+.apath__boundary {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-content: start;
+  margin: 0 -8px;
+  padding: 12px 8px 0;
+  border: 1px dashed var(--line-strong);
+}
+
+/* The boundary is named on its lower edge, as on a drawing. */
+.apath__boundary-k {
+  grid-column: 1 / -1;
+  grid-row: 8;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 14px 0 -13px;
+}
+
+.apath__boundary-k .mono {
+  padding: 0 6px;
+  background: var(--bg-raised);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.apath__tag {
+  padding: 2px 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 0;
+  background: var(--bg-raised);
+  font-size: var(--fs-label);
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.apath__tag:hover {
+  color: var(--text);
+}
+
+.apath__tag[aria-pressed="true"] {
+  border-color: var(--signal);
+  color: var(--text);
+}
+
+.apath__api {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.apath__edge--start {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.apath__wf {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.apath__workers {
+  grid-column: 1;
+  grid-row: 5;
+  position: relative;
+  margin: 10px 0 0 22px;
+}
+
+/* Activities hang off the workflow, on a branch of the rail. */
+.apath__workers::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--mark-x) - 22px);
+  top: -10px;
+  width: 22px;
+  height: 28px;
+  border-left: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.apath__edge--state {
+  grid-column: 1;
+  grid-row: 6;
+}
+
+.apath__pg {
+  grid-column: 1;
+  grid-row: 7;
+}
+
+.apath__ws {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.apath__edge--deliver {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+.apath__redis {
+  grid-column: 3;
+  grid-row: 4;
+}
+
+/* The one horizontal crossing: the workflow appends events to delivery. */
+.apath__link {
+  grid-column: 2;
+  grid-row: 4;
+  position: relative;
+  align-self: center;
+  margin: 0;
+  padding: 0 4px 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  line-height: 1.3;
+  text-align: center;
+  color: var(--signal);
+}
+
+.apath__link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 6px;
+  bottom: 0;
+  height: 1px;
+  background: var(--signal-line);
+}
+
+.apath__link::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -3.5px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid var(--signal-line);
+}
+
+.apath__link-who {
+  display: none;
+}
+
+.apath__reconnect {
+  grid-column: 3;
+  grid-row: 5 / span 3;
+  align-self: start;
+  margin-top: 10px;
+  padding: 8px 0 0 12px;
+  border-left: 1px dashed var(--signal-line);
+}
+
+.apath__reconnect-k {
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.apath__reconnect ol {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  font-size: var(--fs-label);
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+
+.apath__reconnect li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.apath__reconnect li .mono {
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+}
+
+@media (max-width: 1180px) {
+  .arch--path {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .arch--path .arch__detail {
+    position: static;
+  }
+}
+
+/* Phones: one column, top to bottom — the request path, then delivery. */
+@media (max-width: 760px) {
+  .apath {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px 12px 16px;
+  }
+
+  .apath__edge--push {
+    display: none;
+  }
+
+  .apath__boundary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .apath__boundary > * {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .apath__link {
+    align-self: auto;
+    padding: 6px 0 6px 32px;
+    text-align: left;
+  }
+
+  .apath__link::before {
+    left: var(--mark-x);
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    height: auto;
+  }
+
+  .apath__link::after {
+    left: calc(var(--mark-x) - 3.5px);
+    right: auto;
+    bottom: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid var(--signal-line);
+    border-bottom: 0;
+  }
+
+  .apath__boundary-k {
+    order: 12;
+  }
+
+  .apath__api {
+    order: 1;
+  }
+
+  .apath__edge--start {
+    order: 2;
+  }
+
+  .apath__wf {
+    order: 3;
+  }
+
+  .apath__workers {
+    order: 4;
+  }
+
+  .apath__edge--state {
+    order: 5;
+  }
+
+  .apath__pg {
+    order: 6;
+  }
+
+  .apath__link {
+    order: 7;
+  }
+
+  .apath__redis {
+    order: 8;
+  }
+
+  .apath__edge--deliver {
+    order: 9;
+  }
+
+  .apath__ws {
+    order: 10;
+  }
+
+
+  .apath__link-who {
+    display: inline;
+  }
+
+  .apath__edge--deliver::after {
+    top: auto;
+    bottom: 0;
+    border-bottom: 0;
+    border-top: 6px solid var(--signal-line);
+  }
+
+  .apath__reconnect {
+    order: 11;
   }
 }

@@ -85,7 +85,7 @@
   position: relative;
   margin: 0 auto;
   /* Fit the plan below the intro band at any laptop height. */
-  max-width: max(560px, calc((100vh - var(--topbar-h) - 220px) * 2.083));
+  max-width: max(560px, calc((100vh - var(--topbar-h) - 248px) * 2.083));
   overflow: hidden;
 }
 
@@ -94,23 +94,26 @@
   aspect-ratio: 1 / 0.48;
   perspective: 160cqw;
   perspective-origin: 50% 50%;
-  transition: transform 520ms cubic-bezier(0.45, 0, 0.2, 1);
 }
 
+/* The transform list is the same at rest and in motion (see lib/facility),
+   so the camera interpolates as a move through space, not a matrix blend. */
 .facility__plane {
   position: absolute;
   left: 7%;
   width: 86%;
   top: -5.52cqw;
   height: 55.04cqw;
-  transform: rotateX(40deg);
+  transform: translate3d(0, 0, 0) rotateX(40deg);
   transform-origin: 50% 50%;
+  transition: transform 640ms cubic-bezier(0.45, 0, 0.15, 1);
 }
 
-/* Depth: the far side of the plan recedes into darkness. */
+/* Depth: the far side of the plan recedes, gently, so the far rooms keep
+   their drawings legible; the near side stays at full contrast. */
 .facility__plane {
-  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.42), #000 58%);
-  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.42), #000 58%);
+  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.66), rgb(0 0 0 / 0.9) 40%, #000 62%);
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.66), rgb(0 0 0 / 0.9) 40%, #000 62%);
 }
 
 .plan {
@@ -164,6 +167,16 @@
   stroke-width: 10;
 }
 
+/* Near structure: the walls closest to the viewer carry a little more light. */
+.plan__walls .plan__near {
+  stroke: #3b4957;
+}
+
+.plan__walls .plan__near--outer {
+  stroke: #46535f;
+  stroke-width: 10;
+}
+
 .plan__walls .plan__door {
   stroke: #3a4858;
   stroke-width: 1.2;
@@ -193,39 +206,61 @@
   fill: transparent;
 }
 
-/* The room boundary: invisible at rest, strengthened when the room is in focus. */
+/* The room boundary: a hairline at most. Selection is carried by the room's
+   own state — its instruments, its light — not by an outline. */
 .plan__edge {
   fill: none;
   stroke: transparent;
-  stroke-width: 2;
+  stroke-width: 1.5;
   pointer-events: none;
   transition: stroke 220ms var(--ease);
 }
 
 .plan__room--signal[data-active] .plan__edge {
-  stroke: var(--signal);
+  stroke: rgb(92 208 203 / 0.28);
 }
 
 .plan__room--research[data-active] .plan__edge {
-  stroke: var(--research);
+  stroke: rgb(155 150 244 / 0.28);
 }
 
 .plan__room--neutral[data-active] .plan__edge {
-  stroke: var(--text-faint);
+  stroke: rgb(200 214 226 / 0.14);
 }
 
+/* Internal illumination: faint at rest in the two flagship rooms, full when active. */
 .plan__glow {
-  opacity: 0.7;
-  transition: opacity 260ms var(--ease);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 320ms var(--ease);
+}
+
+.plan__room--neutral .plan__glow {
+  opacity: 0;
 }
 
 .plan__room[data-active] .plan__glow {
   opacity: 1;
 }
 
+/* A faint reflection of the active room's light on the corridor floor by its door. */
+.plan__spill {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 360ms var(--ease);
+}
+
+.plan__room[data-active] .plan__spill {
+  opacity: 0.7;
+}
+
 /* FOCUS: while one room is in focus, the others step back. */
 .facility[data-focus] .plan__room:not([data-active]) {
-  opacity: 0.45;
+  opacity: 0.42;
+}
+
+.facility[data-moving] .plan__room:not([data-active]) {
+  opacity: 0.24;
 }
 
 .facility[data-focus] .room-tag:not([data-active]) {
@@ -234,11 +269,15 @@
 
 .plan__preview {
   transform-box: view-box;
-  transition: transform 420ms var(--ease);
+  transition: transform 520ms var(--ease);
 }
 
 .plan__room[data-active] .plan__preview {
-  transform: scale(1.05);
+  transform: scale(1.04);
+}
+
+.facility[data-moving] .plan__room[data-active] .plan__preview {
+  transform: scale(1.09);
 }
 
 .plan__wire {
@@ -275,7 +314,21 @@
   font-family: var(--font-mono);
   font-size: 15px;
   text-anchor: middle;
-  fill: #6f7d8a;
+  fill: #8693a0;
+  transition: fill 260ms var(--ease);
+}
+
+.floor path,
+.floor rect,
+.floor circle {
+  transition:
+    stroke 260ms var(--ease),
+    stroke-opacity 260ms var(--ease),
+    fill-opacity 260ms var(--ease);
+}
+
+.plan__room[data-active] .floor text {
+  fill: #a9b6c2;
 }
 
 .floor .floor__note {
@@ -286,14 +339,27 @@
 .floor--sams .floor__rail,
 .floor--sams .floor__drop {
   fill: none;
-  stroke: rgb(92 208 203 / 0.5);
+  stroke: var(--signal);
+  stroke-opacity: 0.58;
   stroke-width: 2;
 }
 
 .floor--sams .floor__ev rect {
   fill: #0c1014;
-  stroke: rgb(92 208 203 / 0.7);
+  stroke: var(--signal);
+  stroke-opacity: 0.78;
   stroke-width: 1.6;
+}
+
+/* Active: the event rail reads clearly. */
+.plan__room[data-active] .floor--sams .floor__rail,
+.plan__room[data-active] .floor--sams .floor__drop,
+.plan__room[data-active] .floor--sams .floor__ev rect {
+  stroke-opacity: 1;
+}
+
+.plan__room[data-active] .floor--sams .floor__ev:not([data-head]) text {
+  fill: #cfe9e8;
 }
 
 .floor--sams .floor__ev[data-head] rect {
@@ -350,24 +416,43 @@
 
 .floor--fiq .floor__axis {
   fill: none;
-  stroke: #3a4553;
+  stroke: #56636f;
   stroke-width: 1.5;
 }
 
 .floor--fiq .floor__lag {
   fill: none;
-  stroke: rgb(155 150 244 / 0.6);
+  stroke: var(--research);
+  stroke-opacity: 0.7;
   stroke-width: 2;
 }
 
 .floor--fiq .floor__lag--later {
-  stroke: #3a4553;
+  stroke: #4a5664;
+  stroke-opacity: 1;
   stroke-dasharray: 5 6;
+}
+
+/* Active: the timeline becomes legible — axis, record and as-of all lift. */
+.plan__room[data-active] .floor--fiq .floor__axis {
+  stroke: #6c7a88;
+}
+
+.plan__room[data-active] .floor--fiq .floor__lag {
+  stroke-opacity: 1;
+}
+
+.plan__room[data-active] .floor--fiq .floor__lag--later {
+  stroke: #7a8794;
+}
+
+.plan__room[data-active] .floor--fiq .floor__note {
+  fill: #c9c7f7;
 }
 
 .floor--fiq .floor__period {
   fill: #0c1014;
-  stroke: #8794a2;
+  stroke: #9aa6b2;
   stroke-width: 1.8;
 }
 
@@ -409,25 +494,33 @@
 .floor__sheet,
 .floor__drawer {
   fill: #0e1318;
-  stroke: #4b5967;
+  stroke: #5a6876;
   stroke-width: 1.5;
 }
 
 .floor__ink {
   fill: none;
-  stroke: #2f3a46;
+  stroke: #3a4652;
   stroke-width: 2;
 }
 
 .floor__specimen {
   fill: none;
-  stroke: #66737f;
+  stroke: #7a8793;
   stroke-width: 1.5;
 }
 
 .plan__room--neutral[data-active] .floor__sheet,
 .plan__room--neutral[data-active] .floor__drawer {
-  stroke: #8794a2;
+  stroke: #9aa7b4;
+}
+
+.plan__room--neutral[data-active] .floor__ink {
+  stroke: #56636f;
+}
+
+.plan__room--neutral[data-active] .floor__specimen {
+  stroke: #b4c0cb;
 }
 
 /* ---- Upright labels ---------------------------------------------------- */
@@ -469,7 +562,7 @@
   gap: 0;
   padding: 2px 0 3px 12px;
   border-left: 1px solid var(--line-strong);
-  transform: translate(0, -100%);
+  transform: none;
   pointer-events: auto;
   text-decoration: none;
   white-space: nowrap;
@@ -479,8 +572,15 @@
     opacity 220ms var(--ease);
 }
 
-.room-tag[data-hang="down"] {
-  transform: none;
+/* Flagship rooms are signed at their doorway, in the corridor, so their
+   floors stay unobstructed; a short tick ties the sign to the door. */
+.room-tag[data-door]::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -10px;
+  height: 10px;
+  border-left: 1px dashed var(--line-strong);
 }
 
 .room-tag:hover {
@@ -538,19 +638,19 @@
   color: var(--text-faint);
 }
 
-/* Title block, as on a drawing sheet. */
+/* Title strip under the plan, as on a drawing sheet. */
 .facility__title {
-  position: absolute;
-  right: 1%;
-  bottom: 1%;
-  z-index: 1;
-  display: grid;
-  justify-items: end;
-  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 2px 0 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
   font-size: var(--fs-meta);
   letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--text-faint);
+  transition: opacity 200ms var(--ease);
 }
 
 .facility__title span {
@@ -561,6 +661,18 @@
 
 /* ---- Walking toward a room (SPACE) ------------------------------------ */
 
+/* Moving through the plan: the view's edges soften instead of clipping hard. */
+.facility[data-moving] {
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 76%, transparent),
+    linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, #000 76%, transparent),
+    linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  mask-composite: intersect;
+}
+
 .facility[data-moving] .facility__labels,
 .facility[data-moving] .facility__title {
   opacity: 0;
@@ -570,19 +682,21 @@
 /* ---- Arriving from the entry (SPACE) ----------------------------------
    The entry's trace folded into a line; the floor opens from that line. */
 
+/* The bridge lines reach the corridor first (180ms); the floor then opens
+   from that line while the lines become its walls. */
 :root[data-arrive="facility"] .facility__plane {
-  animation: floor-open 760ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+  animation: floor-open 400ms cubic-bezier(0.2, 0.7, 0.1, 1) 180ms both;
 }
 
 :root[data-arrive="facility"] .facility__labels,
 :root[data-arrive="facility"] .facility__title {
-  animation: labels-in 360ms var(--ease) 420ms both;
+  animation: labels-in 260ms var(--ease) 400ms both;
 }
 
 @keyframes floor-open {
   from {
-    transform: rotateX(89deg);
-    opacity: 0.4;
+    transform: translate3d(0, 0, 0) rotateX(89deg);
+    opacity: 0.5;
   }
 }
 
@@ -836,6 +950,18 @@
 @media (max-width: 1279px) {
   .control__intro {
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: 0 32px;
+  }
+
+  /* Each audience route on two short lines: the question, then the way in. */
+  .control__routes li {
+    display: grid;
+    gap: 0;
+    padding: 5px 0;
+  }
+
+  .control__routes span {
+    font-size: var(--fs-meta);
   }
 }
 

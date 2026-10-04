@@ -84,22 +84,31 @@ export function InstrumentTrace() {
             <span className="trace__cur trace__cur--server" style={{ left: `${x(head)}%` }}>
               server
             </span>
+            <span className="trace__future-k">not yet known</span>
             <span className="trace__cur trace__cur--client" data-behind={client < head || undefined} style={{ left: `${x(client)}%` }}>
               client
             </span>
           </div>
 
           <div className="trace__axis">
-            <span className="trace__axis-t mono">t</span>
+            <span className="trace__axis-k">Shared time axis</span>
+            <span className="trace__axis-t mono">t →</span>
           </div>
 
           <div className="trace__band trace__band--fiq">
             <span className="trace__band-k">Historical trace</span>
             <svg className="trace__record" viewBox="0 0 1000 100" preserveAspectRatio="none">
               <path className="trace__drop" d={`M${PERIOD_END * 10} 0 V24`} />
-              <path className="trace__lag" d={`M${PERIOD_END * 10} 24 H${PUBLICATION * 10} V62 H${NOW * 10}`} />
+              <path className="trace__wait" d={`M${PERIOD_END * 10} 24 H${PUBLICATION * 10}`} />
+              <path className="trace__lag" d={`M${PUBLICATION * 10} 24 V62 H${NOW * 10}`} />
               <path className="trace__later" d={`M${NOW * 10} 62 H${REVISION * 10}`} />
             </svg>
+            <span className="trace__seg" style={{ left: `${(PERIOD_END + PUBLICATION) / 2}%`, top: "24%" }}>
+              reporting lag
+            </span>
+            <span className="trace__seg trace__seg--known" style={{ left: `${(PUBLICATION + NOW) / 2}%`, top: "62%" }}>
+              known
+            </span>
             <span className="trace__pt trace__pt--period" style={{ left: `${PERIOD_END}%`, top: "24%" }}>
               <i />
               <span>Period end</span>

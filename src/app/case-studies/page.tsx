@@ -54,7 +54,7 @@ export default function CaseStudiesPage() {
         ))}
       </ul>
       <p className="editorial__aside">
-        Professional work is kept in the <LabLink href="/archive/">Engineering Archive</LabLink> ({engineeringRecords.map((r) => r.organisation).join(", ")}).
+        Professional work is kept in the <LabLink href="/archive/">Engineering Archive</LabLink> ({[...new Set(engineeringRecords.map((r) => r.organisation))].join(", ")}).
       </p>
     </div>
   );

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import { FigureLabel } from "@/components/records/FigureLabel";
 import { useLab } from "@/components/shell/LabProvider";
 import { prefersReducedMotion } from "@/lib/useReducedMotion";
-import { FIRST_SEQ, replayScript, topology, type NodeId } from "@/content/sams";
+import { eventShortLabel, FIRST_SEQ, replayScript, topology, type NodeId } from "@/content/sams";
 import {
   clientTick,
   converged,
@@ -296,8 +296,11 @@ export function FailureDemo({ startToken = 0 }: { startToken?: number }) {
                   <span role="cell" className="evlog__seq">
                     {pad(e.seq)}
                   </span>
-                  <span role="cell" className="evlog__type">
-                    {e.type}
+                  <span role="cell" className="evlog__type" title={e.type}>
+                    <span className="evlog__type-id">{e.type}</span>
+                    <span className="evlog__type-short" aria-hidden="true">
+                      {eventShortLabel[e.type]}
+                    </span>
                   </span>
                   <span role="cell" className="evlog__dur evlog__colDur">
                     <i aria-hidden="true" /> retained

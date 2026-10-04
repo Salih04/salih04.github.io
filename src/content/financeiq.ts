@@ -231,7 +231,7 @@ export const financeCaseStudy: CaseStudy = {
     project: "MSc Data Science research / semester project · University of Basel",
     status: "In progress · active development",
     problemLabel: "Research question",
-    problem: "How can a historical experiment be restricted to the information that was actually available on each date it simulates?",
+    problem: "How can we ensure a historical experiment only uses information that was actually knowable at each simulated date?",
     approachLabel: "Method",
     approach: ["Availability-aware data", "Walk-forward evaluation", "Negative results preserved"],
     stack: ["Python", "scikit-learn", "FastAPI", "PostgreSQL"],

@@ -35,11 +35,13 @@ export default function ResumePage() {
               {e.organisation}
               {e.period ? <span className="resume__period"> · {e.period}</span> : null}
             </p>
-            <ul>
-              {e.points.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
+            {e.points.length ? (
+              <ul>
+                {e.points.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
         ))}
       </section>

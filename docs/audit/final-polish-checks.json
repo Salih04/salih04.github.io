@@ -1,0 +1,379 @@
+{
+ "pages": [
+  {
+   "name": "01-entry-1440",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 963
+  },
+  {
+   "name": "02-entry-transition-midpoint",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1010
+  },
+  {
+   "name": "03b-control-room-arrived",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1010
+  },
+  {
+   "name": "03-control-room-1440",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1010
+  },
+  {
+   "name": "04-control-room-sams-selected",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1010
+  },
+  {
+   "name": "05-control-room-financeiq-selected",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1010
+  },
+  {
+   "name": "06-control-room-transition-to-sams",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1010
+  },
+  {
+   "name": "07-sams-architecture",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1362
+  },
+  {
+   "name": "08-sams-disconnected",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1097
+  },
+  {
+   "name": "09-sams-replay",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1097
+  },
+  {
+   "name": "10-sams-converged",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1097
+  },
+  {
+   "name": "11-financeiq-pit",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1580
+  },
+  {
+   "name": "12-financeiq-experiment-bench",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1071
+  },
+  {
+   "name": "13-financeiq-validation",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 900
+  },
+  {
+   "name": "14-financeiq-pipeline",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 900
+  },
+  {
+   "name": "15-archive-desktop",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1648
+  },
+  {
+   "name": "24-sams-case-study-architecture",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 9864
+  },
+  {
+   "name": "w1440-console-errors",
+   "errors": []
+  },
+  {
+   "name": "16-control-room-1280",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 901
+  },
+  {
+   "name": "17-entry-1280",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 815
+  },
+  {
+   "name": "w1280-console-errors",
+   "errors": []
+  },
+  {
+   "name": "16-control-room-1024",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 838
+  },
+  {
+   "name": "17-entry-1024",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 854
+  },
+  {
+   "name": "w1024-console-errors",
+   "errors": []
+  },
+  {
+   "name": "18-mobile-entry",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1240
+  },
+  {
+   "name": "19-mobile-facility-directory",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1229
+  },
+  {
+   "name": "20-mobile-sams",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 2011
+  },
+  {
+   "name": "21-mobile-financeiq",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 3077
+  },
+  {
+   "name": "22-mobile-case-study",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 15868
+  },
+  {
+   "name": "25-mobile-archive",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 2466
+  },
+  {
+   "name": "23-mobile-sams-architecture",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 2472
+  },
+  {
+   "name": "mobile-console-errors",
+   "errors": []
+  },
+  {
+   "name": "reduced-console-errors",
+   "errors": []
+  }
+ ],
+ "checks": [
+  {
+   "name": "Entry → Control Room: the bridge carries three lines from the entry through the route change and then removes itself",
+   "pass": true,
+   "detail": "{\"fold\":3,\"mid\":{\"lines\":3,\"phase\":\"travel\"},\"after\":{\"bridge\":false,\"arrive\":null}}"
+  },
+  {
+   "name": "Entry → Control Room: route changes within 400ms of the click",
+   "pass": true,
+   "detail": "238ms"
+  },
+  {
+   "name": "1440: Control Room labels are inside the plan and do not overlap",
+   "pass": true,
+   "detail": "{\"clipped\":0,\"overlaps\":0,\"facility\":1136}"
+  },
+  {
+   "name": "Control Room: a selected room activates from inside (light, rail contrast, corridor spill) while the others recede",
+   "pass": true,
+   "detail": "{\"others\":\"0.42\",\"glow\":\"1\",\"spill\":\"0.7\",\"rail\":\"1\"}"
+  },
+  {
+   "name": "Control Room: the camera moves the plane in depth (dolly + tilt), not a 2D zoom of the stage",
+   "pass": true,
+   "detail": "translate3d(14.393cqw, 11.103cqw, 48.827cqw) rotateX(33deg)"
+  },
+  {
+   "name": "Control Room click navigates to the room after the camera move",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "SAMS Architecture: request, workflow, state and delivery path drawn from the published components",
+   "pass": true,
+   "detail": "Client, FastAPI, Temporal, Agent workers, PostgreSQL, WebSockets, Redis"
+  },
+  {
+   "name": "SAMS Architecture: selecting a component keeps keyboard focus and updates the detail",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "SAMS disconnected: client frozen at 041, server at 047",
+   "pass": true,
+   "detail": "{\"server\":\"047\",\"client\":\"041\",\"sync\":\"Client behind by 6\"}"
+  },
+  {
+   "name": "SAMS replay: resume from last_seq=041",
+   "pass": true,
+   "detail": "resume from last_seq=041"
+  },
+  {
+   "name": "SAMS converged: continuity PASS, duplicates NONE, convergence PASS",
+   "pass": true,
+   "detail": "PASS,NONE,PASS"
+  },
+  {
+   "name": "SAMS durability column still reads 'retained'",
+   "pass": true,
+   "detail": "retained"
+  },
+  {
+   "name": "FinanceIQ PIT unchanged: 31 Mar 2020 · naive 1.18 · known 1.31",
+   "pass": true,
+   "detail": "31 Mar 2020 / 1.18 / 1.31"
+  },
+  {
+   "name": "FinanceIQ research question uses the final wording",
+   "pass": true,
+   "detail": "At a glanceRoleResearcherResearch design, methodology and validation.ProjectMSc "
+  },
+  {
+   "name": "Archive: backend record carries Role, Period, Area, Tech, Context, Basis; the QA record stays minimal",
+   "pass": true,
+   "detail": "[{\"role\":\"Backend Engineering Intern\",\"fields\":\"Role,Period,Area,Tech,Context,Basis\"},{\"role\":\"QA Intern\",\"fields\":\"Role,Period,Basis\"}]"
+  },
+  {
+   "name": "Archive: approved areas only (Backend services · Telemetry · Automated testing)",
+   "pass": true,
+   "detail": "Backend services · Telemetry · Automated testing"
+  },
+  {
+   "name": "SAMS case study architecture agrees with the lab tab (same paths, roles and reconnect contract)",
+   "pass": true,
+   "detail": "Client>FastAPI>Temporal>PostgreSQL>Redis>WebSockets>Client | last_seq>replay>gap | Client,API boundary,Durable workflow,Activities,Durable state,Event gateway,Event delivery"
+  },
+  {
+   "name": "first Tab reaches the skip link",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "keyboard reaches both project keys and Enter S//LAB on the entry",
+   "pass": true,
+   "detail": "S//LAB | About | Resume | Contact |  |  | Case study | 02 · Independent project | 03 · MSc research · in p | EnterS//LAB→ | Read the case studies → | Press ~ for terminal"
+  },
+  {
+   "name": "deep link /sams/#decisions loads",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "deep link /financeiq/#results loads",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "deep link /notes/designing-replayable-event-systems/ loads",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "w1440: zero console errors",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "1280: Control Room labels are inside the plan and do not overlap",
+   "pass": true,
+   "detail": "{\"clipped\":0,\"overlaps\":0,\"facility\":867}"
+  },
+  {
+   "name": "1280: intro does not crowd the plan and the plan fits the first viewport",
+   "pass": true,
+   "detail": "{\"gap\":32,\"fits\":true}"
+  },
+  {
+   "name": "w1280: zero console errors",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "1024: Control Room labels are inside the plan and do not overlap",
+   "pass": true,
+   "detail": "{\"clipped\":0,\"overlaps\":0,\"facility\":734}"
+  },
+  {
+   "name": "1024: intro does not crowd the plan and the plan fits the first viewport",
+   "pass": true,
+   "detail": "{\"gap\":28,\"fits\":true}"
+  },
+  {
+   "name": "w1024: zero console errors",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "mobile directory: Vault and Notes counts are derived from the records",
+   "pass": true,
+   "detail": "Simulation ready · In progress · Open · 4 specimens · 3 drafts"
+  },
+  {
+   "name": "mobile SAMS: concise event labels, none truncated, canonical identifiers kept",
+   "pass": true,
+   "detail": "[{\"id\":\"TASK_ACCEPTED\",\"shown\":\"TASK ACCEPTED\",\"cut\":false},{\"id\":\"WORKFLOW_STARTED\",\"shown\":\"WORKFLOW START\",\"cut\":false},{\"id\":\"PLAN_CREATED\",\"shown\":\"PLAN CREATED\",\"cut\":false},{\"id\":\"STEP_COMPLETED\",\"shown\":\"STEP COMPLETE\",\"cut\":false},{\"id\":\"STEP_COMPLETED\",\"shown\":\"STEP COMPLETE\",\"cut\":false},{\"id\":\"APPROVAL_REQUESTED\",\"shown\":\"APPROVAL REQUEST\",\"cut\":false},{\"id\":\"APPROVAL_RECORDED\",\"shown\":\"APPROVAL RECORDED\",\"cut\":false}]"
+  },
+  {
+   "name": "mobile: zero console errors",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "reduced motion: Enter S//LAB navigates at once, with no bridge or floor animation",
+   "pass": true,
+   "detail": "{\"arrive\":\"none\",\"bridge\":false}"
+  },
+  {
+   "name": "reduced motion: choosing a room navigates without the camera move",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "reduced: zero console errors",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "no page horizontal overflow on any captured page",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "no visible text under 12px on any captured page",
+   "pass": true,
+   "detail": ""
+  }
+ ]
+}

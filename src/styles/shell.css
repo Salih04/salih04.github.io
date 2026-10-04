@@ -246,20 +246,25 @@
   color: var(--signal);
 }
 
+/* Mode selector: a report switch, not an app toggle. Square, ruled, with a
+   two-position slot (lab | report). */
 .mode-switch {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 38px;
+  min-height: 36px;
   margin-left: 6px;
   padding: 0 12px 0 10px;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: var(--panel);
+  border-radius: var(--radius);
+  background: transparent;
   font-size: var(--fs-label);
   color: var(--text-dim);
   cursor: pointer;
   white-space: nowrap;
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease);
 }
 
 .mode-switch:hover {
@@ -269,20 +274,18 @@
 
 .mode-switch__track {
   position: relative;
-  width: 28px;
-  height: 16px;
-  border-radius: 999px;
-  background: var(--line-strong);
-  transition: background-color var(--dur) var(--ease);
+  width: 26px;
+  height: 12px;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(var(--line-strong), var(--line-strong)) 50% 0 / 1px 100% no-repeat;
 }
 
 .mode-switch__thumb {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+  top: 1px;
+  left: 1px;
+  width: 10px;
+  height: 8px;
   background: var(--text-dim);
   transition:
     transform var(--dur) var(--ease),
@@ -295,7 +298,7 @@
 }
 
 .mode-switch[aria-checked="true"] .mode-switch__track {
-  background: rgb(149 144 242 / 0.35);
+  border-color: rgb(149 144 242 / 0.5);
 }
 
 .mode-switch[aria-checked="true"] .mode-switch__thumb {
@@ -693,5 +696,71 @@ kbd {
   from {
     opacity: 0;
     transform: translateY(16px);
+  }
+}
+
+/* ---- Entry → Control Room bridge (SPACE) -------------------------------
+   Three lines lifted from the entry instrument; they survive the route
+   change, travel to the corridor and open into its walls. */
+
+.bridge {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.bridge__line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  background: var(--line-strong);
+  transform-origin: 0 0;
+}
+
+.bridge__line--axis {
+  background: rgb(150 165 180 / 0.7);
+}
+
+.bridge[data-phase="fold"] .bridge__line {
+  transition:
+    transform 200ms cubic-bezier(0.6, 0, 0.3, 1),
+    width 200ms cubic-bezier(0.6, 0, 0.3, 1);
+}
+
+.bridge[data-phase="travel"] .bridge__line {
+  transition:
+    transform 180ms cubic-bezier(0.5, 0, 0.2, 1),
+    width 180ms cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+/* Opening: the rules become the corridor walls, then hand over to the plan. */
+.bridge[data-phase="open"] .bridge__line {
+  opacity: 0;
+  transition:
+    transform 400ms cubic-bezier(0.2, 0.7, 0.1, 1),
+    width 400ms cubic-bezier(0.2, 0.7, 0.1, 1),
+    opacity 180ms var(--ease) 240ms;
+}
+
+.bridge[data-phase="open"] .bridge__line--top,
+.bridge[data-phase="open"] .bridge__line--bottom {
+  height: 2px;
+  background: #3a4858;
+}
+
+/* Arriving: the rail and the intro resolve around the corridor. */
+:root[data-arrive="facility"] .page {
+  animation: page-fade 260ms var(--ease) backwards;
+}
+
+:root[data-arrive="facility"] .rail {
+  animation: page-fade 360ms var(--ease) 80ms backwards;
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
   }
 }

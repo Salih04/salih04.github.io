@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent, type ReactElement } from "react";
 import { LabLink } from "@/components/shell/LabLink";
 import { useLab } from "@/components/shell/LabProvider";
+import { dolly, planeTransform, project } from "@/lib/facility";
 import { prefersReducedMotion } from "@/lib/useReducedMotion";
 import { ArchiveGlyph, FinanceGlyph, NotesGlyph, SamsGlyph, VaultGlyph } from "./Glyphs";
 
@@ -23,54 +24,38 @@ export interface Room {
 interface Space {
   rect: [number, number, number, number];
   centre: [number, number];
-  /** Where the upright label's left edge stands, in plane units. */
+  /** Where the upright label's top-left stands, in plane units: at the doorway for the
+   *  flagship rooms (signage in the corridor, so their floors stay unobstructed), inside
+   *  the room for the others. */
   label: [number, number];
   /** Route from the control room to the room's doorway. */
   wire: string;
+  /** The doorway, where the room's light spills into the corridor. */
+  door: [number, number];
 }
 
 const HUB: [number, number] = [500, 320];
 
 const SPACES: Record<RoomId, Space> = {
-  sams: { rect: [10, 10, 490, 240], centre: [255, 130], label: [44, 214], wire: "M500 320 H260 V250" },
-  financeiq: { rect: [500, 10, 490, 240], centre: [745, 130], label: [534, 214], wire: "M500 320 H740 V250" },
-  archive: { rect: [10, 390, 330, 240], centre: [175, 510], label: [40, 404], wire: "M500 320 H175 V390" },
-  vault: { rect: [340, 390, 320, 240], centre: [500, 510], label: [370, 404], wire: "M500 320 V390" },
-  notes: { rect: [660, 390, 330, 240], centre: [825, 510], label: [690, 404], wire: "M500 320 H825 V390" },
+  sams: { rect: [10, 10, 490, 240], centre: [255, 130], label: [40, 264], wire: "M500 320 H260 V250", door: [260, 250] },
+  financeiq: { rect: [500, 10, 490, 240], centre: [745, 130], label: [640, 264], wire: "M500 320 H740 V250", door: [740, 250] },
+  archive: { rect: [10, 390, 330, 240], centre: [175, 510], label: [40, 404], wire: "M500 320 H175 V390", door: [175, 390] },
+  vault: { rect: [340, 390, 320, 240], centre: [500, 510], label: [370, 404], wire: "M500 320 V390", door: [500, 390] },
+  notes: { rect: [660, 390, 330, 240], centre: [825, 510], label: [690, 404], wire: "M500 320 H825 V390", door: [825, 390] },
 };
 
 const GLYPHS: Record<RoomId, typeof SamsGlyph> = { sams: SamsGlyph, financeiq: FinanceGlyph, archive: ArchiveGlyph, vault: VaultGlyph, notes: NotesGlyph };
 
 /*
- * Projection that mirrors the CSS on .facility__stage / .facility__plane, in
- * units of the stage width: perspective 160cqw, a stage 0.48 tall, a plane
- * 0.86 × 0.5504 centred at (0.5, 0.22) and rotated 40° about X. Every length
- * scales with the stage width, so label positions are constant percentages.
+ * Camera, in this order: the room activates from inside and the others
+ * recede; then the view moves toward it — the plane travels toward the
+ * viewer (a dolly, so near parts grow more than far ones) while the tilt
+ * eases a few degrees and the room's floor drawing grows. The route changes
+ * before the room fills the view.
  */
-const TILT = (40 * Math.PI) / 180;
-const PERSPECTIVE = 1.6;
-const STAGE_H = 0.48;
-const PLANE_W = 0.86;
-const PLANE_H = 0.5504;
-const PLANE_CY = 0.22;
-
-export function project([x, y]: [number, number]): { left: number; top: number } {
-  const dx = (x / 1000 - 0.5) * PLANE_W;
-  const dy = (y / 640 - 0.5) * PLANE_H;
-  const y1 = dy * Math.cos(TILT);
-  const z = dy * Math.sin(TILT);
-  const s = PERSPECTIVE / (PERSPECTIVE - z);
-  const X = 0.5 + dx * s;
-  const Y = STAGE_H / 2 + (PLANE_CY + y1 - STAGE_H / 2) * s;
-  return { left: X * 100, top: (Y / STAGE_H) * 100 };
-}
-
-/* Camera: the room's boundary strengthens and the others dim, then the view walks toward it. */
-const FOCUS_MS = 140;
-const MOVE_MS = 520;
-const CAMERA_SCALE = 1.32;
-/** How far the room centre travels toward the middle of the view (0–1). */
-const CAMERA_PULL = 0.62;
+const FOCUS_MS = 120;
+const MOVE_MS = 560;
+const CAMERA = { pull: 0.55, zoom: 1.42, tilt: 33 };
 
 /** Walls as poché: thick dark strokes with doorway gaps. */
 function Walls() {
@@ -80,7 +65,8 @@ function Walls() {
       <path d="M10 250 H220 M300 250 H700 M780 250 H990" />
       <path d="M500 10 V250" />
       <path d="M10 390 H140 M210 390 H465 M535 390 H790 M860 390 H990" />
-      <path d="M340 390 V630 M660 390 V630" />
+      <path className="plan__near" d="M340 390 V630 M660 390 V630" />
+      <path className="plan__near plan__near--outer" d="M10 630 H990" />
       <path className="plan__door" d="M220 250 A80 80 0 0 0 300 250 M700 250 A80 80 0 0 0 780 250" />
       <path className="plan__door" d="M140 390 A70 70 0 0 1 210 390 M465 390 A70 70 0 0 1 535 390 M790 390 A70 70 0 0 1 860 390" />
     </g>
@@ -215,7 +201,6 @@ export function FacilityMap({ rooms }: { rooms: Room[] }) {
   const [active, setActive] = useState<RoomId | null>(null);
   const [selected, setSelected] = useState<RoomId | null>(null);
   const [camera, setCamera] = useState<CSSProperties | null>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
@@ -227,26 +212,16 @@ export function FacilityMap({ rooms }: { rooms: Room[] }) {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
     if (selected) return;
-    const stage = stageRef.current;
-    if (!stage || prefersReducedMotion()) {
+    if (prefersReducedMotion()) {
       navigate(room.href);
       return;
     }
-    // 1. The room's boundary strengthens and the others dim.
+    // 1–2. The room activates from inside; the others recede.
     setSelected(room.id);
     setActive(room.id);
-    // 2. The view walks toward the room, then the route changes.
-    const r = stage.getBoundingClientRect();
-    const p = project(SPACES[room.id].centre);
-    const ox = (p.left / 100) * r.width;
-    const oy = (p.top / 100) * r.height;
+    // 3–5. The view moves toward the room, then the route changes.
     timers.current.push(
-      window.setTimeout(() => {
-        setCamera({
-          transformOrigin: `${ox}px ${oy}px`,
-          transform: `translate(${(r.width / 2 - ox) * CAMERA_PULL}px, ${(r.height / 2 - oy) * CAMERA_PULL}px) scale(${CAMERA_SCALE})`,
-        });
-      }, FOCUS_MS),
+      window.setTimeout(() => setCamera({ transform: planeTransform(dolly(SPACES[room.id].centre, CAMERA)) }), FOCUS_MS),
       window.setTimeout(() => navigate(room.href), FOCUS_MS + MOVE_MS),
     );
   };
@@ -256,8 +231,8 @@ export function FacilityMap({ rooms }: { rooms: Room[] }) {
 
   return (
     <div className="facility" data-focus={lit ?? undefined} data-moving={camera ? "" : undefined}>
-      <div className="facility__stage" ref={stageRef} style={camera ?? undefined}>
-        <div className="facility__plane">
+      <div className="facility__stage">
+        <div className="facility__plane" style={camera ?? undefined}>
           <svg className="plan" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <pattern id="plan-fine" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -276,6 +251,10 @@ export function FacilityMap({ rooms }: { rooms: Room[] }) {
               <radialGradient id="glow-research" cx="50%" cy="45%" r="55%">
                 <stop offset="0%" stopColor="#9b96f4" stopOpacity="0.16" />
                 <stop offset="100%" stopColor="#9b96f4" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="glow-neutral" cx="50%" cy="45%" r="55%">
+                <stop offset="0%" stopColor="#c8d6e2" stopOpacity="0.09" />
+                <stop offset="100%" stopColor="#c8d6e2" stopOpacity="0" />
               </radialGradient>
               <radialGradient id="glow-hub" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stopColor="#c8d6e2" stopOpacity="0.07" />
@@ -312,9 +291,15 @@ export function FacilityMap({ rooms }: { rooms: Room[] }) {
                   onClick={enter(room)}
                 >
                   <rect x={x} y={y} width={w} height={h} className="plan__space" />
-                  {room.tone !== "neutral" ? (
-                    <ellipse cx={x + w / 2} cy={y + h * 0.44} rx={w * 0.48} ry={h * 0.5} fill={`url(#glow-${room.tone})`} className="plan__glow" />
-                  ) : null}
+                  <ellipse cx={x + w / 2} cy={y + h * 0.48} rx={w * 0.5} ry={h * 0.52} fill={`url(#glow-${room.tone})`} className="plan__glow" />
+                  <ellipse
+                    cx={SPACES[room.id].door[0]}
+                    cy={SPACES[room.id].door[1] + (SPACES[room.id].door[1] < 320 ? 34 : -34)}
+                    rx={120}
+                    ry={40}
+                    fill={`url(#glow-${room.tone})`}
+                    className="plan__spill"
+                  />
                   <g className="plan__preview" style={{ transformOrigin: `${x + w / 2}px ${y + h / 2}px` }}>
                     <Floor />
                   </g>
@@ -347,7 +332,7 @@ export function FacilityMap({ rooms }: { rooms: Room[] }) {
                 key={room.id}
                 href={room.href}
                 className={`room-tag room-tag--${room.tone}`}
-                data-hang={SPACES[room.id].rect[1] > 300 ? "down" : undefined}
+                data-door={SPACES[room.id].rect[1] < 300 || undefined}
                 data-active={lit === room.id || undefined}
                 style={{ left: `${p.left}%`, top: `${p.top}%` }}
                 onPointerEnter={() => setActive(room.id)}
@@ -366,11 +351,11 @@ export function FacilityMap({ rooms }: { rooms: Room[] }) {
             );
           })}
         </div>
-
-        <p className="facility__title mono" aria-hidden="true">
-          S//LAB · Level 01 · Plan <span>Schematic · not to scale</span>
-        </p>
       </div>
+
+      <p className="facility__title mono" aria-hidden="true">
+        S//LAB · Level 01 · Plan <span>Schematic · not to scale</span>
+      </p>
     </div>
   );
 }

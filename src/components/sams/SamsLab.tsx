@@ -5,7 +5,7 @@ import { LabLink } from "@/components/shell/LabLink";
 import { TabBar } from "@/components/shell/TabBar";
 import { samsCaseStudy, samsDecisions, samsSources } from "@/content/sams";
 import { useHashTab } from "@/lib/useHashTab";
-import { ArchitectureView } from "./ArchitectureView";
+import { ArchitecturePath } from "./ArchitecturePath";
 import { FailureDemo } from "./FailureDemo";
 
 const TABS = ["demo", "architecture", "decisions"] as const;
@@ -48,9 +48,9 @@ export function SamsLab() {
           <>
             <div className="section-head">
               <h2>Architecture</h2>
-              <p>The same system as engineering components. Select one to see why it exists, what it is responsible for and what it costs.</p>
+              <p>The same system as paths: what owns durable work, what owns durable state, how events reach a client and how it reconnects. Select a component to see why it exists and what it costs.</p>
             </div>
-            <ArchitectureView />
+            <ArchitecturePath />
           </>
         ) : null}
         {tab === "decisions" ? (
