@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FinanceIQ — evaluation case study · Salih Camcı</title>
-<meta name="description" content="A reproducible evaluation harness for BIST equity ranking: an apparent signal, the audit that found it used unpublished statements, and the point-in-time correction that removed it.">
+<meta name="description" content="A reproducible BIST equity-ranking evaluation: the published result used not-yet-public annual statements; after the point-in-time correction, the baseline was +0.031 (p = 0.63).">
 <link rel="canonical" href="https://salih04.github.io/financeiq.html">
 <meta property="og:title" content="FinanceIQ — evaluation case study · Salih Camcı">
-<meta property="og:description" content="A reproducible evaluation harness for BIST equity ranking: an apparent signal, the audit that found it used unpublished statements, and the point-in-time correction that removed it.">
+<meta property="og:description" content="A reproducible BIST equity-ranking evaluation: the published result used not-yet-public annual statements; after the point-in-time correction, the baseline was +0.031 (p = 0.63).">
 <meta property="og:image" content="https://salih04.github.io/assets/images/social-preview.png">
 <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 <section class="hero"><div class="wrap">
   <p class="offset">case study · public repository</p>
   <h1>FinanceIQ: an evaluation harness that audited its own result</h1>
-  <p class="lede">Can one year's public data about a Borsa Istanbul company rank stocks by next year's return? The study first found a weak signal. An audit then showed the signal used annual statements before they were public; re-evaluated point-in-time, it disappeared. Both results are kept.</p>
+  <p class="lede">The published baseline reported IC +0.150 (p = 0.017), but used annual statements that were not public at the prediction date. After enforcing point-in-time availability, the baseline was IC +0.031 (p = 0.63). Both evaluations remain published for provenance; the corrected estimate shows no evidence of a large predictive edge in this sample.</p>
   <ul class="facts"><li>Python · pandas · scikit-learn</li><li>walk-forward, 3 test years</li><li>permutation + bootstrap</li><li>point-in-time guard</li></ul>
   <div class="links"><a href="https://github.com/Salih04/capstone-financeIQ">Repository</a><a href="https://github.com/Salih04/capstone-financeIQ/blob/main/RESULTS.md">RESULTS.md</a></div>
 </div></section>
