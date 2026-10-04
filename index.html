@@ -44,7 +44,7 @@
 <text x="672" y="24" font-size="11" text-anchor="middle" class="t-ok">live</text>
 <text x="40" y="24" font-size="11" class="t-muted">delivered</text>
 </svg></div>
-    <figcaption>The replay → live handoff from SAMS. A reconnecting client resumes from its cursor; the server replays up to a watermark, buffers what arrives meanwhile, and switches to live delivery under one lock, so each event is delivered once or the gap is named.</figcaption>
+    <figcaption>The replay → live handoff from SAMS. A reconnecting client receives an ordered missed interval and then live events, or an explicit gap when complete history cannot be proven.</figcaption>
   </figure>
 </div></section>
 
