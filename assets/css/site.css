@@ -132,10 +132,10 @@ td.num { font-family: var(--mono); white-space: nowrap; }
 /* Failure cards */
 .fails { display: grid; gap: 12px; grid-template-columns: 1fr; margin: 1rem 0 1.5rem; }
 @media (min-width: 720px) { .fails { grid-template-columns: 1fr 1fr; } }
-.fcard { border: 1px solid var(--rule); border-left: 3px solid var(--gap); border-radius: 3px; background: var(--surface); padding: 14px 16px; }
+.fcard { min-width: 0; border: 1px solid var(--rule); border-left: 3px solid var(--gap); border-radius: 3px; background: var(--surface); padding: 14px 16px; }
 .fcard h3 { font-size: 1rem; margin-bottom: .35rem; }
 .fcard p { margin: 0; font-size: .95rem; color: var(--muted); }
-.fcard .ev { display: block; margin-top: .5rem; font: 500 .75rem/1.5 var(--mono); color: var(--ink); }
+.fcard .ev { display: block; margin-top: .5rem; font: 500 .75rem/1.5 var(--mono); color: var(--ink); overflow-wrap: anywhere; }
 
 pre { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 14px 16px; overflow-x: auto; font: .85rem/1.55 var(--mono); }
 
