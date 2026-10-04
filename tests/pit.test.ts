@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { pitObservations } from "@/content/financeiq";
-import { detectLeakage, naive, pointInTime, reconstruct } from "@/lib/pit";
+import { compareFact, detectLeakage, naive, pointInTime, reconstruct, syntheticScores } from "@/lib/pit";
 
 const ids = (m: Map<string, { id: string }>) => [...m.values()].map((o) => o.id).sort();
 
@@ -39,5 +39,48 @@ describe("point-in-time reconstruction", () => {
 
   it("finds nothing to leak before any data exists", () => {
     expect(detectLeakage(pitObservations, "2019-07-01").filter((i) => i.kind !== "survivorship")).toEqual([]);
+  });
+});
+
+describe("fact comparison and consequence", () => {
+  it("shows the later correction as leakage on 31 March 2020", () => {
+    const c = compareFact(pitObservations, "Company A|EPS|Q4 2019", "2020-03-31");
+    expect(c.naive?.value).toBe(1.18);
+    expect(c.available?.value).toBe(1.31);
+    expect(c.verdict).toBe("revision-leak");
+  });
+
+  it("agrees once the correction has been published", () => {
+    const c = compareFact(pitObservations, "Company A|EPS|Q4 2019", "2020-06-01");
+    expect(c.verdict).toBe("match");
+    expect(c.available?.value).toBe(1.18);
+  });
+
+  it("flags a value used before it was published, and a value nobody could know yet", () => {
+    expect(compareFact(pitObservations, "Company A|EPS|Q1 2020", "2020-04-15").verdict).toBe("look-ahead");
+    expect(compareFact(pitObservations, "Company A|EPS|Q1 2020", "2020-02-01").verdict).toBe("not-yet-available");
+  });
+
+  it("toy scores only diverge when facts leak", () => {
+    const leaks = detectLeakage(pitObservations, "2020-03-31").length;
+    const s = syntheticScores(leaks);
+    expect(s.naive).toBeCloseTo(0.06);
+    expect(s.pit).toBeCloseTo(0.01);
+    expect(syntheticScores(0).naive).toBe(syntheticScores(0).pit);
+  });
+});
+
+describe("survivorship in the comparison", () => {
+  it("reports an entity missing from today's constituents", () => {
+    const c = compareFact(pitObservations, "Company C|Universe|Membership", "2020-03-31");
+    expect(c.verdict).toBe("survivorship");
+    expect(c.naive).toBeUndefined();
+    expect(c.available?.value).toBe(1);
+  });
+});
+
+describe("membership after removal", () => {
+  it("agrees once the entity has actually left the universe", () => {
+    expect(compareFact(pitObservations, "Company C|Universe|Membership", "2020-10-01").verdict).toBe("match");
   });
 });

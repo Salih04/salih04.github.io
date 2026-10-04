@@ -10,14 +10,12 @@ import { gaussian, hash32, mulberry32 } from "./prng";
  */
 
 export interface ExperimentConfig {
-  universe: string;
-  dateRange: string;
+  dataset: "pit" | "naive";
+  validation: "walk-forward" | "shuffled";
+  model: string;
   signal: string;
-  modelFamily: string;
-  strategy: string;
-  validation: string;
+  universe: string;
   seed: number;
-  pit: boolean;
 }
 
 export interface ExperimentResult {
@@ -30,56 +28,34 @@ export interface ExperimentResult {
   verdict: string;
 }
 
-export const PIPELINE_LOG = [
-  "Preparing historical universe",
-  "Loading valid point-in-time observations",
-  "Applying publication lag",
-  "Building features",
-  "Walk-forward validation",
-  "Statistical evaluation",
-] as const;
-
 /** Log lines for a run; the wording reflects the configuration. */
 export function runLog(config: ExperimentConfig): string[] {
-  const shuffled = config.validation.startsWith("K-fold");
+  const pit = config.dataset === "pit";
   return [
-    config.pit ? "Preparing historical universe (as-of membership)" : "Preparing universe from current constituents",
-    config.pit ? "Loading valid point-in-time observations" : "Loading latest values (no availability filter)",
-    config.pit ? "Applying publication lag from recorded timestamps" : "Skipping publication lag",
+    pit ? "Universe from as-of membership" : "Universe from current constituents",
+    pit ? "Loading values published by each date" : "Loading latest values (no availability filter)",
     "Building features",
-    shuffled ? "K-fold validation (shuffled)" : "Walk-forward validation",
-    "Statistical evaluation",
+    config.validation === "shuffled" ? "Shuffled k-fold validation" : "Walk-forward validation",
+    "Comparing with a null distribution",
   ];
 }
 
+/** Same inputs, same fingerprint: the identity of a run. */
 export function fingerprint(config: ExperimentConfig): string {
-  const canonical = JSON.stringify([
-    config.universe,
-    config.dateRange,
-    config.signal,
-    config.modelFamily,
-    config.strategy,
-    config.validation,
-    config.seed,
-    config.pit,
-  ]);
+  const canonical = JSON.stringify([config.dataset, config.validation, config.model, config.signal, config.universe, config.seed]);
   return hash32(canonical).toString(16).padStart(8, "0");
 }
 
-const SIGNAL_EDGE: Record<string, number> = {
-  "Earnings revision": 0.012,
-  "Value composite": 0.006,
-  "Momentum 12-1": 0.009,
-};
+const SIGNAL_EDGE: Record<string, number> = { a: 0.012, b: 0.006, c: 0.009 };
 
 export function simulate(config: ExperimentConfig, foldCount = 10): ExperimentResult {
   const fp = fingerprint(config);
   const rand = mulberry32(hash32(fp));
-  const shuffled = config.validation.startsWith("K-fold");
+  const shuffled = config.validation === "shuffled";
 
   const leakage: string[] = [];
   let inflation = 0;
-  if (!config.pit) {
+  if (config.dataset === "naive") {
     inflation += 0.035;
     leakage.push("Look-ahead: features use values before their publication date");
     leakage.push("Survivorship: universe built from current constituents");
@@ -90,7 +66,7 @@ export function simulate(config: ExperimentConfig, foldCount = 10): ExperimentRe
   }
 
   const edge = SIGNAL_EDGE[config.signal] ?? 0.008;
-  const noise = config.universe.includes("400") ? 0.02 : 0.03;
+  const noise = config.universe === "400" ? 0.02 : 0.03;
   const folds = Array.from({ length: foldCount }, () => edge + inflation + noise * gaussian(rand));
 
   const mean = folds.reduce((s, x) => s + x, 0) / folds.length;
@@ -107,7 +83,7 @@ export function simulate(config: ExperimentConfig, foldCount = 10): ExperimentRe
   } else {
     verdict = significant
       ? "Significant under leakage-free validation. Candidate for replication."
-      : "Not statistically significant. Archived as negative evidence.";
+      : "Not statistically significant. Kept as a negative result.";
   }
 
   return { fingerprint: fp, folds, meanIC: mean, tStat, significant, leakage, verdict };

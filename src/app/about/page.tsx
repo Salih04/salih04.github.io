@@ -5,7 +5,7 @@ import { about } from "@/content/about";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About the researcher behind S//LAB: software engineer, Data Science MSc, systems + AI + research.",
+  description: "About Salih: software engineer and MSc Data Science student at the University of Basel.",
 };
 
 export default function AboutPage() {
@@ -24,18 +24,18 @@ export default function AboutPage() {
         ))}
       </div>
 
-      <section className="trajectory" aria-labelledby="trajectory-title">
-        <h2 id="trajectory-title" className="eyebrow">
-          Trajectory
+      <section className="areas" aria-labelledby="areas-title">
+        <h2 id="areas-title" className="eyebrow">
+          Areas of work
         </h2>
-        <ol>
-          {about.trajectory.map((t) => (
-            <li key={t.stage}>
-              <span className="trajectory__stage">{t.stage}</span>
-              <span className="trajectory__note">{t.note}</span>
-            </li>
+        <dl>
+          {about.areas.map((a) => (
+            <div key={a.area}>
+              <dt>{a.area}</dt>
+              <dd>{a.note}</dd>
+            </div>
           ))}
-        </ol>
+        </dl>
       </section>
 
       <section aria-labelledby="principles-title" className="principles">

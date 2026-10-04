@@ -9,5 +9,12 @@ export const metadata: Metadata = {
 };
 
 export default function SamsCaseStudyPage() {
-  return <CaseStudy study={samsCaseStudy} labHref="/sams/" architecture={<ArchitectureView compact />} />;
+  return (
+    <CaseStudy
+      study={samsCaseStudy}
+      labHref="/sams/"
+      decisionKind="Engineering decision"
+      architecture={<ArchitectureView compact fig="1" />}
+    />
+  );
 }

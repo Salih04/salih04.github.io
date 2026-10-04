@@ -1,69 +1,99 @@
-import type { CaseStudy, DecisionRecord } from "./types";
+import type { CaseStudy, DecisionRecord, SourceLink } from "./types";
 
 /*
  * SAMS — Spatial Agentic Management System.
  *
- * Public boundary: this file describes concepts, responsibilities and
- * decisions. It deliberately contains no endpoints, identifiers, schema,
- * configuration or authentication internals. The live view is a scripted
- * demonstration and is labelled as such wherever it renders.
+ * An independent engineering project with a private codebase. Every claim in
+ * this file is either (a) a design concept stated at the level of the public
+ * evidence package, or (b) a historical verification result from that
+ * package, labelled as such. Nothing here describes production telemetry:
+ * SAMS has not served production traffic.
+ *
+ * Public boundary: no endpoints, identifiers, schema, migrations,
+ * configuration, security mechanics or private source. See
+ * docs/PUBLIC_BOUNDARY.md.
  */
 
-export type AgentId = "planner" | "coordinator" | "research" | "analysis" | "spatial" | "execution";
+const REPO = "https://github.com/Salih04/sams-reliability-core";
 
-export interface AgentNode {
-  id: AgentId;
+export const samsSources = {
+  evidence: { label: "SAMS reliability evidence package", href: REPO },
+  verification: { label: "Verification matrix", href: `${REPO}/blob/main/docs/VERIFICATION.md` },
+  limitations: { label: "Limitations of the evidence", href: `${REPO}/blob/main/docs/LIMITATIONS.md` },
+  ci: { label: "Historical CI record, 4 Oct 2026", href: `${REPO}/blob/main/results/CI_2026-10-04.md` },
+} satisfies Record<string, SourceLink>;
+
+/* ---- Agent topology (schematic) --------------------------------------- */
+
+export type NodeId = "api" | "workflow" | "planner" | "research" | "analysis" | "approval" | "execution";
+
+export interface TopologyNode {
+  id: NodeId;
   label: string;
+  kind: "entry" | "coordinator" | "agent" | "human";
   role: string;
-  /** Position inside the topology viewBox (0 0 560 440). */
-  x: number;
-  y: number;
 }
 
-export const agents: AgentNode[] = [
-  { id: "planner", label: "Planner", role: "Turns an incoming task into an ordered plan of steps.", x: 280, y: 48 },
-  { id: "coordinator", label: "Coordinator", role: "Owns the workflow: assigns steps, tracks progress, handles retries.", x: 280, y: 150 },
-  { id: "research", label: "Research", role: "Gathers the context a step needs.", x: 110, y: 270 },
-  { id: "analysis", label: "Analysis", role: "Evaluates gathered context and produces intermediate results.", x: 280, y: 270 },
-  { id: "spatial", label: "Spatial", role: "Reasons over location and geometry: regions, proximity, layout.", x: 450, y: 270 },
-  { id: "execution", label: "Execution", role: "Applies the outcome and emits the final state change.", x: 280, y: 392 },
+/**
+ * A simplified, portfolio-safe topology. It shows the shape of the system —
+ * an entry point, a durable coordinator, agent steps and a human decision —
+ * not the exact production agent set.
+ */
+export const topology: TopologyNode[] = [
+  { id: "api", label: "API", kind: "entry", role: "Accepts the task and returns immediately. Nobody waits on an open request." },
+  { id: "workflow", label: "Workflow", kind: "coordinator", role: "Durable coordinator. Owns the plan, assigns steps and survives the loss of a worker." },
+  { id: "planner", label: "Planner", kind: "agent", role: "Turns the task into an ordered plan of steps." },
+  { id: "research", label: "Research", kind: "agent", role: "Gathers the context a step needs." },
+  { id: "analysis", label: "Analysis", kind: "agent", role: "Evaluates the context and produces an intermediate result." },
+  { id: "approval", label: "Approval", kind: "human", role: "A person approves or rejects. The decision is stored durably before the workflow acts on it." },
+  { id: "execution", label: "Execution", kind: "agent", role: "Applies the approved outcome and emits the final state change." },
 ];
 
-export const agentEdges: [AgentId, AgentId][] = [
-  ["planner", "coordinator"],
-  ["coordinator", "research"],
-  ["coordinator", "analysis"],
-  ["coordinator", "spatial"],
-  ["research", "execution"],
-  ["analysis", "execution"],
-  ["spatial", "execution"],
-];
+/* ---- Event script for the failure demo (simulation) ------------------- */
 
-/** One message in the scripted live demonstration. */
-export interface LiveStep {
-  from: AgentId | null;
-  to: AgentId;
-  feed: string;
+export type EventType =
+  | "TASK_ACCEPTED"
+  | "WORKFLOW_STARTED"
+  | "PLAN_CREATED"
+  | "STEP_COMPLETED"
+  | "APPROVAL_REQUESTED"
+  | "APPROVAL_RECORDED"
+  | "STATE_UPDATED"
+  | "TASK_COMPLETED"
+  | "WORKFLOW_RESUMED";
+
+export interface ScriptEvent {
+  type: EventType;
+  node: NodeId;
+  /** Plain-language caption for the narration region. */
+  note: string;
+  /** Plan step this event completes, if any. */
+  step?: number;
 }
 
-export const liveScript: LiveStep[] = [
-  { from: null, to: "planner", feed: "Task received" },
-  { from: "planner", to: "coordinator", feed: "Plan created · 3 steps" },
-  { from: "coordinator", to: "coordinator", feed: "Workflow created" },
-  { from: "coordinator", to: "research", feed: "Agent assigned · Research" },
-  { from: "coordinator", to: "spatial", feed: "Agent assigned · Spatial" },
-  { from: "research", to: "execution", feed: "Event persisted · context gathered" },
-  { from: "coordinator", to: "analysis", feed: "Agent assigned · Analysis" },
-  { from: "spatial", to: "execution", feed: "Event persisted · region resolved" },
-  { from: "analysis", to: "execution", feed: "Event persisted · result evaluated" },
-  { from: "execution", to: "execution", feed: "Client state synchronized" },
-  { from: "execution", to: "execution", feed: "Task completed" },
+/** First sequence number the demo assigns. The stream's earlier history is out of frame. */
+export const FIRST_SEQ = 41;
+
+/** One deterministic task, in the order the workflow appends its events. */
+export const replayScript: ScriptEvent[] = [
+  { type: "TASK_ACCEPTED", node: "api", note: "The API accepts the task and returns at once." },
+  { type: "WORKFLOW_STARTED", node: "workflow", note: "A durable workflow takes ownership of the task." },
+  { type: "PLAN_CREATED", node: "planner", note: "The planner produces three ordered steps." },
+  { type: "STEP_COMPLETED", node: "research", note: "Step 1 of 3 complete: context gathered.", step: 1 },
+  { type: "STEP_COMPLETED", node: "analysis", note: "Step 2 of 3 complete: result evaluated.", step: 2 },
+  { type: "APPROVAL_REQUESTED", node: "approval", note: "The workflow waits for a human decision." },
+  { type: "APPROVAL_RECORDED", node: "approval", note: "The decision is stored durably; the workflow reads it from state." },
+  { type: "STEP_COMPLETED", node: "execution", note: "Step 3 of 3 complete: outcome applied.", step: 3 },
+  { type: "STATE_UPDATED", node: "workflow", note: "Task state updated from the event history." },
+  { type: "TASK_COMPLETED", node: "workflow", note: "Task complete." },
 ];
+
+/* ---- Architecture (schematic) ----------------------------------------- */
 
 export interface ArchComponent {
   id: string;
   label: string;
-  layer: "client" | "api" | "orchestration" | "durability" | "storage" | "events" | "crosscutting";
+  layer: "client" | "api" | "orchestration" | "workers" | "state" | "crosscutting";
   why: string;
   responsibilities: string[];
   tradeoff: string;
@@ -76,239 +106,276 @@ export const architecture: ArchComponent[] = [
     id: "client",
     label: "Client",
     layer: "client",
-    why: "Operators need to watch long-running agent work as it happens, including after a refresh or a dropped connection.",
-    responsibilities: ["Render workflow and agent state", "Hold a local projection of server events", "Resume from the last event it saw"],
-    tradeoff: "The client keeps a projection instead of re-fetching everything, which means it must be able to detect and repair gaps.",
+    why: "People watch long-running agent work as it happens, including after a refresh or a dropped connection.",
+    responsibilities: ["Render task and agent state", "Remember the last event it applied", "Resume from that position after reconnecting"],
+    tradeoff: "The client keeps its own projection instead of re-fetching everything, so it has to detect and handle gaps.",
   },
   {
     id: "api",
     label: "FastAPI",
     layer: "api",
-    why: "A thin, typed boundary between clients and the system. Requests start work; they never wait for it to finish.",
-    responsibilities: ["Validate and authorize requests", "Start workflows and return immediately", "Serve state snapshots and event history"],
-    tradeoff: "Keeping the API thin moves complexity into orchestration, where it can be retried and observed.",
-  },
-  {
-    id: "orchestration",
-    label: "Workflow / orchestration",
-    layer: "orchestration",
-    why: "Agent work is a multi-step plan, not a single function call. The plan needs an owner that outlives any one request.",
-    responsibilities: ["Translate plans into workflow steps", "Assign steps to agents", "Decide what happens when a step fails"],
-    tradeoff: "Workflow code has to be written deterministically, which constrains how agents are called.",
-  },
-  {
-    id: "temporal",
-    label: "Temporal",
-    layer: "durability",
-    why: "Long-running operations cannot rely on ordinary request/response execution. A process restart must not lose a half-finished workflow.",
-    responsibilities: ["Durable orchestration", "Retry semantics", "Workflow recovery"],
-    tradeoff: "Adds an operational dependency and a programming model the whole team has to learn.",
-  },
-  {
-    id: "postgres",
-    label: "PostgreSQL",
-    layer: "storage",
-    why: "One source of truth for tenants, workflows and the event log, with transactions where correctness matters.",
-    responsibilities: ["Persist domain state", "Persist the ordered event log", "Answer spatial and relational queries"],
-    tradeoff: "Writing every event costs storage and write throughput in exchange for replayability.",
-  },
-  {
-    id: "events",
-    label: "Event / replay layer",
-    layer: "events",
-    why: "If every state change is an ordered event, any client or service can rebuild state by replaying from a known point.",
-    responsibilities: ["Assign a monotonic sequence per stream", "Serve replay from a sequence number", "Fall back to a snapshot when a gap is too large"],
-    tradeoff: "Every consumer must handle replay idempotently.",
-  },
-  {
-    id: "redis",
-    label: "Redis",
-    layer: "crosscutting",
-    why: "Several API instances serve WebSocket clients; an event produced on one must reach clients connected to another.",
-    responsibilities: ["Fan out fresh events across instances", "Hold short-lived coordination state"],
-    tradeoff: "Delivery is best-effort. Redis is never the source of truth, so lost messages are recovered through replay.",
+    why: "A thin, typed boundary. Requests start work; they never wait for it to finish.",
+    responsibilities: ["Validate and authorize requests", "Start workflows and return immediately", "Serve state and event history"],
+    tradeoff: "A thin API moves complexity into the workflow layer, where it can be retried and observed.",
   },
   {
     id: "websockets",
     label: "WebSockets",
-    layer: "crosscutting",
-    why: "Agent progress is pushed, not polled, so operators see changes within the same moment they are persisted.",
-    responsibilities: ["Push events to subscribed clients", "Accept a resume point on reconnect"],
-    tradeoff: "Connections drop. The protocol has to treat reconnects as normal, not exceptional.",
+    layer: "api",
+    why: "Agent progress is pushed, not polled. A reconnecting client states where it stopped.",
+    responsibilities: ["Push events to subscribed clients", "Accept a resume position on reconnect", "Hand off from replay to live delivery"],
+    tradeoff: "Connections drop, so reconnecting has to be a normal path in the protocol rather than an exception.",
+  },
+  {
+    id: "temporal",
+    label: "Temporal",
+    layer: "orchestration",
+    why: "Long-running work cannot depend on one process staying alive. A lost worker must not lose a half-finished workflow.",
+    responsibilities: ["Durable workflow coordination", "Retry semantics", "Resumption after worker loss"],
+    tradeoff: "An extra service, and workflow code must be deterministic, so non-deterministic agent calls run as activities.",
+  },
+  {
+    id: "workers",
+    label: "Agent workers",
+    layer: "workers",
+    why: "Agent steps call models and tools. They are slow, can fail, and must be isolated from the deterministic workflow logic.",
+    responsibilities: ["Execute plan steps as activities", "Report results back to the workflow"],
+    tradeoff: "Workers can disappear at any time, so steps must be safe to retry.",
+  },
+  {
+    id: "postgres",
+    label: "PostgreSQL",
+    layer: "state",
+    why: "Durable state for tasks, ownership, sessions and human decisions, with transactions where correctness matters.",
+    responsibilities: ["Persist durable task and decision state", "Arbitrate concurrent decisions to one outcome", "Hold ownership records"],
+    tradeoff: "Writing decisions durably first costs latency in exchange for one source of truth.",
+  },
+  {
+    id: "redis",
+    label: "Redis",
+    layer: "state",
+    why: "Ordered event streams carry delivery state between the system and its clients.",
+    responsibilities: ["Append events in order", "Serve a missed interval to a reconnecting client", "Make a history reset detectable"],
+    tradeoff: "Delivery state is transient. When history cannot be proven complete, resume reports an explicit gap instead of a partial replay.",
   },
   {
     id: "tenancy",
-    label: "Tenant isolation",
+    label: "Tenant boundary",
     layer: "crosscutting",
-    why: "Several organisations share one deployment. One tenant must never observe another tenant's agents, events or data.",
-    responsibilities: ["Scope every read and write to a tenant", "Scope event streams and subscriptions to a tenant"],
-    tradeoff: "Enforcing scope in one place is safer than trusting every call site, at the cost of a less flexible data layer.",
+    why: "Several organisations share one system. An event claiming a tenant is not proof of ownership.",
+    responsibilities: ["Resolve ownership from trusted stored state", "Withhold delivery when ownership is unknown"],
+    tradeoff: "Failing closed can hide a legitimate event until ownership is resolved, which is preferable to delivering it to the wrong tenant.",
     boundary: "Enforcement mechanics are intentionally not published.",
   },
   {
     id: "auth",
     label: "Authentication",
     layer: "crosscutting",
-    why: "Every request and every socket connection has to be tied to an identity and a tenant before it can do anything.",
+    why: "Every request and every socket has to be tied to an identity before it can do anything.",
     responsibilities: ["Establish identity", "Bind identity to tenant scope"],
-    tradeoff: "Socket connections need the same guarantees as requests, which complicates reconnect handling.",
+    tradeoff: "Sockets need the same guarantees as requests, which complicates reconnecting.",
     boundary: "Authentication internals are intentionally not published.",
   },
 ];
 
 export const archLayers: { id: ArchComponent["layer"]; label: string }[] = [
   { id: "client", label: "Client" },
-  { id: "api", label: "API" },
-  { id: "orchestration", label: "Orchestration" },
-  { id: "durability", label: "Durable execution" },
-  { id: "storage", label: "Storage" },
-  { id: "events", label: "Events & replay" },
+  { id: "api", label: "API and event gateway" },
+  { id: "orchestration", label: "Workflow coordination" },
+  { id: "workers", label: "Agent steps" },
+  { id: "state", label: "Durable state and event delivery" },
 ];
 
-/** The signature "Observe System" sequence. */
-export const observeSteps: { id: string; label: string; detail: string }[] = [
-  { id: "task", label: "Task", detail: "An operator submits a task. The API validates it and returns at once — nobody waits on an open request." },
-  { id: "planner", label: "Planner", detail: "The planner breaks the task into ordered steps that agents can execute independently." },
-  { id: "workflow", label: "Workflow", detail: "A durable workflow takes ownership of the plan. If a process restarts now, the work continues where it stopped." },
-  { id: "agents", label: "Agents", detail: "Research, Analysis and Spatial agents run their steps. Failures are retried by the workflow, not by the agent." },
-  { id: "events", label: "Events", detail: "Every state change is written to an ordered event log before anyone is told about it." },
-  { id: "state", label: "State", detail: "Projections are rebuilt from events, so the server's view of the task is always derivable from history." },
-  { id: "client", label: "Client", detail: "Connected clients receive the events. A client that reconnects resumes from the last sequence number it saw." },
-];
+/* ---- Decision records -------------------------------------------------- */
 
 export const samsDecisions: DecisionRecord[] = [
   {
-    id: "004",
-    title: "Durable orchestration for agent workflows",
-    problem: "Agent plans run for minutes and involve several external calls. A deploy or crash in the middle of a plan lost work and left state half-written.",
+    key: "A",
+    title: "Durable workflows for agent work",
+    problem: "Agent plans run for minutes, wait for human decisions and call external services. A restart or a lost worker must not lose progress or leave state half-written.",
     options: [
-      { key: "A", label: "Durable workflow engine (Temporal)", detail: "Workflow state is persisted by the engine; steps are retried and resumed after failure." },
-      { key: "B", label: "Task queue with workers", detail: "Familiar and light, but multi-step progress, retries and compensation are hand-written." },
+      { key: "A", label: "Durable workflow engine (Temporal)", detail: "Workflow state is recorded by the engine; work resumes after a worker is lost." },
+      { key: "B", label: "Task queue with workers", detail: "Light and familiar; multi-step progress, retries and waiting are hand-written." },
       { key: "C", label: "Background tasks in the API process", detail: "Simplest to start; any restart drops in-flight work." },
     ],
     selected: "A",
-    reason: "The hard part was not running a task but surviving partial failure across many steps. A durable engine makes that the default instead of something each feature re-implements.",
-    tradeoff: "An extra service to operate, and workflow code must be deterministic, so non-deterministic agent calls live in activities.",
-    evidence: "Failure-injection runs that stop a worker mid-plan and check that the workflow completes with the same final state.",
+    reason: "The hard part is not running a step but surviving partial failure across many steps and long waits. A durable engine makes that the default.",
+    tradeoff: "An extra service to operate. Workflow code must be deterministic, so agent calls live in activities.",
+    evidence: "Historical test on a Temporal development server: a worker was stopped and replaced while a workflow waited for approval, and the workflow resumed.",
+    evidenceSource: samsSources.verification,
   },
   {
-    id: "009",
-    title: "Persist the event before telling anyone",
-    problem: "Clients occasionally saw a state change that the database did not contain after a failed write, and the two never reconciled.",
+    key: "B",
+    title: "Resume from a position, or name the gap",
+    problem: "A reconnecting client must receive every event it missed. If the history it needs no longer exists, it must be told, not given a partial replay that looks complete.",
     options: [
-      { key: "A", label: "Broadcast, then persist", detail: "Lowest latency; clients can observe events that never existed." },
-      { key: "B", label: "Persist, then broadcast", detail: "A broadcast is only sent for an event that is already durable." },
-      { key: "C", label: "Persist and broadcast in parallel", detail: "Faster than B, with the same failure mode as A." },
-    ],
-    selected: "B",
-    reason: "The event log is the source of truth. Anything a client sees must be replayable from it.",
-    tradeoff: "A few milliseconds of extra latency per event, and the write path becomes the throughput limit.",
-    evidence: "Tests that fail the write after an event is produced and assert that no client receives it.",
-  },
-  {
-    id: "012",
-    title: "Redis as fan-out, never as truth",
-    problem: "With several API instances, a client connected to one instance missed events produced on another.",
-    options: [
-      { key: "A", label: "Sticky sessions", detail: "Route each tenant to one instance; breaks on scaling and failover." },
-      { key: "B", label: "Redis pub/sub fan-out", detail: "Every instance receives fresh events; delivery is best-effort." },
-      { key: "C", label: "Clients poll the database", detail: "Simple and correct, but slow and wasteful." },
-    ],
-    selected: "B",
-    reason: "Fan-out solves the multi-instance problem, and the replay layer already covers lost messages, so best-effort delivery is acceptable.",
-    tradeoff: "Two delivery paths to reason about: live fan-out for speed and replay for correctness.",
-    evidence: "Multi-instance tests where producer and subscriber sit on different instances, with messages dropped on purpose.",
-  },
-  {
-    id: "017",
-    title: "Reconnects resume from a sequence number",
-    problem: "WebSocket reconnects could create state inconsistencies: events emitted while a client was disconnected were missed, and the client's view drifted from the server.",
-    options: [
-      { key: "A", label: "Resume from last sequence", detail: "The client reports the last sequence number it applied; the server replays everything after it, or sends a snapshot if the gap is too large." },
-      { key: "B", label: "Full snapshot on every reconnect", detail: "Always correct; expensive for large workspaces and noisy for brief disconnects." },
-      { key: "C", label: "Client-side diffing", detail: "The client re-fetches and diffs; correctness depends on every view implementing it right." },
+      { key: "A", label: "Resume from the last applied position; report an explicit gap", detail: "Replay the missed interval when history can be proven complete; otherwise return an incomplete-sync outcome." },
+      { key: "B", label: "Full refetch on every reconnect", detail: "Always correct; expensive and noisy for brief disconnects." },
+      { key: "C", label: "Best-effort replay", detail: "Cheap; can silently skip events when history was trimmed or reset." },
     ],
     selected: "A",
-    reason: "Brief disconnects are the common case, and replaying a handful of events is cheaper and more precise than a snapshot. The snapshot is kept as the fallback, so correctness never depends on replay alone.",
-    tradeoff: "Requires a monotonic sequence per stream, retained history, and idempotent event handling on the client.",
-    evidence: "Reconnect scenarios that drop the socket mid-workflow and assert that the client projection equals the server projection after resume.",
+    reason: "Brief disconnects are the common case and replaying a short interval is cheap. Naming the gap keeps the protocol honest when history is incomplete.",
+    tradeoff: "Every consumer must handle a gap outcome, and history resets must be detectable.",
+    evidence: "Historical Redis 7 integration tests covering stream deletion, restart without persistence and trimmed history: resume reported an explicit gap when history could not be proven complete.",
+    evidenceSource: samsSources.verification,
   },
   {
-    id: "021",
-    title: "Tenant scope enforced in one layer",
-    problem: "Tenant filtering written by hand at each query site is easy to forget once, and once is enough.",
+    key: "C",
+    title: "No gap and no duplicate at the replay-to-live handoff",
+    problem: "Events keep arriving while a client is catching up. The moment it switches from replayed to live events must not skip or repeat anything.",
     options: [
-      { key: "A", label: "Filter at every call site", detail: "Flexible; relies on discipline and review." },
-      { key: "B", label: "Enforce scope in a single data-access layer", detail: "Every query passes through one scoped path." },
+      { key: "A", label: "Ordered handoff with a shared position", detail: "Replay up to the live position, then continue live from exactly the next event." },
+      { key: "B", label: "Replay, then subscribe", detail: "Simple; events appended between the two steps can be lost." },
+      { key: "C", label: "Subscribe, then replay without de-duplication", detail: "Nothing is lost; events at the boundary can arrive twice." },
+    ],
+    selected: "A",
+    reason: "A client's state is only trustworthy if every event is applied exactly once, in order.",
+    tradeoff: "The handoff needs careful ordering and is the part of the protocol most worth testing under concurrency.",
+    evidence: "Historical real-Redis race test with concurrent writes during replay found no missing or duplicated event at the boundary. A deliberately late live capture, run as a negative control, failed as expected.",
+    evidenceSource: samsSources.verification,
+  },
+  {
+    key: "D",
+    title: "Durable state decides, not the message",
+    problem: "A human decision, a deadline and a workflow wake-up signal can race. If the signal is lost, the decision must still take effect, exactly once.",
+    options: [
+      { key: "A", label: "Arbitrate against one durable decision record", detail: "The first durable decision wins; the workflow re-reads stored state." },
+      { key: "B", label: "Trust the signal payload", detail: "Fast; a lost or duplicated signal changes the outcome." },
+      { key: "C", label: "Read, then write", detail: "Simple; two concurrent decisions can both be accepted." },
+    ],
+    selected: "A",
+    reason: "Messages can be lost or repeated. A stored decision cannot be both approved and rejected.",
+    tradeoff: "Every path, including the deadline, has to go through the same record.",
+    evidence: "Historical PostgreSQL race tests: exactly one durable outcome for concurrent decisions and decision-versus-deadline. Temporal test: a decision recorded without its signal was recovered from state.",
+    evidenceSource: samsSources.verification,
+  },
+  {
+    key: "E",
+    title: "Ownership from trusted state, failing closed",
+    problem: "Several tenants share the system. An event that names a tenant is a claim, not proof.",
+    options: [
+      { key: "A", label: "Resolve ownership from trusted stored state; withhold when unknown", detail: "Delivery requires a resolved owner." },
+      { key: "B", label: "Trust the tenant named in the event", detail: "Simple; one wrong claim leaks data." },
       { key: "C", label: "Separate deployment per tenant", detail: "Strongest isolation; heavy to operate at this scale." },
     ],
-    selected: "B",
-    reason: "Isolation should be a property of the system, not of each developer's memory.",
-    tradeoff: "Cross-tenant administrative tasks need an explicit, audited path around the scoped layer.",
-    evidence: "Tests that issue requests as one tenant against another tenant's resources and expect nothing back.",
+    selected: "A",
+    reason: "Isolation should hold even when an upstream component is wrong.",
+    tradeoff: "Unresolved ownership delays delivery until it is resolved.",
+    evidence: "Historical Redis/PostgreSQL and unit tests: delivery failed closed for unknown or conflicting tenant attribution in the tested cases.",
+    evidenceSource: samsSources.verification,
   },
 ];
+
+/* ---- Case study -------------------------------------------------------- */
 
 export const samsCaseStudy: CaseStudy = {
   slug: "sams",
   name: "SAMS",
   fullName: "Spatial Agentic Management System",
   lab: "Agent Systems Lab",
-  oneLiner: "A multi-tenant platform where agents plan and execute long-running spatial tasks, and every client sees the same state — even after it disconnects.",
-  overview: [
-    "SAMS coordinates a set of specialised agents — planning, research, analysis, spatial reasoning and execution — around tasks that take minutes rather than milliseconds.",
-    "The engineering problem is not calling agents. It is making their work durable, observable and consistent: surviving restarts, recovering from partial failure and keeping every connected client in agreement with the server.",
-  ],
-  problem: {
-    existed: "Agent work ran as ordinary request handlers and background jobs. It was fine for demos and fragile for anything longer than one request.",
-    difficulty: [
-      "Long-running plans are interrupted by deploys, crashes and timeouts.",
-      "Several clients watch the same work, and connections drop.",
-      "Multiple tenants share infrastructure that must never leak between them.",
-      "Spatial reasoning adds data that is expensive to recompute and easy to get subtly wrong.",
+  oneLiner:
+    "An independent engineering project: a multi-tenant system for long-running LLM agent workflows, built so that clients can disconnect, reconnect and resume without silently missing events.",
+  glance: {
+    role: "Technical lead and maintainer. Led backend architecture, event replay, real-time state and reliability validation.",
+    project: "Independent engineering project · private codebase",
+    status: "In development · not deployed to production",
+    problem: "Agent workflows run for minutes, wait for human decisions and outlive worker processes, while clients whose connections drop must still see every event.",
+    approach: ["Durable workflows", "Resumable, ordered event streams", "Durable state as the authority"],
+    stack: ["FastAPI", "Temporal", "PostgreSQL", "Redis", "WebSockets"],
+    evidence: [
+      { text: "Public reliability evidence package", href: samsSources.evidence.href },
+      { text: "Historical CI run, 4 Oct 2026: 543 unit tests and 25 integration checks passed on a prior private snapshot", href: samsSources.ci.href },
     ],
   },
-  constraints: {
-    technical: ["Work must survive process restarts", "Clients must converge after reconnecting", "Several API instances behind one entry point"],
-    research: ["Agent behaviour is non-deterministic and must be isolated from deterministic workflow logic", "Plans must be inspectable after the fact"],
-    operational: ["Small team: every added service has to earn its place", "Multi-tenant from the first release", "No visitor-facing component may expose infrastructure details"],
+  problem: {
+    summary:
+      "Calling an agent is easy. Keeping long-running agent work durable, observable and consistent is the hard part: work has to survive lost workers, human decisions have to settle to one outcome, and every client has to end up agreeing with the server after a dropped connection.",
+    difficulty: [
+      "Long-running plans are interrupted by restarts, lost workers and timeouts.",
+      "A human decision, a deadline and a wake-up signal can race each other.",
+      "Clients disconnect while events keep arriving, and must neither miss nor repeat any.",
+      "Several tenants share infrastructure that must never leak between them.",
+    ],
   },
   role: {
-    owned: [
-      "Backend architecture for orchestration, events and real-time synchronization",
-      "The event and replay model, including reconnect semantics",
-      "Workflow design for agent plans and their failure handling",
-      "Test strategy for failure, reconnect and isolation scenarios",
+    summary: "Technical lead and maintainer of the project.",
+    items: [
+      "Led backend architecture: workflow coordination, event delivery and replay, real-time state",
+      "Set the engineering decisions and the acceptance criteria for each reliability guarantee",
+      "Led technical validation: failure scenarios, race tests and deliberately broken variants (negative controls)",
     ],
-    context: "Described at the level of concepts and decisions. Infrastructure, identifiers and security internals are intentionally omitted.",
+    context:
+      "As stated in the public evidence package, the private system was built with AI coding agents in a specification, review and validation workflow, with architecture, engineering decisions, acceptance criteria and technical validation owned by Salih. Infrastructure, identifiers and security internals are intentionally omitted here.",
+  },
+  status: {
+    summary: "In development. The reliability guarantees below were verified by historical tests on a prior private snapshot; they are not production measurements.",
+    items: [
+      "A reconnecting client receives the complete missed interval, or an explicit gap when history cannot be proven complete.",
+      "The replay-to-live handoff showed no missing or duplicated event under concurrent writes.",
+      "Concurrent human decisions and deadlines settled to exactly one durable outcome.",
+      "A workflow resumed after its worker was stopped and replaced.",
+      "Delivery failed closed for unknown or conflicting tenant attribution in the tested cases.",
+    ],
+    limits: [
+      "No production traffic, load test or reconnect-storm measurement.",
+      "Temporal was tested on a development server, not a production cluster.",
+      "Agent, Git and Docker activities were stubbed in integration tests: they test control flow and failure handling, not agent output quality.",
+    ],
+    limitsSource: samsSources.limitations,
   },
   architectureSummary:
-    "Requests start work and return. A durable workflow owns each plan and assigns steps to agents. Every state change becomes an ordered event in PostgreSQL before it is fanned out through Redis to WebSocket clients, which can always rebuild state by replaying from their last sequence number.",
+    "Requests start work and return. A durable Temporal workflow owns each task and runs agent steps as activities. Durable task, ownership and decision state lives in PostgreSQL; ordered event streams in Redis carry delivery state to WebSocket clients, which resume from the last event they applied — or are told explicitly that a gap exists.",
   hardProblems: [
-    { title: "Partial failure across many steps", body: "A plan that fails at step four of seven must neither restart from zero nor leave steps one to three half-applied. Durable workflows and idempotent steps made recovery a default rather than a per-feature effort." },
-    { title: "Consistency across reconnects", body: "A client that blinks offline for two seconds must end up exactly where the server is. Sequence numbers, replay and a snapshot fallback replaced ad-hoc refetching." },
-    { title: "Multi-instance real-time delivery", body: "Events produced on one instance must reach clients connected to another, without making the message bus a second source of truth." },
-    { title: "Determinism around non-deterministic agents", body: "Workflow logic must replay identically, while agent calls cannot. Separating orchestration from agent activities kept both honest." },
+    { title: "Partial failure across many steps", body: "A plan that loses its worker at step two of three must neither restart from zero nor re-run completed steps." },
+    { title: "Consistency across reconnects", body: "A client that blinks offline must end up exactly where the server is, or be told precisely what it could not recover." },
+    { title: "Multi-instance delivery", body: "Multi-instance delivery requires fan-out between application instances, without creating a second source of truth." },
+    { title: "Determinism around non-deterministic agents", body: "Workflow logic must replay identically while agent calls cannot. Agent calls run as activities, outside the deterministic workflow." },
   ],
   decisions: samsDecisions,
-  implementation: [
-    { title: "Thin API, thick workflows", body: "Endpoints validate, authorize and start work. Everything that can fail slowly lives inside a workflow where it can be retried and observed." },
-    { title: "Ordered event streams", body: "Each stream carries a monotonic sequence. Consumers track the last sequence applied and treat duplicates as no-ops." },
-    { title: "Projection from history", body: "Server-side and client-side state are projections of the same events, which makes \"what did the client see?\" an answerable question." },
-    { title: "Scoped data access", body: "Tenant scope is applied in one layer that every read and write passes through." },
-  ],
   evidence: [
-    { kind: "Tests", items: ["Failure injection during workflow steps", "Reconnect scenarios with dropped and duplicated events", "Cross-tenant access attempts expected to return nothing"] },
-    { kind: "Methodology", items: ["Each decision recorded with the problem, the options and the evidence that would prove it wrong"] },
+    {
+      kind: "Historical verification",
+      items: [
+        "Historical result: 543 unit tests passed (3 deselected) and 25 integration checks passed in GitHub Actions on 4 Oct 2026, against Redis 7, PostgreSQL 16 and a Temporal development server.",
+        "These results belong to a prior private implementation snapshot. They are not a current or live measurement.",
+      ],
+      source: samsSources.ci,
+    },
+    {
+      kind: "Failure scenarios",
+      items: [
+        "Stream deletion, restart without persistence and trimmed history",
+        "Concurrent event writes during replay",
+        "Concurrent approve/reject and decision/deadline races",
+        "Decision recorded without its workflow signal",
+        "Worker stopped and replaced during an approval wait",
+      ],
+      source: samsSources.verification,
+    },
   ],
-  didntWork: [
-    { title: "Refetch-on-reconnect", body: "The first reconnect strategy re-fetched every view. It was correct for simple screens and drifted for complex ones, because each view had to get it right on its own.", lesson: "Consistency belongs in the protocol, not in each screen." },
-    { title: "Retries inside agents", body: "Agents originally retried their own failures. Combined with workflow retries this multiplied calls and hid real failures.", lesson: "One owner per failure policy." },
-  ],
-  result: [
-    "Agent plans survive restarts and resume where they stopped.",
-    "Clients converge on server state after reconnecting.",
-    "Tenant isolation is a property of the data layer.",
-  ],
-  next: ["Richer replay tooling for inspecting a plan step by step", "Back-pressure for very chatty agent streams", "Published, sanitized architecture notes as Lab Notes"],
+  didntWork: {
+    intro:
+      "The test campaign deliberately broke each guarantee to show the tests could fail. These are historical negative controls on the original implementation, not incidents.",
+    items: [
+      { title: "Read-then-write approval", body: "Reading a decision and then writing it let two concurrent decisions both succeed.", lesson: "Arbitrate on one durable record." },
+      { title: "Trusting the signal payload", body: "Acting on the wake-up message instead of stored state made the outcome depend on message delivery.", lesson: "Durable state is the authority; messages are hints." },
+      { title: "Starting live delivery too late", body: "Capturing live events too late during a reconnect opened a window in which events could be missed.", lesson: "The replay-to-live boundary needs its own test under concurrency." },
+      { title: "Ignoring history resets", body: "Without detecting that a stream had been reset, a resume could look complete when it was not.", lesson: "If completeness cannot be proven, name the gap." },
+    ],
+    source: samsSources.verification,
+  },
+  details: {
+    constraints: [
+      "Work must survive the loss of a worker process",
+      "Clients must converge after reconnecting, or learn exactly what was lost",
+      "Agent behaviour is non-deterministic and must stay outside deterministic workflow logic",
+      "No visitor-facing material may expose infrastructure or security details",
+    ],
+    implementation: [
+      { title: "Thin API, durable workflows", body: "Endpoints validate, authorize and start work. Anything that can fail slowly runs inside a workflow, where it can be retried and observed." },
+      { title: "Ordered event streams", body: "Each stream is ordered. Consumers track the last event applied and resume from it." },
+      { title: "Decisions as durable records", body: "Human decisions are stored first and acted on second, so a lost signal cannot lose a decision." },
+      { title: "Fail-closed ownership", body: "Delivery requires an owner resolved from trusted stored state." },
+    ],
+  },
 };

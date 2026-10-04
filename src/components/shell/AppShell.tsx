@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { FIGURE_KINDS } from "@/components/records/FigureLabel";
 import { primaryNav, secondaryNav, site } from "@/content/site";
 import { isActive, normalizePath } from "@/lib/paths";
 import { LabLink } from "./LabLink";
@@ -44,7 +45,9 @@ function ModeSwitch() {
       <span className="mode-switch__track" aria-hidden="true">
         <span className="mode-switch__thumb" />
       </span>
-      <span className="mode-switch__label">Case study</span>
+      <span className="mode-switch__label">
+        Case<span className="mode-switch__long"> study</span>
+      </span>
     </button>
   );
 }
@@ -99,10 +102,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <nav aria-label="Primary">
           <NavLinks />
         </nav>
-        <div className="rail__foot mono">
-          <span className={`status-dot ${mode === "case" ? "status-dot--research" : "status-dot--pulse"}`} aria-hidden="true" />
-          <span>{mode === "case" ? "Case study mode" : "Lab mode"}</span>
-        </div>
+        <p className="rail__foot mono">{mode === "case" ? "Case study mode" : "Lab mode"}</p>
       </aside>
 
       <header className="topbar">
@@ -117,10 +117,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
         <div className="topbar__tools">
-          <button type="button" className="icon-btn" onClick={toggleSound} aria-pressed={soundOn} aria-label={soundOn ? "Sound on" : "Sound off"} title={soundOn ? "Sound on" : "Sound off (default)"}>
+          <button type="button" className="icon-btn icon-btn--desk" onClick={toggleSound} aria-pressed={soundOn} aria-label={soundOn ? "Sound on" : "Sound off"} title={soundOn ? "Sound on" : "Sound off (default)"}>
             <SoundIcon on={soundOn} />
           </button>
-          <button type="button" className="icon-btn" onClick={openTerminal} aria-label="Open terminal" title="Terminal  ( ~ )" aria-haspopup="dialog">
+          <button type="button" className="icon-btn icon-btn--desk" onClick={openTerminal} aria-label="Open terminal" title="Terminal  ( ~ )" aria-haspopup="dialog">
             <TerminalIcon />
           </button>
           <ModeSwitch />
@@ -152,6 +152,22 @@ export function AppShell({ children }: { children: ReactNode }) {
             </li>
           </ul>
         </nav>
+        <div className="pocket-menu__tools">
+          <button type="button" className="btn btn--ghost btn--sm" onClick={toggleSound} aria-pressed={soundOn}>
+            <SoundIcon on={soundOn} /> Sound {soundOn ? "on" : "off"}
+          </button>
+          <button
+            type="button"
+            className="btn btn--ghost btn--sm"
+            aria-haspopup="dialog"
+            onClick={() => {
+              setMenuOpen(false);
+              openTerminal();
+            }}
+          >
+            <TerminalIcon /> Terminal
+          </button>
+        </div>
       </div>
 
       <main id="main" className="main" tabIndex={-1}>
@@ -160,10 +176,17 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </main>
 
-      <footer className="footer mono">
-        <span>{site.mark} · {site.labName}</span>
-        <span>Interface states are demonstrations, not production telemetry.</span>
-        <button type="button" className="footer__term" onClick={openTerminal}>
+      <footer className="footer">
+        <span className="mono">{site.mark} · {site.labName}</span>
+        <dl className="footer__legend" aria-label="Figure labels">
+          {Object.entries(FIGURE_KINDS).map(([k, v]) => (
+            <div key={k}>
+              <dt className="mono">{v.label}</dt>
+              <dd>{v.meaning.split(".")[0]}.</dd>
+            </div>
+          ))}
+        </dl>
+        <button type="button" className="footer__term mono" onClick={openTerminal}>
           Press <kbd>~</kbd> for terminal
         </button>
       </footer>

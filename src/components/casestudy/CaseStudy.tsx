@@ -1,37 +1,102 @@
 import type { ReactNode } from "react";
 import { DecisionRecord } from "@/components/records/DecisionRecord";
 import { LabLink } from "@/components/shell/LabLink";
-import type { CaseStudy as Study } from "@/content/types";
+import type { CaseStudy as Study, SourceLink } from "@/content/types";
 
 const SECTIONS = [
-  ["overview", "Overview"],
-  ["problem", "The problem"],
-  ["constraints", "Constraints"],
+  ["glance", "At a glance"],
+  ["problem", "Problem"],
   ["role", "My role"],
+  ["status", "Result / current status"],
   ["architecture", "Architecture"],
-  ["hard-problems", "Hard problems"],
-  ["decisions", "Decisions"],
-  ["implementation", "Implementation"],
-  ["evidence", "Validation / evidence"],
+  ["decisions", "Key decisions"],
+  ["evidence", "Evidence"],
   ["didnt-work", "What didn't work"],
-  ["result", "Result"],
-  ["next", "Next"],
+  ["details", "Technical details"],
 ] as const;
 
 interface Props {
   study: Study;
   labHref: string;
-  /** The interactive diagram for this project; it stays interactive in Case Study Mode. */
+  /** The interactive figures for this project; they stay interactive in Case Study Mode. */
   architecture: ReactNode;
   accent?: "signal" | "research";
+  decisionKind: string;
 }
 
 function Section({ id, n, title, children }: { id: string; n: number; title: string; children: ReactNode }) {
   return (
     <section id={id} className="cs-section" aria-labelledby={`${id}-title`}>
-      <p className="cs-section__n mono">{String(n).padStart(2, "0")}</p>
-      <h2 id={`${id}-title`}>{title}</h2>
+      <h2 id={`${id}-title`}>
+        <span className="cs-section__n mono" aria-hidden="true">
+          {String(n).padStart(2, "0")}
+        </span>
+        {title}
+      </h2>
       {children}
+    </section>
+  );
+}
+
+function Source({ source }: { source?: SourceLink }) {
+  if (!source) return null;
+  return (
+    <p className="cs-source">
+      Source: <a href={source.href}>{source.label} ↗</a>
+    </p>
+  );
+}
+
+/** The "At a glance" spec plate: role, project, status, problem, approach, stack, evidence. */
+function Glance({ study }: { study: Study }) {
+  const g = study.glance;
+  return (
+    <section id="glance" className="glance" aria-labelledby="glance-title">
+      <h2 id="glance-title" className="glance__title">
+        At a glance
+      </h2>
+      <dl className="glance__grid">
+        <div className="glance__cell glance__cell--wide">
+          <dt>Role</dt>
+          <dd>{g.role}</dd>
+        </div>
+        <div className="glance__cell">
+          <dt>Project</dt>
+          <dd>{g.project}</dd>
+        </div>
+        <div className="glance__cell">
+          <dt>Status</dt>
+          <dd>{g.status}</dd>
+        </div>
+        <div className="glance__cell glance__cell--wide">
+          <dt>Problem</dt>
+          <dd>{g.problem}</dd>
+        </div>
+        <div className="glance__cell glance__cell--wide">
+          <dt>Approach</dt>
+          <dd>
+            <ul className="glance__chips">
+              {g.approach.map((a) => (
+                <li key={a}>{a}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+        <div className="glance__cell glance__cell--wide">
+          <dt>Stack</dt>
+          <dd className="mono">{g.stack.join(" · ")}</dd>
+        </div>
+        <div className="glance__cell glance__cell--wide">
+          <dt>Evidence</dt>
+          <dd>
+            <ul className="glance__evidence">
+              {g.evidence.map((e) => (
+                <li key={e.text}>{e.href ? <a href={e.href}>{e.text} ↗</a> : e.text}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      </dl>
     </section>
   );
 }
@@ -40,42 +105,39 @@ function Section({ id, n, title, children }: { id: string; n: number; title: str
  * The editorial view of a project. It renders the same content records as
  * the lab, so nothing is available only through an animation.
  */
-export function CaseStudy({ study, labHref, architecture, accent = "signal" }: Props) {
+export function CaseStudy({ study, labHref, architecture, accent = "signal", decisionKind }: Props) {
   return (
     <article className={`case-study case-study--${accent}`}>
       <header className="cs-header">
-        <p className="eyebrow">Case study · {study.lab}</p>
-        <h1 className="cs-header__title">{study.name}</h1>
-        <p className="cs-header__full">{study.fullName}</p>
+        <p className="cs-header__kicker mono">Case study · {study.lab}</p>
+        <h1 className="cs-header__title">
+          {study.name} <span className="cs-header__full">{study.fullName}</span>
+        </h1>
         <p className="cs-header__one">{study.oneLiner}</p>
-        <LabLink href={labHref} className="cs-header__back mono">
-          ← Open the interactive lab
-        </LabLink>
       </header>
+
+      <Glance study={study} />
 
       <div className="cs-layout">
         <nav className="cs-toc" aria-label="Case study sections">
-          <p className="eyebrow">Contents</p>
-          <ol>
-            {SECTIONS.map(([id, label]) => (
-              <li key={id}>
-                <a href={`#${id}`}>{label}</a>
-              </li>
-            ))}
-          </ol>
+          <details className="cs-toc__details" open>
+            <summary>Contents</summary>
+            <ol>
+              {SECTIONS.map(([id, label]) => (
+                <li key={id}>
+                  <a href={`#${id}`}>{label}</a>
+                </li>
+              ))}
+            </ol>
+          </details>
+          <LabLink href={labHref} className="cs-toc__lab">
+            Open the interactive lab →
+          </LabLink>
         </nav>
 
         <div className="cs-body">
-          <Section id="overview" n={1} title="Overview">
-            {study.overview.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </Section>
-
-          <Section id="problem" n={2} title="The problem">
-            <h3>What existed</h3>
-            <p>{study.problem.existed}</p>
-            <h3>Why it was difficult</h3>
+          <Section id="problem" n={2} title="Problem">
+            <p>{study.problem.summary}</p>
             <ul>
               {study.problem.difficulty.map((d) => (
                 <li key={d}>{d}</li>
@@ -83,108 +145,101 @@ export function CaseStudy({ study, labHref, architecture, accent = "signal" }: P
             </ul>
           </Section>
 
-          <Section id="constraints" n={3} title="Constraints">
-            <div className="cs-columns">
-              {(["technical", "research", "operational"] as const).map((k) => (
-                <div key={k}>
-                  <h3 className="cs-label">{k}</h3>
-                  <ul>
-                    {study.constraints[k].map((c) => (
-                      <li key={c}>{c}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </Section>
-
-          <Section id="role" n={4} title="My role">
-            <p>What I personally owned:</p>
+          <Section id="role" n={3} title="My role">
+            <p>{study.role.summary}</p>
             <ul>
-              {study.role.owned.map((r) => (
+              {study.role.items.map((r) => (
                 <li key={r}>{r}</li>
               ))}
             </ul>
             <p className="cs-aside">{study.role.context}</p>
           </Section>
 
+          <Section id="status" n={4} title="Result / current status">
+            <p>{study.status.summary}</p>
+            <ul>
+              {study.status.items.map((r) => (
+                <li key={r}>{r}</li>
+              ))}
+            </ul>
+            <h3>What this does not show</h3>
+            <ul className="cs-limits">
+              {study.status.limits.map((l) => (
+                <li key={l}>{l}</li>
+              ))}
+            </ul>
+            <Source source={study.status.limitsSource} />
+          </Section>
+
           <Section id="architecture" n={5} title="Architecture">
             <p>{study.architectureSummary}</p>
             <div className="cs-figure">{architecture}</div>
-          </Section>
-
-          <Section id="hard-problems" n={6} title="Hard problems">
-            <ol className="cs-numbered">
-              {study.hardProblems.map((h) => (
-                <li key={h.title}>
-                  <h3>{h.title}</h3>
-                  <p>{h.body}</p>
-                </li>
-              ))}
-            </ol>
-          </Section>
-
-          <Section id="decisions" n={7} title="Decisions">
-            <p>Important trade-offs, kept as records.</p>
-            <div className="cs-records">
-              {study.decisions.map((d) => (
-                <DecisionRecord key={d.id} decision={d} />
-              ))}
-            </div>
-          </Section>
-
-          <Section id="implementation" n={8} title="Implementation">
+            <h3>Hard problems</h3>
             <dl className="cs-defs">
-              {study.implementation.map((i) => (
-                <div key={i.title}>
-                  <dt>{i.title}</dt>
-                  <dd>{i.body}</dd>
+              {study.hardProblems.map((h) => (
+                <div key={h.title}>
+                  <dt>{h.title}</dt>
+                  <dd>{h.body}</dd>
                 </div>
               ))}
             </dl>
           </Section>
 
-          <Section id="evidence" n={9} title="Validation / evidence">
-            <div className="cs-columns">
+          <Section id="decisions" n={6} title="Key decisions">
+            <p>Important trade-offs, kept as records. Letters label records within this project; they imply no wider log.</p>
+            <div className="cs-records">
+              {study.decisions.map((d) => (
+                <DecisionRecord key={d.key} decision={d} kind={decisionKind} />
+              ))}
+            </div>
+          </Section>
+
+          <Section id="evidence" n={7} title="Evidence">
+            <div className="cs-evidence">
               {study.evidence.map((g) => (
-                <div key={g.kind}>
+                <div key={g.kind} className="cs-evidence__group">
                   <h3 className="cs-label">{g.kind}</h3>
                   <ul>
                     {g.items.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
+                  <Source source={g.source} />
                 </div>
               ))}
             </div>
           </Section>
 
-          <Section id="didnt-work" n={10} title="What didn't work">
-            {study.didntWork.map((l) => (
+          <Section id="didnt-work" n={8} title="What didn't work">
+            <p>{study.didntWork.intro}</p>
+            {study.didntWork.items.map((l) => (
               <div key={l.title} className="cs-lesson">
                 <h3>{l.title}</h3>
                 <p>{l.body}</p>
                 <p className="cs-lesson__lesson">
-                  <span className="mono">Lesson</span> {l.lesson}
+                  <span>Lesson</span> {l.lesson}
                 </p>
               </div>
             ))}
+            <Source source={study.didntWork.source} />
           </Section>
 
-          <Section id="result" n={11} title="Result">
+          <Section id="details" n={9} title="Technical details">
+            <h3>Constraints</h3>
             <ul>
-              {study.result.map((r) => (
-                <li key={r}>{r}</li>
+              {study.details.constraints.map((c) => (
+                <li key={c}>{c}</li>
               ))}
             </ul>
-          </Section>
-
-          <Section id="next" n={12} title="Next">
-            <ul>
-              {study.next.map((n) => (
-                <li key={n}>{n}</li>
+            <h3>Implementation</h3>
+            <dl className="cs-defs">
+              {study.details.implementation.map((i) => (
+                <div key={i.title}>
+                  <dt>{i.title}</dt>
+                  <dd>{i.body}</dd>
+                </div>
               ))}
-            </ul>
+            </dl>
           </Section>
 
           <footer className="cs-end">

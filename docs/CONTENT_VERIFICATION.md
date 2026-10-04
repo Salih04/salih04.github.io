@@ -1,6 +1,6 @@
 # Content verification register (V1)
 
-Status: **open**. Nothing in this register has been verified yet.
+Status: **partly resolved in V2 Pass 1** (see the [resolution log](#resolution-log-v2-pass-1) at the end). Rows still open are listed there.
 
 ## Why this exists
 
@@ -208,3 +208,61 @@ kinds apart.
 The biggest single risk is **A-4 + A-20 + A-24**: first-person ownership of SAMS's architecture, backed by
 specific test suites and stated outcomes, none of which come from a known source. An interviewer will ask about
 exactly these.
+
+---
+
+## Resolution log (V2 Pass 1)
+
+Sources used, in order of authority:
+
+1. **Approved facts** supplied with the V2 Pass 1 brief (role, MSc status and institution, SAMS stack and status,
+   FinanceIQ status and research problem).
+2. **Salih's public repositories**: the SAMS reliability evidence package (`Salih04/sams-reliability-core`),
+   the public FinanceIQ repository (`Salih04/capstone-financeIQ`) and the public profile README
+   (`Salih04/Salih04`). The private SAMS repository was not read.
+3. This repository (for claims about the site itself).
+
+Outcomes: **Corrected** (rewritten from a source above), **Neutralised** (replaced with neutral wording or a
+label), **Removed**, **Open** (still needs Salih).
+
+| Rows | Outcome | What changed |
+| --- | --- | --- |
+| I-1 | Open | Entry shows "Salih" as briefed. The public profile uses "Salih Camcı"; decide whether the resume should. |
+| I-2 | Corrected | "Software Engineer · MSc Data Science student · University of Basel". Never shown as a completed degree. |
+| I-3, I-4 | Corrected | Approved positioning line: "I build reliable software systems, agentic infrastructure, and reproducible data research." |
+| I-5 | Corrected | GitHub profile matches the owner of the public repositories. |
+| I-6 | Neutralised | Register's suggested neutral lead. |
+| I-7 | Corrected | Crytek is named on Salih's public profile. |
+| S-1, S-2, S-5, S-6 | Corrected | "Simulation ready", "In progress", "Open"; no "online", "active" or "live system" anywhere (unit-tested). |
+| S-4 | Removed | "Experiment #038" gone; the bench names runs "Demo run 01" within a session. |
+| C-1, C-2, C-10, C-11 | Corrected | "Backend Engineering Intern · Crytek · May–Jul 2026 · Go services for the live game backend of Hunt: Showdown" (public profile). V1's "Backend Engineer" title was wrong. |
+| C-3 – C-8 | Removed | Unsourced responsibilities, practices and environment claims. |
+| A-1 | Corrected | Approved expansion. |
+| A-2, A-3 | Corrected | Independent engineering project, private codebase, multi-tenant system for long-running LLM agent workflows (evidence package). Resume no longer lists SAMS as an organisation. |
+| A-4 | Corrected | "Technical lead and maintainer. Led backend architecture, event replay, real-time state and reliability validation." Context quotes the evidence package's ownership statement, including that implementation used AI coding agents. Team size: **Open**. |
+| A-5, A-6, A-25 | Removed | Invented team size, multi-tenancy timeline, "before" history and roadmap. |
+| A-7 | Corrected | Approved stack. The PostGIS / "spatial queries" implication was removed. |
+| A-8 | Corrected | Python (FinanceIQ repository), Go (public profile), TypeScript (this site), SQL. |
+| A-9, A-10, A-12 | Neutralised | Topology labelled SCHEMATIC ("not the exact production agent set"); the event script labelled SIMULATION. |
+| A-11, A-13, A-21 | Corrected | Architecture rewritten to the evidence package: PostgreSQL for durable task/ownership/decision state, Redis for event delivery, Temporal for workflows. V1's "event log in PostgreSQL" and "snapshot fallback" contradicted the published explicit-gap contract and were removed. Where tenant scope is enforced is no longer stated. |
+| A-14 | Corrected | Decision IDs are letters A–E. |
+| A-15 – A-20 | Corrected | Fictional incidents removed. Decisions rewritten around the published guarantees; evidence cites the verification matrix and is labelled historical. The Redis fan-out decision (A-17) was dropped: nothing public supports it. |
+| A-22, A-23 | Removed | Replaced by the evidence package's documented negative controls. |
+| A-24, A-26 | Corrected | Results stated as historical verification on a prior private snapshot, with the published limitations (no production traffic, Temporal dev server, stubbed activities). |
+| F-1 | Corrected | "MSc Data Science research / semester project · University of Basel · in progress". Not presented as a capstone (unit-tested). |
+| F-2, F-4 | Corrected | Role from the public repository's ownership statement; "sole author" removed. |
+| F-3 | Removed | Data-licensing claim. |
+| F-6 | Neutralised | Pipeline labelled SCHEMATIC ("target design of the in-progress project"). The embargo gap was removed from the walk-forward schematic. Correction across models is supported by the repository. |
+| F-7, F-9 – F-11, F-14, F-15 | Corrected | Replaced by two documented negative results quoted from `RESULTS.md` (IC +0.150 → +0.031; guards did not catch timing leakage) and one labelled synthetic example. |
+| F-8, F-12, F-19 | Corrected | No experiment numbers; decisions are letters A–E. |
+| F-13 | Corrected | Each decision carries a status: applied in the public repository, design direction, or open problem. Survivorship is marked open, as the repository states. |
+| F-16, F-17 | Corrected / Removed | Status rewritten as in progress; roadmap removed. |
+| F-18 | Neutralised | Bench options are "Synthetic signal A/B/C" on a "Synthetic · 120 assets" universe. |
+| E-1 | Corrected | MSc Data Science, University of Basel, in progress; Software Engineering undergraduate studies (no institution or dates invented). |
+| E-2 | Corrected | Skills limited to methods the FinanceIQ repository documents. |
+| E-3, E-4 | Neutralised | "Areas of work", not a chronology. |
+| E-5 | Open | Working principles are kept; Salih should confirm the voice. |
+| N-1, N-2 | Removed | Notes carry no number or date. |
+| N-3 | Open | Notes are labelled "Lab note — draft". Fabricated project history was removed and the replay note now matches the published contract; Salih must still approve or rewrite them. |
+| M-1, M-5 | Removed / Corrected | The WebGL experiment is gone from the Vault and the README (unit-tested). |
+| M-4 | Open | The Vault still holds only this site's own experiments. |

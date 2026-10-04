@@ -1,65 +1,74 @@
-import { SystemField } from "@/components/entry/SystemField";
+import { InstrumentTrace } from "@/components/entry/InstrumentTrace";
+import { FinanceGlyph, SamsGlyph } from "@/components/lab/Glyphs";
 import { LabLink } from "@/components/shell/LabLink";
-import { primaryNav, site } from "@/content/site";
+import { site } from "@/content/site";
 
-const statuses = [
-  { label: "SAMS", state: "Online", tone: "" },
-  { label: "Market Data Lab", state: "Active", tone: "status-dot--research" },
-  { label: "Engineering Archive", state: "Available", tone: "status-dot--signal" },
-];
+const projects = [
+  {
+    href: "/sams/",
+    tone: "sams",
+    status: "Agent Systems Lab · Simulation ready",
+    name: "SAMS",
+    desc: "Agent systems · event replay · reliable workflows",
+    go: "Run the failure demo",
+    Glyph: SamsGlyph,
+  },
+  {
+    href: "/financeiq/",
+    tone: "fiq",
+    status: "Market Data Lab · In progress",
+    name: "FinanceIQ",
+    desc: "Point-in-time data · reproducible research",
+    go: "Reconstruct history",
+    Glyph: FinanceGlyph,
+  },
+] as const;
 
 export default function EntryPage() {
   return (
     <section className="entry" aria-labelledby="entry-title">
-      <SystemField />
       <div className="entry__inner">
-        <p className="entry__mark mono">{site.mark}</p>
-        <h1 id="entry-title" className="entry__title">
-          <span>{site.name}</span>
-          <span>Research Lab</span>
-        </h1>
-        <p className="entry__roles mono">
-          {site.roles[0]}
-          <span aria-hidden="true"> × </span>
-          <span className="sr-only">, </span>
-          {site.roles[1]}
-        </p>
-        <p className="entry__line">{site.entryLine}</p>
-
-        <div className="entry__actions">
-          <LabLink href="/lab/" className="btn entry__enter">
-            Enter lab <span aria-hidden="true">→</span>
-          </LabLink>
-          <LabLink href="/case-studies/" className="btn btn--ghost">
-            Read case studies
-          </LabLink>
+        <div className="entry__who">
+          <p className="entry__mark mono">{site.mark} · research portfolio</p>
+          <h1 id="entry-title" className="entry__name">
+            {site.name}
+          </h1>
+          <p className="entry__discipline">
+            <span className="entry__role">{site.role}</span>
+            <span className="entry__study">
+              {site.study.degree} {site.study.status} · {site.study.institution}
+            </span>
+          </p>
+          <p className="entry__line">{site.entryLine}</p>
+          <div className="entry__actions">
+            <LabLink href="/lab/" className="btn entry__enter">
+              Enter the lab <span aria-hidden="true">→</span>
+            </LabLink>
+            <LabLink href="/case-studies/" className="btn btn--ghost">
+              Read case studies
+            </LabLink>
+          </div>
         </div>
 
-        <dl className="entry__status" aria-label="Lab status (interface state)">
-          {statuses.map((s) => (
-            <div key={s.label} className="entry__status-row">
-              <dt>{s.label}</dt>
-              <dd>
-                <span className={`status-dot ${s.tone}`} aria-hidden="true" />
-                {s.state}
-              </dd>
-            </div>
+        <ul className="entry__projects" aria-label="Flagship projects">
+          {projects.map(({ href, tone, status, name, desc, go, Glyph }) => (
+            <li key={href}>
+              <LabLink href={href} className={`project-card project-card--${tone}`}>
+                <span className="project-card__status mono">{status}</span>
+                <span className="project-card__name">{name}</span>
+                <span className="project-card__desc">{desc}</span>
+                <span className="project-card__glyph">
+                  <Glyph />
+                </span>
+                <span className="project-card__go">
+                  {go} <span aria-hidden="true">→</span>
+                </span>
+              </LabLink>
+            </li>
           ))}
-        </dl>
-
-        <nav className="entry__pocket" aria-label="Quick navigation">
-          <p className="eyebrow">Navigation</p>
-          <ul>
-            {primaryNav.map((item) => (
-              <li key={item.href}>
-                <LabLink href={item.href}>
-                  <span className="mono">{item.index}</span> {item.label}
-                </LabLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        </ul>
       </div>
+      <InstrumentTrace />
     </section>
   );
 }

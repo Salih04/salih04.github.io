@@ -1,0 +1,426 @@
+{
+ "pages": [
+  {
+   "name": "01-entry",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1033
+  },
+  {
+   "name": "02-control-room",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1056
+  },
+  {
+   "name": "03-control-room-selected",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1056
+  },
+  {
+   "name": "03b-control-room-camera",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1056
+  },
+  {
+   "name": "04-sams-default",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1304
+  },
+  {
+   "name": "05-sams-disconnected",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1304
+  },
+  {
+   "name": "06-sams-replay",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1304
+  },
+  {
+   "name": "07-sams-completed",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1304
+  },
+  {
+   "name": "07b-sams-worker-stopped",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1304
+  },
+  {
+   "name": "07c-sams-worker-resumed",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1304
+  },
+  {
+   "name": "08-sams-case-study",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 11134
+  },
+  {
+   "name": "09-fiq-pit-default",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1558
+  },
+  {
+   "name": "10-fiq-naive-leakage",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1599
+  },
+  {
+   "name": "11-fiq-pit-corrected",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1558
+  },
+  {
+   "name": "12-fiq-reconstruction",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 2021
+  },
+  {
+   "name": "12b-fiq-bench",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1437
+  },
+  {
+   "name": "13-fiq-case-study",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 10967
+  },
+  {
+   "name": "desktop-console-errors",
+   "errors": []
+  },
+  {
+   "name": "laptop1280-entry",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 785
+  },
+  {
+   "name": "laptop1280-control-room",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 869
+  },
+  {
+   "name": "laptop1280-sams",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1429
+  },
+  {
+   "name": "laptop1280-fiq-pit",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1651
+  },
+  {
+   "name": "laptop1280-console-errors",
+   "errors": []
+  },
+  {
+   "name": "laptop1024-entry",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 862
+  },
+  {
+   "name": "laptop1024-control-room",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 824
+  },
+  {
+   "name": "laptop1024-sams",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1789
+  },
+  {
+   "name": "laptop1024-fiq-pit",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 2055
+  },
+  {
+   "name": "laptop1024-console-errors",
+   "errors": []
+  },
+  {
+   "name": "14-mobile-entry",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1323
+  },
+  {
+   "name": "14b-mobile-entry-full",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1323
+  },
+  {
+   "name": "15-mobile-control-room",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1245
+  },
+  {
+   "name": "16-mobile-sams",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 2264
+  },
+  {
+   "name": "16b-mobile-sams-full",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 2264
+  },
+  {
+   "name": "17-mobile-fiq-pit",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 2909
+  },
+  {
+   "name": "17b-mobile-fiq-pit-full",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 2909
+  },
+  {
+   "name": "18-mobile-sams-case-study",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 15954
+  },
+  {
+   "name": "19-mobile-menu",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 15954
+  },
+  {
+   "name": "mobile-console-errors",
+   "errors": []
+  },
+  {
+   "name": "20-reduced-motion-sams",
+   "overflow": 0,
+   "small": {},
+   "smallTotal": 0,
+   "height": 1304
+  },
+  {
+   "name": "reduced-console-errors",
+   "errors": []
+  }
+ ],
+ "checks": [
+  {
+   "name": "control room click navigates to the room after the camera move",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "disconnected client cursor stops while the server appends",
+   "pass": true,
+   "detail": "{\"server\":\"047\",\"client\":\"041\",\"sync\":\"Client behind by 6\",\"connection\":\"Disconnected\",\"worker\":\"Running\"}"
+  },
+  {
+   "name": "reconnect sends last_seq and replays",
+   "pass": true,
+   "detail": "{\"server\":\"048\",\"client\":\"045\",\"sync\":\"Replaying 046 → 047\",\"connection\":\"Replaying\",\"worker\":\"Running\"}"
+  },
+  {
+   "name": "replay converges: client equals server",
+   "pass": true,
+   "detail": "{\"server\":\"050\",\"client\":\"050\",\"sync\":\"State converged ✓\",\"connection\":\"Live\",\"worker\":\"Running\"}"
+  },
+  {
+   "name": "every event delivered exactly once (no pending rows)",
+   "pass": true,
+   "detail": "live,replayed,replayed,replayed,replayed,replayed,replayed,live,live,live"
+  },
+  {
+   "name": "stopped worker is replaced and the workflow resumes",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "SAMS: focus stays on the connection control",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "SAMS: focus stays after reconnect",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "FinanceIQ opens on point-in-time reconstruction",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "as-of slider is keyboard operable",
+   "pass": true,
+   "detail": "21 Apr 2020"
+  },
+  {
+   "name": "comparison shows naive 1.18 vs available 1.31 on 31 Mar 2020",
+   "pass": true,
+   "detail": "1.18 / 1.31"
+  },
+  {
+   "name": "FinanceIQ: focus stays on the reconstruct control while running",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "FinanceIQ: focus stays on Run demo while running",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "as-of cursor is draggable on the timeline",
+   "pass": true,
+   "detail": "10 Oct 2020"
+  },
+  {
+   "name": "paired routes preserve case mode (SAMS case → FinanceIQ case)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "unrelated route /resume/ does not inherit case mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "unrelated route /vault/ does not inherit case mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "unrelated route /about/ does not inherit case mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "unrelated route /notes/ does not inherit case mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "a toggle on an unpaired page applies to that page only",
+   "pass": true,
+   "detail": "case → lab"
+  },
+  {
+   "name": "fresh load of /resume/ opens in lab mode",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "first Tab reaches the skip link",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "ArrowRight moves to the next tab",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "mobile SAMS tab bar shows an overflow affordance and the active tab is fully visible",
+   "pass": true,
+   "detail": "{\"right\":true,\"left\":false,\"activeVisible\":true}"
+  },
+  {
+   "name": "mobile SAMS topology labels are at least 14px (not a scaled-down diagram)",
+   "pass": true,
+   "detail": "15px"
+  },
+  {
+   "name": "mobile: tap a node to inspect it",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "mobile FinanceIQ: deep-linked last tab is scrolled into view",
+   "pass": true,
+   "detail": "{\"left\":true,\"activeVisible\":true}"
+  },
+  {
+   "name": "mobile PIT axis: no tick/cursor label collisions",
+   "pass": true,
+   "detail": "0 overlaps"
+  },
+  {
+   "name": "reduced motion: SAMS demo does not auto-start",
+   "pass": true,
+   "detail": "{\"server\":\"—\",\"client\":\"—\",\"sync\":\"Idle\",\"connection\":\"Live\",\"worker\":\"Running\"}"
+  },
+  {
+   "name": "reduced motion: reconstruction jumps to its final state",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "reduced motion: the entry trace stays still",
+   "pass": true,
+   "detail": "seq 044"
+  }
+ ]
+}

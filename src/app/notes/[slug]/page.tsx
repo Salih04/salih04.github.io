@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LabLink } from "@/components/shell/LabLink";
-import { formatNoteDate, notes, readingMinutes, type NoteBlock } from "@/content/notes";
+import { notes, readingMinutes, type NoteBlock } from "@/content/notes";
 
 export const dynamicParams = false;
 
@@ -14,7 +14,7 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const note = notes.find((n) => n.slug === slug);
-  return note ? { title: `${note.title} — Lab Note ${note.number}`, description: note.summary } : {};
+  return note ? { title: `${note.title} — Lab note (draft)`, description: note.summary } : {};
 }
 
 function Block({ block }: { block: NoteBlock }) {
@@ -53,14 +53,12 @@ export default async function NotePage({ params }: Props) {
   return (
     <article className="editorial note">
       <header className="note__head">
-        <p className="eyebrow eyebrow--signal">Lab note {note.number}</p>
+        <p className="eyebrow eyebrow--signal">Lab note — draft</p>
         <h1>{note.title}</h1>
         <p className="note__summary">{note.summary}</p>
         <p className="note__meta mono">
           <span>{note.category}</span>
-          <span>
-            <time dateTime={note.date}>{formatNoteDate(note.date)}</time>
-          </span>
+          <span>Draft · not yet published</span>
           <span>{readingMinutes(note)} min read</span>
         </p>
       </header>
@@ -72,14 +70,14 @@ export default async function NotePage({ params }: Props) {
       <nav className="note__nav" aria-label="More lab notes">
         {older ? (
           <LabLink href={`/notes/${older.slug}/`}>
-            <span className="mono">← Older</span> {older.title}
+            <span className="mono">← Previous</span> {older.title}
           </LabLink>
         ) : (
           <span />
         )}
         {newer ? (
           <LabLink href={`/notes/${newer.slug}/`}>
-            <span className="mono">Newer →</span> {newer.title}
+            <span className="mono">Next →</span> {newer.title}
           </LabLink>
         ) : null}
       </nav>

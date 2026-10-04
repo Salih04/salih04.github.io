@@ -9,13 +9,14 @@ export const site = {
   mark: "S//LAB",
   name: "Salih",
   labName: "Salih Research Lab",
-  roles: ["Software Engineer", "MSc Data Science"],
-  headline:
-    "Building reliable intelligent systems at the intersection of software, data, and real-world complexity.",
-  shortHeadline: "Software systems. Intelligent agents. Reproducible research.",
-  entryLine: "Building reliable intelligent systems through software, agents and data.",
+  role: "Software Engineer",
+  /** Current study. In progress: never present it as a completed degree. */
+  study: { degree: "MSc Data Science", institution: "University of Basel", status: "student" },
+  roles: ["Software Engineer", "MSc Data Science student, University of Basel"],
+  headline: "I build reliable software systems, agentic infrastructure, and reproducible data research.",
+  entryLine: "I build reliable software systems, agentic infrastructure, and reproducible data research.",
   description:
-    "S//LAB is the research portfolio of Salih, a software engineer with an MSc in Data Science, building reliable intelligent systems through software, agents and data.",
+    "S//LAB is the research portfolio of Salih, a software engineer and MSc Data Science student at the University of Basel, who builds reliable software systems, agentic infrastructure and reproducible data research.",
   /**
    * Public contact channels. Leave `email` empty until a public address is
    * chosen; the contact page and terminal only render channels that are set.

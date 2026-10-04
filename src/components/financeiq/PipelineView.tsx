@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { FigureLabel } from "@/components/records/FigureLabel";
 import { pipeline } from "@/content/financeiq";
 
 /** The research pipeline as a sequence of questions the data must answer. */
-export function PipelineView() {
+export function PipelineView({ fig = "05" }: { fig?: string }) {
   const [selected, setSelected] = useState(pipeline[0]!.id);
   const index = pipeline.findIndex((s) => s.id === selected);
   const stage = pipeline[index] ?? pipeline[0]!;
 
   return (
-    <div className="pipeline">
+    <div className="pipeline plate plate--paper">
+      <FigureLabel fig={fig} kind="schematic" className="plate__label" />
       <ol className="pipeline__stages" aria-label="Pipeline stages">
         {pipeline.map((s, i) => (
           <li key={s.id} data-state={i < index ? "done" : i === index ? "active" : "idle"}>
@@ -21,8 +23,8 @@ export function PipelineView() {
           </li>
         ))}
       </ol>
-      <section id="pipeline-detail" className="pipeline__detail panel" aria-live="polite">
-        <p className="eyebrow eyebrow--research">
+      <section id="pipeline-detail" className="pipeline__detail" aria-live="polite">
+        <p className="pipeline__stage">
           Stage {String(index + 1).padStart(2, "0")} · {stage.label}
         </p>
         <h3>{stage.question}</h3>

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { normalizePath, pairFor } from "@/lib/paths";
+import { modeForRoute, normalizePath, pairFor } from "@/lib/paths";
 import { playCue, type Cue } from "@/lib/sound";
 import { readPref, writePref } from "@/lib/storage";
 import { prefersReducedMotion } from "@/lib/useReducedMotion";
@@ -25,10 +25,9 @@ interface LabContextValue {
 
 const LabContext = createContext<LabContextValue | null>(null);
 
-export const MODE_KEY = "slab:mode";
 const SOUND_KEY = "slab:sound";
-const OUT_MS = 200;
-const IN_MS = 460;
+const OUT_MS = 160;
+const IN_MS = 240;
 
 function setTransition(phase: "out" | "in" | null) {
   const root = document.documentElement;
@@ -44,7 +43,7 @@ function isEditable(target: EventTarget | null) {
 export function LabProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [mode, setModeState] = useState<Mode>("lab");
+  const [mode, setModeState] = useState<Mode>(() => modeForRoute(pathname));
   const [soundOn, setSoundOn] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const pendingNav = useRef(false);
@@ -54,19 +53,17 @@ export function LabProvider({ children }: { children: ReactNode }) {
     timers.current.push(window.setTimeout(fn, ms));
   };
 
-  // Restore preferences written by the pre-hydration script / earlier visits.
+  // Sound is the only stored preference. Mode is never restored from storage.
   useEffect(() => {
-    const initial = document.documentElement.dataset.mode === "case" ? "case" : "lab";
-    setModeState(initial);
     setSoundOn(readPref(SOUND_KEY) === "on");
     const pending = timers.current;
     return () => pending.forEach(clearTimeout);
   }, []);
 
-  // Lab/case-study route pairs define the mode for those routes.
+  // Every navigation resets the mode to the one the route defines. A toggle on
+  // an unpaired page applies to that page only.
   useEffect(() => {
-    const p = pairFor(pathname);
-    if (p) setModeState(p.side);
+    setModeState(modeForRoute(pathname));
     if (pendingNav.current) {
       pendingNav.current = false;
       setTransition("in");
@@ -76,7 +73,6 @@ export function LabProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.mode = mode;
-    writePref(MODE_KEY, mode);
   }, [mode]);
 
   const cue = useCallback((c: Cue) => {

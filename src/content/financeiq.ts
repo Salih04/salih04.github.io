@@ -1,13 +1,25 @@
-import type { CaseStudy, DecisionRecord } from "./types";
+import type { CaseStudy, DecisionRecord, SourceLink } from "./types";
 import type { Observation } from "@/lib/pit";
 
 /*
- * FinanceIQ — Point-in-Time Market Data Lab (MSc capstone).
+ * FinanceIQ — Point-in-Time Market Data Lab.
+ *
+ * MSc Data Science research / semester project at the University of Basel,
+ * in progress. Its direction is point-in-time market-data and research
+ * infrastructure. Planned capabilities are described as plans.
  *
  * Every dataset and number rendered by the interactive lab is synthetic and
- * labelled as such. The interactions demonstrate the method; they do not
- * report research results.
+ * labelled as such. The only real results quoted here come from the public
+ * FinanceIQ repository and are cited to it.
  */
+
+const REPO = "https://github.com/Salih04/capstone-financeIQ";
+
+export const financeSources = {
+  repository: { label: "Public FinanceIQ repository", href: REPO },
+  results: { label: "RESULTS.md", href: `${REPO}/blob/main/RESULTS.md` },
+  protocol: { label: "Point-in-time protocol", href: `${REPO}/blob/main/docs/PIT_PROTOCOL.md` },
+} satisfies Record<string, SourceLink>;
 
 /**
  * A deliberately small, fictional dataset for the PIT reconstruction
@@ -26,6 +38,9 @@ export const pitObservations: Observation[] = [
 
 export const pitRange = { start: "2019-07-01", end: "2020-12-31", defaultAsOf: "2020-03-31" };
 
+/** The fact the comparison panel opens on: it has a later correction. */
+export const pitDefaultFact = "Company A|EPS|Q4 2019";
+
 export interface PipelineStage {
   id: string;
   label: string;
@@ -33,176 +48,265 @@ export interface PipelineStage {
   detail: string;
 }
 
+/** The method as a sequence of questions. Schematic: the target design, not a claim about what is built. */
 export const pipeline: PipelineStage[] = [
-  { id: "ingest", label: "Ingestion", question: "When did we learn this?", detail: "Raw records are stored with the time they became available, not only the period they describe. Without that timestamp, history cannot be reconstructed later." },
+  { id: "ingest", label: "Ingestion", question: "When did we learn this?", detail: "Records are stored with the time they became available, not only the period they describe. Without that timestamp, history cannot be reconstructed later." },
   { id: "normalize", label: "Normalization", question: "Is this the same thing?", detail: "Identifiers, units and fiscal calendars are aligned so that a value means the same thing across sources and time." },
-  { id: "store", label: "PIT store", question: "What did we know, and when?", detail: "Observations are bitemporal: the period they describe and the moment they were known. Revisions are added, never overwritten." },
-  { id: "asof", label: "As-of query", question: "What was knowable on date D?", detail: "For any date, the store returns the latest version of each fact that had been published by then — and nothing published after." },
-  { id: "features", label: "Features", question: "What can the model use?", detail: "Features are computed from as-of snapshots, so a feature on date D only depends on information available on date D." },
-  { id: "validation", label: "Walk-forward validation", question: "Would this have worked then?", detail: "Models are trained on the past and tested on the following window, repeatedly, with a gap between train and test to stop overlap leaking." },
-  { id: "evaluation", label: "Statistical evaluation", question: "Is this more than noise?", detail: "Results are tested for significance across folds, with correction for the number of hypotheses tried." },
-  { id: "archive", label: "Archive", question: "What did we learn?", detail: "Every run — including the ones that failed — is stored with its configuration and fingerprint." },
+  { id: "store", label: "PIT store", question: "What did we know, and when?", detail: "Observations carry two times: the period they describe and the moment they became known. Corrections are added, never overwritten." },
+  { id: "asof", label: "As-of query", question: "What was knowable on date D?", detail: "For any date, return the latest version of each fact that had been published by then — and nothing published after." },
+  { id: "features", label: "Features", question: "What can the model use?", detail: "Features are computed from as-of snapshots, so a feature on date D depends only on information available on date D." },
+  { id: "validation", label: "Walk-forward evaluation", question: "Would this have worked then?", detail: "Models are trained on the past and tested on the following window, repeatedly, so no test period is ever older than its training data." },
+  { id: "evaluation", label: "Statistical evaluation", question: "Is this more than noise?", detail: "Results are compared with a null distribution, corrected for the number of models tried, and read against the study's detection power." },
+  { id: "archive", label: "Evidence archive", question: "What did we learn?", detail: "Every run — including the ones that failed — is kept with its inputs, so a result can be traced and re-run." },
 ];
 
-export const consoleOptions = {
-  universe: ["Synthetic universe · 120 assets", "Synthetic universe · 400 assets"],
-  dateRange: ["2012 – 2020", "2015 – 2023"],
-  signal: ["Earnings revision", "Value composite", "Momentum 12-1"],
-  modelFamily: ["Linear (ridge)", "Gradient-boosted trees"],
-  strategy: ["Long-short quintiles", "Long-only top decile"],
-  validation: ["Walk-forward · expanding", "Walk-forward · rolling", "K-fold · shuffled"],
+/* ---- Experiment bench (simulation, synthetic data) --------------------- */
+
+export const benchOptions = {
+  dataset: [
+    { value: "pit", label: "Point-in-time snapshot" },
+    { value: "naive", label: "Naive · latest values" },
+  ],
+  validation: [
+    { value: "walk-forward", label: "Walk-forward" },
+    { value: "shuffled", label: "Shuffled k-fold" },
+  ],
+  model: [
+    { value: "ridge", label: "Ridge" },
+    { value: "gbt", label: "Gradient-boosted trees" },
+  ],
+  signal: [
+    { value: "a", label: "Synthetic signal A" },
+    { value: "b", label: "Synthetic signal B" },
+    { value: "c", label: "Synthetic signal C" },
+  ],
+  universe: [
+    { value: "120", label: "Synthetic · 120 assets" },
+    { value: "400", label: "Synthetic · 400 assets" },
+  ],
 } as const;
 
-export interface FailedExperiment {
+/* ---- Negative results ------------------------------------------------- */
+
+export interface NegativeResult {
   id: string;
+  /** "documented": quoted from the public repository. "synthetic": an illustration. */
+  provenance: "documented" | "synthetic";
   hypothesis: string;
-  result: string;
-  status: "Archived" | "Replaced";
+  observation: string;
   why: string;
+  status: string;
+  source?: SourceLink;
 }
 
-export const failedExperiments: FailedExperiment[] = [
+export const negativeResults: NegativeResult[] = [
   {
-    id: "021",
-    hypothesis: "Signal improves forward returns.",
-    result: "Not statistically significant.",
-    status: "Archived",
-    why: "Negative evidence prevents repeated mistakes.",
+    id: "lookahead",
+    provenance: "documented",
+    hypothesis: "One year of public company data ranks BIST stocks by their next-year return (equal-weight baseline).",
+    observation:
+      "The baseline looked like a weak signal: IC +0.150 (p = 0.017). An audit found that 31 of 40 features were annual statements used weeks before they were published. Re-evaluated point-in-time, the IC is +0.031 (p = 0.63).",
+    why: "The apparent signal came from information that did not exist yet on the simulated date. Both results are kept, with the audit.",
+    status: "Original reading withdrawn · corrected result kept",
+    source: financeSources.results,
   },
   {
-    id: "027",
-    hypothesis: "Shuffled k-fold cross-validation is a fair estimate of out-of-sample performance.",
-    result: "Apparent performance disappeared under walk-forward validation.",
-    status: "Replaced",
-    why: "Shuffling lets the model train on the future. The gap between the two estimates measured the leakage.",
+    id: "guards",
+    provenance: "documented",
+    hypothesis: "The original dataset guards would catch timing leakage.",
+    observation: "In a registered defect-injection check, timing leakage was not detected by the original guards.",
+    why: "A guard only protects against what it checks. The point-in-time guard now refuses any value whose availability timestamp is after the prediction time.",
+    status: "Guard replaced",
+    source: financeSources.results,
   },
   {
-    id: "031",
-    hypothesis: "A fixed publication lag approximates when reports became available.",
-    result: "Late filers leaked; early filers were needlessly delayed.",
-    status: "Replaced",
-    why: "Approximating availability is the problem PIT data exists to remove. Actual publication timestamps replaced the lag.",
+    id: "shuffled",
+    provenance: "synthetic",
+    hypothesis: "Shuffled k-fold cross-validation is a fair estimate on time-ordered data.",
+    observation: "On the experiment bench's synthetic data, shuffled folds inflate the score; walk-forward evaluation removes the inflation.",
+    why: "Shuffling lets a model train on periods after its test window. The bench shows the mechanism; it is not a research result.",
+    status: "Illustration",
   },
 ];
+
+/* ---- Research decisions ------------------------------------------------ */
 
 export const financeDecisions: DecisionRecord[] = [
   {
-    id: "003",
-    title: "Bitemporal storage over snapshots",
-    problem: "Research needs the dataset exactly as it looked on any past date, including values that were later revised.",
+    key: "A",
+    title: "Every value carries the time it became public",
+    problem: "A backtest is only trustworthy if every input was available on the date it simulates. That cannot be checked unless availability is recorded.",
     options: [
-      { key: "A", label: "Bitemporal observations", detail: "Store the period a value describes and the time it became known; revisions append." },
-      { key: "B", label: "Daily snapshots", detail: "Simple to query; storage grows with every day and gaps are unrecoverable." },
-      { key: "C", label: "Latest values only", detail: "Smallest and fastest; history is overwritten and leakage is invisible." },
+      { key: "A", label: "Availability timestamp per value, enforced by a guard", detail: "A registry records when each feature became public; a guard refuses anything later than the prediction time." },
+      { key: "B", label: "A fixed publication lag", detail: "Simple; wrong for late filers in one direction and early filers in the other." },
+      { key: "C", label: "Period-end dating", detail: "Easiest; attaches results to the quarter they describe, weeks before publication." },
     ],
     selected: "A",
-    reason: "It is the only option where any historical state can be reconstructed from first principles rather than from whatever happened to be saved.",
-    tradeoff: "As-of queries are more complex and slower than reading a flat table.",
-    evidence: "Reconstruction tests: for fixed as-of dates, the query returns exactly the hand-checked set of facts and nothing published afterwards.",
+    reason: "If availability matters, store it and enforce it. Do not estimate it.",
+    tradeoff: "Exact filing timestamps are expensive to collect, so conservative statutory deadlines stand in where they are missing.",
+    evidence: "Applied in the public repository: a feature-availability registry and a guard, with tests that inject future-available features and check that each is rejected.",
+    evidenceSource: financeSources.protocol,
+    status: "Applied in the public repository",
   },
   {
-    id: "011",
-    title: "Walk-forward validation, never shuffled folds",
-    problem: "Standard k-fold cross-validation mixes past and future, so a model can be validated on periods older than those it was trained on.",
+    key: "B",
+    title: "Walk-forward evaluation, never shuffled folds",
+    problem: "Standard k-fold cross-validation mixes past and future, so a model can be tested on periods older than the ones it learned from.",
     options: [
-      { key: "A", label: "Walk-forward with an embargo gap", detail: "Train on the past, test on the next window, leave a gap between them." },
+      { key: "A", label: "Expanding-window walk-forward", detail: "Train on everything before the test year, then test on that year." },
       { key: "B", label: "Shuffled k-fold", detail: "More data per fold; leaks temporal information." },
       { key: "C", label: "Single train/test split", detail: "No leakage; one split is a single noisy estimate." },
     ],
     selected: "A",
     reason: "It matches how a model would actually have been used: trained on what was known and judged on what came next.",
-    tradeoff: "Fewer effective training samples, especially in early folds.",
-    evidence: "Experiment #027 — the same signal evaluated both ways. The gap between the two estimates is the leakage.",
+    tradeoff: "Fewer training samples in early folds, and few test years overall.",
+    evidence: "Applied in the public repository: expanding-window walk-forward evaluation with a within-year permutation null and correction across the models tried.",
+    evidenceSource: financeSources.results,
+    status: "Applied in the public repository",
   },
   {
-    id: "015",
-    title: "Universe membership is point-in-time too",
-    problem: "Building the universe from today's constituents silently drops companies that were later delisted — survivorship bias.",
+    key: "C",
+    title: "Keep the withdrawn result next to the corrected one",
+    problem: "When an audit invalidates a result, deleting it hides how the conclusion changed and why.",
+    options: [
+      { key: "A", label: "Preserve both, with the audit between them", detail: "The original numbers are kept unedited and marked as withdrawn." },
+      { key: "B", label: "Replace the result", detail: "Cleaner; the history of the claim disappears." },
+    ],
+    selected: "A",
+    reason: "A negative result is evidence. It shows the method working, not failing.",
+    tradeoff: "The record is longer and less flattering.",
+    evidence: "The public repository keeps the original IC +0.150 (p = 0.017) and the point-in-time IC +0.031 (p = 0.63) side by side.",
+    evidenceSource: financeSources.results,
+    status: "Applied in the public repository",
+  },
+  {
+    key: "D",
+    title: "Corrections are appended, not overwritten",
+    problem: "A later correction to a quarter must not erase the value that was originally published, or history cannot be reconstructed.",
+    options: [
+      { key: "A", label: "Bitemporal observations", detail: "Store the period a value describes and the time it became known; corrections append." },
+      { key: "B", label: "Daily snapshots", detail: "Simple to query; storage grows with every day and gaps are unrecoverable." },
+      { key: "C", label: "Latest values only", detail: "Smallest; history is overwritten and leakage becomes invisible." },
+    ],
+    selected: "A",
+    reason: "It is the only option where any past information state can be rebuilt from first principles.",
+    tradeoff: "As-of queries are more complex and slower than reading a flat table.",
+    evidence: "Not yet verified: this is the design direction of the in-progress MSc project. The reconstruction view on this site demonstrates the idea on synthetic data.",
+    status: "Design direction · in progress",
+  },
+  {
+    key: "E",
+    title: "The universe must be point-in-time too",
+    problem: "Choosing companies from today's listings silently drops the ones that were later delisted — survivorship bias.",
     options: [
       { key: "A", label: "As-of membership", detail: "Membership is an observation with its own availability date." },
       { key: "B", label: "Current constituents", detail: "Easy to obtain; biased toward survivors." },
     ],
     selected: "A",
     reason: "Leakage is not only about values; it is also about which entities exist in the dataset.",
-    tradeoff: "Requires historical membership data, which is harder to source than prices.",
-    evidence: "The reconstruction view keeps Company C in the universe before its removal date.",
-  },
-  {
-    id: "019",
-    title: "Every run has a fingerprint",
-    problem: "Re-running an experiment months later produced different numbers and nobody could say which input had changed.",
-    options: [
-      { key: "A", label: "Hash configuration, data version and seed", detail: "The fingerprint identifies the run; identical inputs give identical results." },
-      { key: "B", label: "Log parameters in notes", detail: "Better than nothing; incomplete by construction." },
-    ],
-    selected: "A",
-    reason: "Reproducibility should be checkable by comparing two strings, not by reading notes.",
-    tradeoff: "Strict determinism constrains parallel execution and some library choices.",
-    evidence: "Determinism tests that run the same configuration twice and compare fingerprints and outputs.",
+    tradeoff: "Historical membership data is much harder to source than prices.",
+    evidence: "Open problem. Survivorship is documented as unresolved in the public repository; addressing it is part of the in-progress project.",
+    evidenceSource: financeSources.results,
+    status: "Open problem",
   },
 ];
+
+/* ---- Case study -------------------------------------------------------- */
 
 export const financeCaseStudy: CaseStudy = {
   slug: "financeiq",
   name: "FinanceIQ",
   fullName: "Point-in-Time Market Data Lab",
   lab: "Market Data Research Lab",
-  oneLiner: "A research pipeline that reconstructs what was actually knowable on any historical date, so financial experiments cannot quietly use the future.",
-  overview: [
-    "FinanceIQ is an MSc Data Science capstone about one question: when a backtest says a signal works, was every input really available at the time?",
-    "The project builds point-in-time reconstruction, leakage-free validation and reproducible experiment tracking — and keeps the negative results.",
-  ],
+  oneLiner:
+    "An MSc Data Science research project in progress: point-in-time market-data and research infrastructure, so that historical experiments only use information that was actually available at the time.",
+  glance: {
+    role: "Researcher. Research design, methodology and validation.",
+    project: "MSc Data Science research / semester project · University of Basel",
+    status: "In progress · active development",
+    problem: "Historical experiments are only trustworthy when they use information that was actually available at the simulated point in time.",
+    approach: ["Availability-aware data", "Walk-forward evaluation", "Negative results preserved"],
+    stack: ["Python", "scikit-learn", "FastAPI", "PostgreSQL"],
+    evidence: [
+      { text: "Documented look-ahead audit: IC +0.150 (p = 0.017) → +0.031 (p = 0.63) after point-in-time correction", href: financeSources.results.href },
+    ],
+  },
   problem: {
-    existed: "Typical research datasets store the latest value of each fact. Revisions overwrite originals, reports appear on the date they describe rather than the date they were published, and delisted companies disappear.",
+    summary:
+      "Most research datasets store the latest value of each fact. Results are dated by the period they describe rather than the day they were published, corrections overwrite originals, and companies that disappeared are missing. A backtest built on such data can quietly use the future.",
     difficulty: [
       "Look-ahead leakage is invisible in the data itself; it only shows up as results that are too good.",
       "Publication delays vary by company and by report.",
-      "Revisions and restatements mean one period can have several true values over time.",
-      "Survivorship bias hides in the universe, not in the values.",
+      "Corrections mean one period can have several true values over time.",
+      "Survivorship bias hides in which companies exist, not in the values.",
     ],
-  },
-  constraints: {
-    technical: ["As-of queries must be exact, not approximate", "Every run must be reproducible from its fingerprint"],
-    research: ["Validation must respect time order", "Multiple hypotheses must be corrected for", "Negative results must be recorded with the same care as positive ones"],
-    operational: ["Capstone timeline and a single researcher", "Data licensing: raw vendor data is never published"],
   },
   role: {
-    owned: [
-      "Research question, methodology and evaluation design",
-      "Point-in-time data model and as-of reconstruction",
-      "Validation framework and leakage audits",
-      "Experiment tracking, reproducibility and reporting",
+    summary: "Researcher on the project.",
+    items: ["Research question, design and methodology", "Point-in-time data model and availability rules", "Evaluation design, statistical validation and leakage audits"],
+    context:
+      "The public repository states that research design, methodological decisions, acceptance criteria and validation are owned by Salih, with implementation produced by AI coding agents under a specification, review and CI-gate workflow. All interactive data on this site is synthetic.",
+  },
+  status: {
+    summary:
+      "In progress. The project's direction is point-in-time market-data and research infrastructure. Planned capabilities are not presented as finished.",
+    items: [
+      "Documented in the public repository: an availability registry and guard, walk-forward evaluation with permutation tests and power analysis, and an audit whose corrected result replaced an apparent signal.",
+      "In progress: bitemporal storage of corrections, as-of reconstruction for any date, and point-in-time universe membership.",
     ],
-    context: "Sole author of the capstone. Raw data is licensed and not reproduced here; all interactive data on this site is synthetic.",
+    limits: [
+      "Survivorship is unresolved in the documented study: its companies were chosen from current listings.",
+      "Exact filing timestamps were not collected; conservative statutory deadlines were used.",
+      "The documented study has three test years and can only detect large effects (|IC| ≈ 0.19 or more).",
+    ],
+    limitsSource: financeSources.results,
   },
   architectureSummary:
-    "Raw records are ingested with their availability time, normalized, and stored as bitemporal observations. As-of queries produce historical snapshots, features are built only from those snapshots, and models are evaluated with walk-forward validation and statistical testing. Every run is fingerprinted and archived.",
+    "Records are ingested with their availability time, normalized, and stored with two times: the period they describe and the moment they became known. As-of queries produce historical snapshots, features are computed only from those snapshots, and models are evaluated walk-forward against a null distribution. Every run is kept with its inputs. The diagram is the target design of the in-progress project.",
   hardProblems: [
-    { title: "Defining \"available\"", body: "Period end, filing date and the moment a dataset vendor recorded the value are different dates. The project had to pick the one a trader could actually have acted on and carry it through every stage." },
-    { title: "Revisions without overwrites", body: "A restated quarter must not replace the original in history. Appending versions and resolving them at query time keeps both truths: what was reported, and what was known when." },
-    { title: "Leakage through validation", body: "Even with clean data, shuffled cross-validation leaks the future. Walk-forward folds with an embargo gap closed that path." },
-    { title: "Telling signal from noise", body: "Many hypotheses tested on the same history will produce some that look significant by chance. Correction for multiple testing turned several apparent wins into honest negatives." },
+    { title: "Defining \"available\"", body: "Period end, filing date and the moment a value was recorded are different dates. The research has to pick the one a decision could actually have used and carry it through every stage." },
+    { title: "Corrections without overwrites", body: "A corrected quarter must not replace the original in history. Appending versions and resolving them at query time keeps both truths: what was reported, and what was known when." },
+    { title: "Leakage through validation", body: "Even with clean data, shuffled cross-validation leaks the future. Walk-forward evaluation closes that path." },
+    { title: "Telling signal from noise", body: "With few test years, only large effects are detectable. A null result means \"no large edge\", not \"no edge\", and has to be reported that way." },
   ],
   decisions: financeDecisions,
-  implementation: [
-    { title: "Observation model", body: "Each fact carries an entity, a field, the period it describes, the time it became known and its value. Membership in the universe is modelled the same way." },
-    { title: "As-of resolution", body: "For a given date, keep observations known by that date and resolve each fact to its latest known version." },
-    { title: "Feature isolation", body: "Feature builders receive an as-of snapshot, never the full table, so leakage is prevented structurally." },
-    { title: "Run registry", body: "Configuration, data version and seed are hashed into a fingerprint stored alongside results." },
-  ],
   evidence: [
-    { kind: "Tests", items: ["As-of reconstruction against hand-checked fixtures", "Determinism checks on repeated runs"] },
-    { kind: "Experiments", items: ["Naive vs point-in-time datasets on the same signal", "Shuffled k-fold vs walk-forward on the same signal"] },
-    { kind: "Methodology", items: ["Walk-forward validation with embargo", "Significance testing with multiple-testing correction", "Negative results archived with their fingerprints"] },
+    {
+      kind: "Documented in the public repository",
+      items: [
+        "Original result (preserved): equal-weight baseline IC +0.150, p = 0.017",
+        "Audit: 31 of 40 features were annual statements used before publication",
+        "Point-in-time re-evaluation: IC +0.031, p = 0.63; no model distinguishable from chance",
+        "Power: minimum detectable |IC| ≈ 0.19 at 80 % power",
+      ],
+      source: financeSources.results,
+    },
+    {
+      kind: "On this site",
+      items: ["A tested as-of engine that drives the reconstruction view (synthetic data)", "A deterministic bench that shows how leakage inflates a score (synthetic data)"],
+    },
   ],
-  didntWork: [
-    { title: "Fixed publication lag", body: "Assuming every report becomes available a fixed number of days after period end was simple and wrong in both directions.", lesson: "If availability matters, store it — do not estimate it." },
-    { title: "Shuffled cross-validation", body: "It produced the most flattering numbers in the project, and they disappeared under walk-forward validation.", lesson: "The most flattering estimate is the first one to distrust." },
-  ],
-  result: [
-    "A pipeline that reconstructs the dataset as it was knowable on any date.",
-    "Validation and auditing that make look-ahead leakage measurable.",
-    "An archive in which negative results are first-class records.",
-  ],
-  next: ["Intraday availability timestamps", "Broader universes and asset classes", "A public, fully synthetic benchmark for leakage detection"],
+  didntWork: {
+    intro: "Approaches that failed, as documented in the public repository.",
+    items: [
+      { title: "Dating annual statements from 1 January", body: "Year-T statements were used from the first trading day of the next year, weeks before companies published them. The apparent signal disappeared once they were used after publication.", lesson: "If availability matters, store it — do not assume it." },
+      { title: "Guards that did not check time", body: "The original dataset guards caught frozen snapshots and leaking return columns, but not timing leakage.", lesson: "A guard only protects against what it checks." },
+      { title: "An end-of-March cutoff", body: "A March cutoff was rejected because it precedes the statutory filing deadline for some years.", lesson: "Check the cutoff against the worst-case publication date, not the typical one." },
+    ],
+    source: financeSources.results,
+  },
+  details: {
+    constraints: [
+      "As-of queries must be exact, not approximate",
+      "Validation must respect time order",
+      "Negative results are recorded with the same care as positive ones",
+      "Raw source data is not reproduced on this site",
+    ],
+    implementation: [
+      { title: "Observation model", body: "Each fact carries an entity, a field, the period it describes, the time it became known and its value. Universe membership is modelled the same way." },
+      { title: "As-of resolution", body: "For a given date, keep observations known by that date and resolve each fact to its latest known version." },
+      { title: "Feature isolation", body: "Feature builders receive an as-of snapshot, never the full table, so leakage is prevented structurally." },
+      { title: "Run records", body: "Each run records its code version, input checksums and package versions." },
+    ],
+  },
 };

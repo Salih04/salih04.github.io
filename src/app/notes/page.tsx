@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function NotesPage() {
   return (
     <div className="editorial">
-      <PageHeader eyebrow="06 — Lab Notes" title="Lab notes" lead="Engineering and research writing: systems, agents, data and the experiments that didn't work." />
+      <PageHeader eyebrow="06 — Lab Notes" title="Lab notes" lead="Engineering and research writing on systems, agents and data. Every note is a draft until it has been reviewed and published." />
       <NotesIndex notes={notes} />
     </div>
   );

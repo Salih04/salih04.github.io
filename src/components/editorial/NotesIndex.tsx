@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { LabLink } from "@/components/shell/LabLink";
-import { formatNoteDate, noteCategories, readingMinutes, type LabNote, type NoteCategory } from "@/content/notes";
+import { noteCategories, readingMinutes, type LabNote, type NoteCategory } from "@/content/notes";
 
 export function NotesIndex({ notes }: { notes: LabNote[] }) {
   const [filter, setFilter] = useState<NoteCategory | null>(null);
@@ -27,11 +27,11 @@ export function NotesIndex({ notes }: { notes: LabNote[] }) {
         {shown.map((n) => (
           <li key={n.slug}>
             <LabLink href={`/notes/${n.slug}/`} className="note-row">
-              <span className="note-row__n mono">Lab note {n.number}</span>
+              <span className="note-row__n mono">Lab note — {n.status.toLowerCase()}</span>
               <span className="note-row__title">{n.title}</span>
               <span className="note-row__summary">{n.summary}</span>
               <span className="note-row__meta mono">
-                {n.category} · {formatNoteDate(n.date)} · {readingMinutes(n)} min read
+                {n.category} · {readingMinutes(n)} min read
               </span>
             </LabLink>
           </li>

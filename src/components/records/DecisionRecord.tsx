@@ -1,25 +1,28 @@
 import type { DecisionRecord as Decision } from "@/content/types";
 
-/** An engineering decision rendered as a lab record. Used in lab and case-study modes. */
-export function DecisionRecord({ decision, headingLevel = 3 }: { decision: Decision; headingLevel?: 2 | 3 | 4 }) {
+/** A decision rendered as a ruled record. Used in lab and case-study modes. */
+export function DecisionRecord({ decision, kind, headingLevel = 3 }: { decision: Decision; kind: string; headingLevel?: 2 | 3 | 4 }) {
   const H = `h${headingLevel}` as "h2" | "h3" | "h4";
   const selected = decision.options.find((o) => o.key === decision.selected);
+  const id = `decision-${kind.split(" ")[0]!.toLowerCase()}-${decision.key.toLowerCase()}`;
   return (
-    <article className="record" aria-labelledby={`decision-${decision.id}`}>
+    <article className="record" aria-labelledby={id}>
       <header className="record__head">
-        <span className="record__id mono">Decision {decision.id}</span>
-        <span className="tag tag--success">Selected · {decision.selected}</span>
+        <span className="record__id mono">
+          {kind} {decision.key}
+        </span>
+        {decision.status ? <span className="record__status">{decision.status}</span> : null}
       </header>
-      <H id={`decision-${decision.id}`} className="record__title">
+      <H id={id} className="record__title">
         {decision.title}
       </H>
       <dl className="record__fields">
         <div>
-          <dt>Problem</dt>
+          <dt>Need</dt>
           <dd>{decision.problem}</dd>
         </div>
         <div>
-          <dt>Options considered</dt>
+          <dt>Alternatives</dt>
           <dd>
             <ul className="record__options">
               {decision.options.map((o) => (
@@ -29,13 +32,14 @@ export function DecisionRecord({ decision, headingLevel = 3 }: { decision: Decis
                     <strong>{o.label}</strong>
                     <span className="record__detail">{o.detail}</span>
                   </span>
+                  {o.key === decision.selected ? <span className="record__chosen">chosen</span> : null}
                 </li>
               ))}
             </ul>
           </dd>
         </div>
         <div>
-          <dt>Selected</dt>
+          <dt>Chosen</dt>
           <dd>
             {decision.selected} — {selected?.label}
           </dd>
@@ -50,7 +54,17 @@ export function DecisionRecord({ decision, headingLevel = 3 }: { decision: Decis
         </div>
         <div>
           <dt>Evidence</dt>
-          <dd>{decision.evidence}</dd>
+          <dd>
+            {decision.evidence}
+            {decision.evidenceSource ? (
+              <>
+                {" "}
+                <a className="record__source" href={decision.evidenceSource.href}>
+                  Source: {decision.evidenceSource.label} ↗
+                </a>
+              </>
+            ) : null}
+          </dd>
         </div>
       </dl>
     </article>

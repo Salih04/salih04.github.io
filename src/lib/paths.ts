@@ -21,3 +21,16 @@ export function isActive(current: string, href: string): boolean {
   const h = normalizePath(href);
   return h === "/" ? c === "/" : c === h || c.startsWith(h);
 }
+
+export type RouteMode = "lab" | "case";
+
+/**
+ * The mode a route opens in. Case Study Mode is a property of the paired
+ * project routes only: a case-study route opens in case mode, its lab partner
+ * in lab mode, and every other route in lab mode. Nothing is inherited from
+ * storage, so Resume, Vault, About or Notes never open in a mode the visitor
+ * did not choose on that page.
+ */
+export function modeForRoute(path: string): RouteMode {
+  return pairFor(path)?.side ?? "lab";
+}

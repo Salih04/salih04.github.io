@@ -14,15 +14,23 @@
   --line-strong: #314050;
 
   --text: #e4e9ee;
-  --text-dim: #a3aeb9;
-  --text-faint: #7d8995;
+  --text-dim: #a8b3be;
+  --text-faint: #7f8b97;
 
+  /* SAMS: a running machine. Cold signal cyan, green for convergence. */
   --signal: #5cd0cb;
-  --signal-soft: rgb(92 208 203 / 0.14);
+  --signal-soft: rgb(92 208 203 / 0.12);
   --signal-line: rgb(92 208 203 / 0.45);
   --success: #74c08f;
-  --research: #9590f2;
-  --research-soft: rgb(149 144 242 / 0.14);
+  --success-soft: rgb(116 192 143 / 0.12);
+
+  /* FinanceIQ: a research instrument. Violet / indigo on a paper plate. */
+  --research: #9b96f4;
+  --research-soft: rgb(155 150 244 / 0.13);
+  --research-line: rgb(155 150 244 / 0.45);
+  --paper: #121319;
+  --paper-rule: rgb(155 150 244 / 0.09);
+
   --warning: #e2aa55;
   --failure: #e0706f;
   --failure-soft: rgb(224 112 111 / 0.12);
@@ -30,17 +38,24 @@
   --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-display: "Space Grotesk Variable", "Space Grotesk", var(--font-sans);
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  /* Type scale. Nothing below 12px; mono metadata only where it is instrument data. */
+  --fs-meta: 12px;
+  --fs-label: 13px;
+  --fs-small: 14px;
+  --track-meta: 0.06em;
 
   --rail-w: 208px;
   --topbar-h: 56px;
-  --radius: 6px;
-  --measure: 72ch;
+  --radius: 4px;
+  --measure: 70ch;
   --gutter: clamp(16px, 4vw, 48px);
 
   --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
-  --dur-fast: 160ms;
-  --dur: 280ms;
-  --dur-slow: 520ms;
+  --dur-fast: 140ms;
+  --dur: 240ms;
+  --dur-slow: 420ms;
 }
 
 /* Case Study Mode: cleaner, quieter, typography-led. */
@@ -100,7 +115,7 @@ h4 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.12;
   letter-spacing: -0.01em;
 }
 
@@ -133,6 +148,12 @@ code,
 pre,
 kbd {
   font-family: var(--font-mono);
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
 }
 
 :focus-visible {
@@ -181,10 +202,11 @@ kbd {
   font-family: var(--font-mono);
 }
 
+/* Instrument metadata: small mono, uppercase only here. */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--text-faint);
 }
@@ -203,16 +225,15 @@ kbd {
   justify-content: center;
   gap: 10px;
   min-height: 44px;
-  padding: 0 20px;
+  padding: 0 18px;
   border: 1px solid var(--signal-line);
   border-radius: var(--radius);
   background: var(--signal-soft);
   color: var(--signal);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -223,7 +244,7 @@ kbd {
 }
 
 .btn:hover {
-  background: rgb(92 208 203 / 0.24);
+  background: rgb(92 208 203 / 0.22);
   border-color: var(--signal);
   color: #e9fffe;
 }
@@ -232,9 +253,14 @@ kbd {
   transform: translateY(1px);
 }
 
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* Busy controls stay focusable: aria-disabled, never `disabled`. */
+.btn[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.btn svg {
+  flex: none;
 }
 
 .btn--ghost {
@@ -250,21 +276,21 @@ kbd {
 }
 
 .btn--research {
-  border-color: rgb(149 144 242 / 0.5);
+  border-color: var(--research-line);
   background: var(--research-soft);
   color: var(--research);
 }
 
 .btn--research:hover {
-  background: rgb(149 144 242 / 0.24);
+  background: rgb(155 150 244 / 0.24);
   border-color: var(--research);
   color: #f0efff;
 }
 
 .btn--sm {
   min-height: 36px;
-  padding: 0 14px;
-  font-size: 12px;
+  padding: 0 12px;
+  font-size: 13px;
 }
 
 .panel {
@@ -273,56 +299,16 @@ kbd {
   border-radius: var(--radius);
 }
 
-.status-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 0 3px rgb(116 192 143 / 0.15);
-  flex: none;
-}
-
-.status-dot--signal {
-  background: var(--signal);
-  box-shadow: 0 0 0 3px var(--signal-soft);
-}
-
-.status-dot--research {
-  background: var(--research);
-  box-shadow: 0 0 0 3px var(--research-soft);
-}
-
-.status-dot--idle {
-  background: var(--text-faint);
-  box-shadow: none;
-}
-
-.status-dot--pulse {
-  animation: dot-pulse 2.4s var(--ease) infinite;
-}
-
-@keyframes dot-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 3px rgb(116 192 143 / 0.15);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgb(116 192 143 / 0.04);
-  }
-}
-
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 2px 8px;
+  padding: 1px 8px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: var(--fs-meta);
+  letter-spacing: 0.02em;
   color: var(--text-dim);
   white-space: nowrap;
 }
@@ -343,7 +329,7 @@ kbd {
 }
 
 .tag--research {
-  border-color: rgb(149 144 242 / 0.4);
+  border-color: var(--research-line);
   color: var(--research);
 }
 
@@ -352,20 +338,58 @@ kbd {
   color: var(--signal);
 }
 
-/* A labelled notice that a view is a demonstration, not live infrastructure. */
-.demo-note {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
+/* ---- Plate: a figure frame with a label in its top-left corner ------- */
+
+.plate {
+  position: relative;
+  margin: 0;
+  padding: 44px 20px 18px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg-raised);
+}
+
+.plate--paper {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 31px, var(--paper-rule) 31px 32px),
+    var(--paper);
+  border-color: rgb(155 150 244 / 0.16);
+}
+
+.plate__label {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+}
+
+/* FIG. 03 · SIMULATION — calm scientific annotation, never a warning. */
+.fig-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-size: var(--fs-meta);
+  line-height: 1;
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--bg);
+  white-space: nowrap;
+}
+
+.fig-label > span:not(.sr-only) {
+  padding: 5px 7px;
+}
+
+.fig-label__n {
+  border-right: 1px solid var(--line-strong);
   color: var(--text-faint);
 }
 
-.demo-note::before {
-  content: "◇";
-  color: var(--warning);
+.fig-label--inline {
+  position: static;
 }
 
 /* Text alternative for diagrams: always present, collapsed by default. */
@@ -379,10 +403,7 @@ kbd {
 
 .text-alt summary {
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: var(--fs-label);
   color: var(--text-faint);
 }
 
@@ -398,4 +419,37 @@ kbd {
 
 .text-alt li + li {
   margin-top: 4px;
+}
+
+/* A button that reads as a link. */
+.linkish {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--research);
+  font-size: var(--fs-small);
+  text-decoration: underline;
+  text-decoration-color: var(--research-line);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.linkish:hover {
+  color: var(--text);
+}
+
+.chip {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-size: var(--fs-label);
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--research-line);
+  color: var(--text);
 }

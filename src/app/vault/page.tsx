@@ -4,13 +4,11 @@ import { vault, type VaultOutcome } from "@/content/vault";
 
 export const metadata: Metadata = {
   title: "Experiment Vault",
-  description: "Small projects, prototypes and technical experiments — including the ones that failed.",
+  description: "Small projects, prototypes and technical experiments made while building this site.",
 };
 
 const tone: Record<VaultOutcome, string> = {
   Completed: "tag--success",
-  Failed: "tag--failure",
-  Archived: "tag--warning",
   Ongoing: "tag--signal",
 };
 
@@ -19,8 +17,8 @@ export default function VaultPage() {
     <div className="editorial editorial--wide">
       <PageHeader
         eyebrow="Experiment Vault"
-        title="Archived samples"
-        lead="Prototypes and technical experiments. Unfinished and failed work is catalogued on purpose: each one taught something."
+        title="Specimens"
+        lead="Small technical experiments made while building this site. Each one is real and can be inspected in the repository."
       />
       <ul className="vault">
         {vault.map((s) => (

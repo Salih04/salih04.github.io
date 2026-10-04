@@ -81,7 +81,7 @@ export function execute(raw: string, ctx: TerminalContext): TerminalResult {
     case "about":
       return { lines: [about.title.toUpperCase(), ...about.summary.map((s) => `  ${s}`), "", about.intro[0] ?? "", "", "run 'open about' for the full page"] };
     case "whoami":
-      return { lines: [site.name, ...site.roles, "Building reliable intelligent systems."] };
+      return { lines: [site.name, site.role, `${site.study.degree} ${site.study.status} · ${site.study.institution}`, site.entryLine] };
     case "projects":
       return {
         lines: [
@@ -89,8 +89,8 @@ export function execute(raw: string, ctx: TerminalContext): TerminalResult {
           "  sams        SAMS — Spatial Agentic Management System",
           "  financeiq   FinanceIQ — Point-in-Time Market Data Lab",
           "  archive     Engineering Archive",
-          `  vault       Experiment Vault · ${vault.length} samples`,
-          `  notes       Lab Notes · ${notes.length} records`,
+          `  vault       Experiment Vault · ${vault.length} specimens`,
+          `  notes       Lab Notes · ${notes.length} drafts`,
           "",
           "run 'open <name>' or 'case <name>'",
         ],
@@ -123,12 +123,12 @@ export function execute(raw: string, ctx: TerminalContext): TerminalResult {
     case "status":
       return {
         lines: [
-          "SYSTEM STATUS (interface state, not production telemetry)",
-          "  SAMS                 ONLINE     scripted demonstration ready",
-          "  Market Data Lab      ACTIVE     PIT reconstruction ready",
-          "  Engineering Archive  AVAILABLE",
-          `  Experiment Vault     ${vault.length} samples`,
-          `  Lab Notes            ${notes.length} records`,
+          "LAB STATUS (interface state; nothing here is live)",
+          "  Agent Systems Lab    READY        failure demo is a simulation",
+          "  Market Data Lab      IN PROGRESS  research project, active development",
+          "  Engineering Archive  OPEN",
+          `  Experiment Vault     ${vault.length} specimens`,
+          `  Lab Notes            ${notes.length} drafts`,
           `  Mode                 ${ctx.mode === "case" ? "CASE STUDY" : "LAB"}`,
         ],
       };

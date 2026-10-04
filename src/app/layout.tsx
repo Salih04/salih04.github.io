@@ -1,6 +1,7 @@
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/source-serif-4";
 import "@/styles/base.css";
 import "@/styles/shell.css";
 import "@/styles/lab.css";
@@ -25,10 +26,11 @@ export const viewport: Viewport = {
 };
 
 /*
- * Applies the saved mode before first paint so Case Study Mode never flashes
- * the lab. Lab/case-study route pairs decide their own mode.
+ * Sets the route's mode before first paint so a case-study route never
+ * flashes the lab. Mode is derived from the route only (see modeForRoute);
+ * nothing is read from storage, so unrelated pages never inherit it.
  */
-const modeScript = `(function(){try{var p=location.pathname.replace(/\\/?$/,"/");var pairs=${JSON.stringify(modePairs)};var m=null;for(var i=0;i<pairs.length;i++){if(p===pairs[i].lab)m="lab";if(p===pairs[i].caseStudy)m="case";}if(!m)m=localStorage.getItem("slab:mode")==="case"?"case":"lab";document.documentElement.dataset.mode=m;}catch(e){document.documentElement.dataset.mode="lab";}})();`;
+const modeScript = `(function(){try{var p=location.pathname.replace(/\\/?$/,"/");var pairs=${JSON.stringify(modePairs)};var m="lab";for(var i=0;i<pairs.length;i++){if(p===pairs[i].caseStudy)m="case";}document.documentElement.dataset.mode=m;}catch(e){document.documentElement.dataset.mode="lab";}})();`;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

@@ -1,16 +1,16 @@
 /*
  * Experiment Vault — small projects, prototypes and technical experiments.
  *
- * The first samples are experiments made while building this site; each one
- * is real and can be inspected in this repository.
+ * The samples are experiments made while building this site; each one is
+ * real and can be inspected in this repository.
  */
 
-export type VaultOutcome = "Completed" | "Failed" | "Archived" | "Ongoing";
+export type VaultOutcome = "Completed" | "Ongoing";
 
 export interface VaultSample {
   id: string;
   name: string;
-  status: "Prototype" | "Shipped" | "Archived";
+  status: "Prototype" | "Shipped";
   domain: string;
   outcome: VaultOutcome;
   note: string;
@@ -35,14 +35,6 @@ export const vault: VaultSample[] = [
   },
   {
     id: "EXP-003",
-    name: "WebGL control room",
-    status: "Archived",
-    domain: "Systems / UI",
-    outcome: "Failed",
-    note: "A full 3D facility for navigation. It cost more in load time and readability than it explained, and was replaced by a CSS-perspective map that works without WebGL.",
-  },
-  {
-    id: "EXP-004",
     name: "Public boundary scanner",
     status: "Shipped",
     domain: "Systems",
@@ -50,7 +42,7 @@ export const vault: VaultSample[] = [
     note: "A build step that fails if content contains endpoints, credentials, private paths or internal identifiers.",
   },
   {
-    id: "EXP-005",
+    id: "EXP-004",
     name: "Synthesized interface sound",
     status: "Prototype",
     domain: "UI",

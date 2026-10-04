@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { FigureLabel } from "@/components/records/FigureLabel";
 import { useLab } from "@/components/shell/LabProvider";
 import { archLayers, architecture, type ArchComponent } from "@/content/sams";
 
 const byLayer = (layer: ArchComponent["layer"]) => architecture.filter((c) => c.layer === layer);
 
 /** Engineering view of SAMS: click any component to see why it exists. */
-export function ArchitectureView({ compact = false }: { compact?: boolean }) {
+export function ArchitectureView({ compact = false, fig = "02" }: { compact?: boolean; fig?: string }) {
   const { cue } = useLab();
-  const [selected, setSelected] = useState("temporal");
+  const [selected, setSelected] = useState("redis");
   const component = architecture.find((c) => c.id === selected) ?? architecture[0]!;
 
   const select = (id: string) => {
@@ -33,7 +34,8 @@ export function ArchitectureView({ compact = false }: { compact?: boolean }) {
 
   return (
     <div className={`arch${compact ? " arch--compact" : ""}`}>
-      <div className="arch__diagram" role="group" aria-label="SAMS architecture components">
+      <div className="arch__diagram plate" role="group" aria-label="SAMS architecture components (schematic)">
+        <FigureLabel fig={fig} kind="schematic" className="plate__label" />
         <ol className="arch__stack">
           {archLayers.map((layer, i) => (
             <li key={layer.id} className="arch__layer">

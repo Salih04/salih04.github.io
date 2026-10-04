@@ -30,3 +30,11 @@ describe("terminal", () => {
     expect(execute("mode case", ctx).action).toEqual({ type: "mode", mode: "case" });
   });
 });
+
+describe("terminal status vocabulary", () => {
+  it("never reports a live or online system", () => {
+    const out = execute("status", ctx).lines.join("\n");
+    expect(out).not.toMatch(/ONLINE|ACTIVE\b|LIVE SYSTEM/);
+    expect(out).toMatch(/IN PROGRESS/);
+  });
+});

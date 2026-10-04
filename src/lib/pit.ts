@@ -37,7 +37,7 @@ export interface LeakIssue {
   message: string;
 }
 
-const factKey = (o: Observation) => `${o.entity}|${o.field}|${o.period}`;
+export const factKey = (o: Observation) => `${o.entity}|${o.field}|${o.period}`;
 
 const byKnownAt = (a: Observation, b: Observation) =>
   a.knownAt < b.knownAt ? -1 : a.knownAt > b.knownAt ? 1 : 0;
@@ -108,4 +108,44 @@ export function detectLeakage(observations: Observation[], asOf: string): LeakIs
     }
   }
   return issues;
+}
+
+export type FactVerdict = "match" | "revision-leak" | "look-ahead" | "survivorship" | "not-yet-available" | "absent";
+
+export interface FactComparison {
+  key: string;
+  /** What a naive dataset holds for this fact on the as-of date. */
+  naive: Observation | undefined;
+  /** What had actually been published by the as-of date. */
+  available: Observation | undefined;
+  verdict: FactVerdict;
+}
+
+/** Compare one fact between the naive dataset and the point-in-time truth. */
+export function compareFact(observations: Observation[], key: string, asOf: string): FactComparison {
+  const nv = naive(observations, asOf).get(key);
+  const available = pointInTime(observations, asOf).get(key);
+  // A membership observation with value 0 means "not in the universe": nothing to compare.
+  const removed = available?.kind === "membership" && available.value === 0;
+  let verdict: FactVerdict;
+  if (removed && !nv) verdict = "match";
+  else if (!nv && !available) verdict = observations.some((o) => factKey(o) === key) ? "not-yet-available" : "absent";
+  else if (nv && !available) verdict = "look-ahead";
+  else if (!nv && available) verdict = "survivorship";
+  else if (nv && available && nv.id !== available.id) verdict = "revision-leak";
+  else verdict = "match";
+  return { key, naive: nv, available, verdict };
+}
+
+/**
+ * Toy "signal score" for the consequence readout. It is not a model: the
+ * point-in-time score is a fixed weak baseline, and every leaked fact adds a
+ * fixed amount of apparent signal. It shows the direction of the effect on
+ * synthetic data, nothing more.
+ */
+export const SYNTHETIC_BASE_SCORE = 0.01;
+export const SYNTHETIC_LEAK_LIFT = 0.0125;
+
+export function syntheticScores(leaks: number): { naive: number; pit: number } {
+  return { naive: SYNTHETIC_BASE_SCORE + SYNTHETIC_LEAK_LIFT * leaks, pit: SYNTHETIC_BASE_SCORE };
 }

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { PrintButton } from "@/components/editorial/PrintButton";
 import { LabLink } from "@/components/shell/LabLink";
-import { about, resume } from "@/content/about";
+import { resume } from "@/content/about";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Resume",
-  description: `Resume of ${site.name}: ${site.roles.join(", ")}.`,
+  description: `Resume of ${site.name}: ${site.role}, ${site.study.degree} ${site.study.status} at the ${site.study.institution}.`,
 };
 
 export default function ResumePage() {
@@ -16,7 +16,9 @@ export default function ResumePage() {
         <div>
           <p className="eyebrow eyebrow--signal">Resume</p>
           <h1>{site.name}</h1>
-          <p className="resume__roles mono">{site.roles.join(" · ")}</p>
+          <p className="resume__roles">
+            {site.role} · {site.study.degree} {site.study.status}, {site.study.institution}
+          </p>
           <p className="resume__line">{site.headline}</p>
         </div>
         <PrintButton />
@@ -29,7 +31,10 @@ export default function ResumePage() {
         {resume.experience.map((e) => (
           <div key={e.role} className="resume__item">
             <h3>{e.role}</h3>
-            <p className="resume__org">{e.organisation}</p>
+            <p className="resume__org">
+              {e.organisation}
+              {e.period ? <span className="resume__period"> · {e.period}</span> : null}
+            </p>
             <ul>
               {e.points.map((p) => (
                 <li key={p}>{p}</li>
@@ -46,11 +51,17 @@ export default function ResumePage() {
         {resume.education.map((e) => (
           <div key={e.degree} className="resume__item">
             <h3>{e.degree}</h3>
-            <ul>
-              {e.points.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
+            <p className="resume__org">
+              {e.institution}
+              {e.period ? <span className="resume__period"> · {e.period}</span> : null}
+            </p>
+            {e.points.length ? (
+              <ul>
+                {e.points.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
         ))}
       </section>
@@ -67,13 +78,6 @@ export default function ResumePage() {
             </div>
           ))}
         </dl>
-      </section>
-
-      <section aria-labelledby="dir-title" className="resume__section">
-        <h2 id="dir-title" className="eyebrow">
-          Direction
-        </h2>
-        <p>{about.trajectory.map((t) => t.stage).join(" → ")}</p>
       </section>
 
       <p className="editorial__aside resume__noprint">

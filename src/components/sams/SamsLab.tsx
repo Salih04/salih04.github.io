@@ -1,105 +1,88 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import { DecisionBrowser } from "@/components/records/DecisionBrowser";
 import { LabLink } from "@/components/shell/LabLink";
-import { samsCaseStudy, samsDecisions } from "@/content/sams";
+import { TabBar } from "@/components/shell/TabBar";
+import { samsCaseStudy, samsDecisions, samsSources } from "@/content/sams";
 import { useHashTab } from "@/lib/useHashTab";
-import { AgentTopology } from "./AgentTopology";
 import { ArchitectureView } from "./ArchitectureView";
+import { FailureDemo } from "./FailureDemo";
 
-const ObserveSystem = dynamic(() => import("./ObserveSystem"), { ssr: false });
-
-const TABS = ["live", "architecture", "engineering"] as const;
+const TABS = ["demo", "architecture", "decisions"] as const;
 type Tab = (typeof TABS)[number];
-const LABELS: Record<Tab, string> = { live: "Live system", architecture: "Architecture", engineering: "Engineering" };
+const LABELS: Record<Tab, string> = { demo: "Failure demo", architecture: "Architecture", decisions: "Engineering decisions" };
 
 export function SamsLab() {
-  const [tab, setTab] = useHashTab(TABS, "live");
-  const [observing, setObserving] = useState(false);
+  const [tab, setTab] = useHashTab(TABS, "demo");
+  const [startToken, setStartToken] = useState(0);
 
   return (
-    <div className="lab">
+    <div className="lab lab--sams">
       <header className="lab-header">
-        <div>
-          <p className="eyebrow eyebrow--signal">02 — Agent Systems Lab</p>
-          <h1 className="lab-header__name">SAMS</h1>
-          <p className="lab-header__full">{samsCaseStudy.fullName}</p>
+        <div className="lab-header__id">
+          <p className="lab-header__status mono">
+            02 · Agent Systems Lab <span className="lab-header__dot" aria-hidden="true" /> Simulation ready
+          </p>
+          <h1 className="lab-header__name">
+            SAMS <span className="lab-header__full">{samsCaseStudy.fullName}</span>
+          </h1>
+          <p className="lab-header__lede">{samsCaseStudy.oneLiner}</p>
         </div>
         <div className="lab-header__actions">
-          <button type="button" className="btn" onClick={() => setObserving(true)} aria-haspopup="dialog">
-            Observe system
+          <button
+            type="button"
+            className="btn"
+            onClick={() => {
+              setTab("demo");
+              setStartToken((n) => n + 1);
+            }}
+          >
+            Run failure demo
           </button>
-          <LabLink href="/sams/case-study/" className="btn btn--research">
+          <LabLink href="/sams/case-study/" className="btn btn--ghost">
             Case study
           </LabLink>
         </div>
       </header>
 
-      <p className="lab-lede">{samsCaseStudy.oneLiner}</p>
+      <TabBar
+        tabs={TABS}
+        labels={LABELS}
+        active={tab}
+        onSelect={setTab}
+        label="SAMS views"
+        trailing={
+          <LabLink href="/sams/case-study/" className="tabs__tab tabs__tab--link">
+            Case study →
+          </LabLink>
+        }
+      />
 
-      <div className="tabs" role="tablist" aria-label="SAMS views">
-        {TABS.map((t) => (
-          <button
-            key={t}
-            type="button"
-            role="tab"
-            id={`tab-${t}`}
-            aria-selected={tab === t}
-            aria-controls={`panel-${t}`}
-            tabIndex={tab === t ? 0 : -1}
-            className="tabs__tab"
-            onClick={() => setTab(t)}
-            onKeyDown={(e) => {
-              const i = TABS.indexOf(t);
-              const next = e.key === "ArrowRight" ? TABS[(i + 1) % TABS.length] : e.key === "ArrowLeft" ? TABS[(i + TABS.length - 1) % TABS.length] : null;
-              if (next) {
-                e.preventDefault();
-                setTab(next);
-                document.getElementById(`tab-${next}`)?.focus();
-              }
-            }}
-          >
-            {LABELS[t]}
-          </button>
-        ))}
-        <LabLink href="/sams/case-study/" className="tabs__tab tabs__tab--link">
-          Case study →
-        </LabLink>
-      </div>
-
-      <div key={tab} id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`} className="tab-panel" tabIndex={0}>
-        {tab === "live" ? (
-          <>
-            <div className="section-head">
-              <h2>Live system</h2>
-              <p>Watch a task move through the agents. Messages travel along the edges; every step lands in the activity feed.</p>
-            </div>
-            <AgentTopology />
-          </>
-        ) : null}
+      <div key={tab} id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`} className="tab-panel" tabIndex={-1}>
+        {tab === "demo" ? <FailureDemo startToken={startToken} /> : null}
         {tab === "architecture" ? (
           <>
             <div className="section-head">
               <h2>Architecture</h2>
-              <p>The same system, seen as engineering components. Select one to see why it exists and what it is responsible for.</p>
+              <p>The same system as engineering components. Select one to see why it exists, what it is responsible for and what it costs.</p>
             </div>
             <ArchitectureView />
           </>
         ) : null}
-        {tab === "engineering" ? (
+        {tab === "decisions" ? (
           <>
             <div className="section-head">
               <h2>Engineering decisions</h2>
-              <p>Each significant choice is kept as a record: the problem, the options, the reason, the trade-off and the evidence.</p>
+              <p>
+                Each significant choice as a record: the need, the alternatives, the reason, the trade-off and the evidence. Evidence cites
+                the public <a href={samsSources.evidence.href}>reliability evidence package</a>; its test results are historical.
+              </p>
             </div>
-            <DecisionBrowser decisions={samsDecisions} initial="017" />
+            <DecisionBrowser decisions={samsDecisions} initial="B" kind="Engineering decision" />
           </>
         ) : null}
       </div>
-
-      {observing ? <ObserveSystem onClose={() => setObserving(false)} /> : null}
     </div>
   );
 }

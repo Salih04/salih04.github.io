@@ -21,7 +21,7 @@ export default function CaseStudiesPage() {
       <PageHeader
         eyebrow="04 — Case Studies"
         title="The research reports"
-        lead="Every project in the lab, written as a clean engineering case study: problem, constraints, role, architecture, decisions, evidence and what didn't work."
+        lead="Each project as an engineering report that opens with role, status and evidence, then the problem, architecture, decisions and what didn't work."
       />
       <ul className="study-list">
         {studies.map(({ study, href, lab, accent }) => (
@@ -32,11 +32,16 @@ export default function CaseStudiesPage() {
             </h2>
             <p className="study-card__full">{study.fullName}</p>
             <p>{study.oneLiner}</p>
-            <ul className="study-card__meta mono">
-              <li>{study.hardProblems.length} hard problems</li>
-              <li>{study.decisions.length} decision records</li>
-              <li>{study.didntWork.length} documented failures</li>
-            </ul>
+            <dl className="study-card__meta">
+              <div>
+                <dt>Role</dt>
+                <dd>{study.glance.role.split(".")[0]}</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd>{study.glance.status}</dd>
+              </div>
+            </dl>
             <div className="study-card__actions">
               <LabLink href={href} className="btn btn--sm">
                 Read case study

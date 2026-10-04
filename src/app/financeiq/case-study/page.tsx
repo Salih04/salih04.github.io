@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CaseStudy } from "@/components/casestudy/CaseStudy";
-import { FailedExperiments } from "@/components/financeiq/FailedExperiments";
+import { NegativeResults } from "@/components/financeiq/NegativeResults";
 import { PipelineView } from "@/components/financeiq/PipelineView";
 import { WalkForward } from "@/components/financeiq/WalkForward";
 import { financeCaseStudy } from "@/content/financeiq";
@@ -16,12 +16,13 @@ export default function FinanceCaseStudyPage() {
       study={financeCaseStudy}
       labHref="/financeiq/"
       accent="research"
+      decisionKind="Research decision"
       architecture={
         <>
-          <PipelineView />
-          <WalkForward />
-          <h3 className="cs-subhead">Failed experiments</h3>
-          <FailedExperiments />
+          <PipelineView fig="1" />
+          <WalkForward fig="2" />
+          <h3 className="cs-subhead">Negative results</h3>
+          <NegativeResults />
         </>
       }
     />
