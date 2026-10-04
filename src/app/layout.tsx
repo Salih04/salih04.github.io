@@ -5,6 +5,10 @@ import "@fontsource-variable/source-serif-4";
 import "@/styles/base.css";
 import "@/styles/shell.css";
 import "@/styles/lab.css";
+import "@/styles/entry.css";
+import "@/styles/facility.css";
+import "@/styles/sams.css";
+import "@/styles/fiq.css";
 import "@/styles/editorial.css";
 
 import type { Metadata, Viewport } from "next";

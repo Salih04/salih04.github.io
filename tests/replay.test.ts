@@ -10,6 +10,7 @@ import {
   start,
   stopWorker,
   tick,
+  verify,
   type ReplayState,
 } from "@/lib/replay";
 
@@ -73,5 +74,30 @@ describe("replay simulation", () => {
   it("is deterministic for the same sequence of actions", () => {
     const script = (s: ReplayState) => untilConverged(reconnect(run(stopWorker(disconnect(run(s, 2))), 5)));
     expect(script(start())).toEqual(script(start()));
+  });
+});
+
+describe("verification readout", () => {
+  it("passes continuity, finds no duplicates and converges after a disconnect and replay", () => {
+    const v = verify(untilConverged(reconnect(run(disconnect(run(start(), 1)), 6))));
+    expect(v).toEqual({ continuity: true, duplicates: 0, convergence: true, stepsRerun: null });
+  });
+
+  it("reports no re-run steps after a worker is replaced", () => {
+    const v = verify(untilConverged(stopWorker(run(start(), 4))));
+    expect(v.stepsRerun).toBe(0);
+    expect(v.convergence).toBe(true);
+  });
+
+  it("does not report convergence while the client is behind", () => {
+    const v = verify(run(disconnect(run(start(), 1)), 3));
+    expect(v.convergence).toBe(false);
+    expect(v.continuity).toBe(true);
+  });
+
+  it("would catch a duplicate or a gap in the applied list", () => {
+    const s = untilConverged(start());
+    expect(verify({ ...s, applied: [...s.applied, s.applied[0]!] }).duplicates).toBe(1);
+    expect(verify({ ...s, applied: s.applied.filter((seq) => seq !== FIRST_SEQ + 2) }).continuity).toBe(false);
   });
 });

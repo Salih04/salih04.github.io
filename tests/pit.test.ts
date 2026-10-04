@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { pitObservations } from "@/content/financeiq";
-import { compareFact, detectLeakage, naive, pointInTime, reconstruct, syntheticScores } from "@/lib/pit";
+import { compareFact, detectLeakage, factKey, naive, pointInTime, reconstruct, reconstructRecord, syntheticScores } from "@/lib/pit";
 
 const ids = (m: Map<string, { id: string }>) => [...m.values()].map((o) => o.id).sort();
 
@@ -82,5 +82,37 @@ describe("survivorship in the comparison", () => {
 describe("membership after removal", () => {
   it("agrees once the entity has actually left the universe", () => {
     expect(compareFact(pitObservations, "Company C|Universe|Membership", "2020-10-01").verdict).toBe("match");
+  });
+});
+
+describe("reconstructRecord", () => {
+  const key = "Company A|EPS|Q4 2019";
+
+  it("accepts the original filing and excludes the later revision on 31 Mar 2020", () => {
+    const r = reconstructRecord(pitObservations, key, "2020-03-31");
+    expect(r.steps.map((s) => s.n)).toEqual(["01", "02", "03", "04", "05"]);
+    expect(r.accepted?.value).toBe(1.31);
+    expect(r.steps[3]).toMatchObject({ label: "Revision excluded", outcome: "excluded" });
+    expect(r.steps[3]!.detail).toContain("8 May 2020");
+  });
+
+  it("applies the revision once it has been published", () => {
+    const r = reconstructRecord(pitObservations, key, "2020-06-30");
+    expect(r.accepted?.value).toBe(1.18);
+    expect(r.steps[3]!.label).toBe("Revision applied");
+  });
+
+  it("accepts nothing before the first publication", () => {
+    const r = reconstructRecord(pitObservations, key, "2020-01-15");
+    expect(r.accepted).toBeUndefined();
+    expect(r.steps[2]!.outcome).toBe("none");
+    expect(r.steps[4]!.label).toBe("No record accepted");
+  });
+
+  it("agrees with the point-in-time dataset for every fact and date", () => {
+    for (const asOf of ["2019-12-01", "2020-03-31", "2020-05-08", "2020-10-01"]) {
+      const pit = pointInTime(pitObservations, asOf);
+      for (const o of pitObservations) expect(reconstructRecord(pitObservations, factKey(o), asOf).accepted?.id).toBe(pit.get(factKey(o))?.id);
+    }
   });
 });

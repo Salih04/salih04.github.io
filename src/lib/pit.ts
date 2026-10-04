@@ -149,3 +149,76 @@ export const SYNTHETIC_LEAK_LIFT = 0.0125;
 export function syntheticScores(leaks: number): { naive: number; pit: number } {
   return { naive: SYNTHETIC_BASE_SCORE + SYNTHETIC_LEAK_LIFT * leaks, pit: SYNTHETIC_BASE_SCORE };
 }
+
+/* ---- Reconstructing one record, step by step -------------------------- */
+
+export type StepOutcome = "ok" | "excluded" | "none";
+
+export interface ReconstructionStep {
+  n: string;
+  label: string;
+  detail: string;
+  outcome: StepOutcome;
+}
+
+export interface Reconstruction {
+  steps: ReconstructionStep[];
+  /** The record a point-in-time dataset holds for this fact on the as-of date. */
+  accepted: Observation | undefined;
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const day = (iso: string) => {
+  const [y, m, d] = iso.split("-");
+  return `${Number(d)} ${MONTHS[Number(m) - 1]} ${y}`;
+};
+
+/**
+ * The five checks that turn the full history of one fact into the record a
+ * point-in-time dataset may use on `asOf`: identify the period, locate its
+ * publications, check availability, deal with revisions, accept a record.
+ */
+export function reconstructRecord(observations: Observation[], key: string, asOf: string): Reconstruction {
+  const versions = observations.filter((o) => factKey(o) === key).sort(byKnownAt);
+  const first = versions[0];
+  if (!first) return { steps: [], accepted: undefined };
+  const membership = first.kind === "membership";
+  const show = (o: Observation) => (membership ? (o.value ? "joins the universe" : "leaves the universe") : o.value.toFixed(2));
+  const known = versions.filter((o) => o.knownAt <= asOf);
+  const later = versions.filter((o) => o.knownAt > asOf);
+  const accepted = known.at(-1);
+
+  const period: ReconstructionStep = membership
+    ? { n: "01", label: "Period identified", detail: `${first.entity} · universe membership`, outcome: "ok" }
+    : { n: "01", label: "Period identified", detail: `${first.entity} · ${first.period} ${first.field} · period ended ${day(first.periodEnd)}`, outcome: "ok" };
+
+  const filing: ReconstructionStep = {
+    n: "02",
+    label: "Filing located",
+    detail: versions.map((o, i) => `${i === 0 ? "First published" : "Revised"} ${day(o.knownAt)}: ${show(o)}`).join(" · "),
+    outcome: "ok",
+  };
+
+  const availability: ReconstructionStep = accepted
+    ? { n: "03", label: "Availability checked", detail: `Published ${day(accepted.knownAt)}, on or before ${day(asOf)}: available.`, outcome: "ok" }
+    : { n: "03", label: "Availability checked", detail: `Nothing about this ${membership ? "membership" : "period"} had been published by ${day(asOf)}.`, outcome: "none" };
+
+  let revision: ReconstructionStep;
+  if (later.length && accepted) {
+    const r = later[0]!;
+    revision = { n: "04", label: "Revision excluded", detail: `${show(r)} was published ${day(r.knownAt)}, after the as-of date. Excluded.`, outcome: "excluded" };
+  } else if (later.length) {
+    revision = { n: "04", label: "Later records excluded", detail: `${later.length} record${later.length > 1 ? "s" : ""} published after ${day(asOf)}. Excluded.`, outcome: "excluded" };
+  } else if (known.length > 1) {
+    const r = known.at(-1)!;
+    revision = { n: "04", label: "Revision applied", detail: `The revision of ${day(r.knownAt)} was already public; it supersedes the earlier value.`, outcome: "ok" };
+  } else {
+    revision = { n: "04", label: "Revisions checked", detail: "No later revision on record.", outcome: "ok" };
+  }
+
+  const result: ReconstructionStep = accepted
+    ? { n: "05", label: "Point-in-time record accepted", detail: `${show(accepted)} · as known on ${day(asOf)}`, outcome: "ok" }
+    : { n: "05", label: "No record accepted", detail: `The dataset holds nothing for this ${membership ? "membership" : "period"} on ${day(asOf)}.`, outcome: "none" };
+
+  return { steps: [period, filing, availability, revision, result], accepted };
+}

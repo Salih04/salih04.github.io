@@ -15,7 +15,7 @@ export default function ResumePage() {
       <header className="resume__head">
         <div>
           <p className="eyebrow eyebrow--signal">Resume</p>
-          <h1>{site.name}</h1>
+          <h1>{site.fullName}</h1>
           <p className="resume__roles">
             {site.role} · {site.study.degree} {site.study.status}, {site.study.institution}
           </p>

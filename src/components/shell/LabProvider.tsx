@@ -15,6 +15,8 @@ interface LabContextValue {
   toggleMode: () => void;
   /** Client-side navigation with the lab's room transition. */
   navigate: (href: string) => void;
+  /** Entry → Control Room: the trace folds into the floor line, then the floor opens. */
+  enterFacility: (href: string) => void;
   soundOn: boolean;
   toggleSound: () => void;
   cue: (cue: Cue) => void;
@@ -28,8 +30,11 @@ const LabContext = createContext<LabContextValue | null>(null);
 const SOUND_KEY = "slab:sound";
 const OUT_MS = 160;
 const IN_MS = 240;
+/** Entry exit (trace folds to a line), then the Control Room floor opens. */
+const ENTER_OUT_MS = 280;
+const ARRIVE_MS = 900;
 
-function setTransition(phase: "out" | "in" | null) {
+function setTransition(phase: "out" | "in" | "enter" | null) {
   const root = document.documentElement;
   if (phase) root.dataset.transition = phase;
   else delete root.dataset.transition;
@@ -47,6 +52,7 @@ export function LabProvider({ children }: { children: ReactNode }) {
   const [soundOn, setSoundOn] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const pendingNav = useRef(false);
+  const arriving = useRef(false);
   const timers = useRef<number[]>([]);
 
   const later = (fn: () => void, ms: number) => {
@@ -68,6 +74,13 @@ export function LabProvider({ children }: { children: ReactNode }) {
       pendingNav.current = false;
       setTransition("in");
       later(() => setTransition(null), IN_MS);
+    }
+    if (arriving.current) {
+      arriving.current = false;
+      setTransition(null);
+      const root = document.documentElement;
+      root.dataset.arrive = "facility";
+      later(() => delete root.dataset.arrive, ARRIVE_MS);
     }
   }, [pathname]);
 
@@ -94,6 +107,22 @@ export function LabProvider({ children }: { children: ReactNode }) {
       }, 2500);
     },
     [router, pathname],
+  );
+
+  const enterFacility = useCallback(
+    (href: string) => {
+      if (prefersReducedMotion()) {
+        router.push(href);
+        return;
+      }
+      arriving.current = true;
+      setTransition("enter");
+      later(() => router.push(href), ENTER_OUT_MS);
+      later(() => {
+        if (document.documentElement.dataset.transition === "enter") setTransition(null);
+      }, 2500);
+    },
+    [router],
   );
 
   const setMode = useCallback(
@@ -145,8 +174,8 @@ export function LabProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ mode, setMode, toggleMode, navigate, soundOn, toggleSound, cue, terminalOpen, openTerminal, closeTerminal }),
-    [mode, setMode, toggleMode, navigate, soundOn, toggleSound, cue, terminalOpen, openTerminal, closeTerminal],
+    () => ({ mode, setMode, toggleMode, navigate, enterFacility, soundOn, toggleSound, cue, terminalOpen, openTerminal, closeTerminal }),
+    [mode, setMode, toggleMode, navigate, enterFacility, soundOn, toggleSound, cue, terminalOpen, openTerminal, closeTerminal],
   );
 
   return <LabContext.Provider value={value}>{children}</LabContext.Provider>;

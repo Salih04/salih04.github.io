@@ -47,7 +47,11 @@ function Source({ source }: { source?: SourceLink }) {
   );
 }
 
-/** The "At a glance" spec plate: role, project, status, problem, approach, stack, evidence. */
+/**
+ * The "At a glance" specification plate: who did what, what it is, where it
+ * stands, the central problem, the approach, the stack and the evidence. It
+ * fits the first viewport so nobody has to scroll for the basics.
+ */
 function Glance({ study }: { study: Study }) {
   const g = study.glance;
   return (
@@ -56,37 +60,47 @@ function Glance({ study }: { study: Study }) {
         At a glance
       </h2>
       <dl className="glance__grid">
-        <div className="glance__cell glance__cell--wide">
+        <div className="glance__cell">
           <dt>Role</dt>
-          <dd>{g.role}</dd>
+          <dd>
+            <strong>{g.role}</strong>
+            {g.roleDetail ? <span className="glance__sub">{g.roleDetail}</span> : null}
+          </dd>
         </div>
         <div className="glance__cell">
           <dt>Project</dt>
-          <dd>{g.project}</dd>
+          <dd>
+            {g.project}
+            {g.team ? <span className="glance__sub">{g.team}</span> : null}
+          </dd>
         </div>
         <div className="glance__cell">
           <dt>Status</dt>
           <dd>{g.status}</dd>
         </div>
-        <div className="glance__cell glance__cell--wide">
-          <dt>Problem</dt>
+        <div className="glance__cell glance__cell--problem">
+          <dt>{g.problemLabel ?? "Problem"}</dt>
           <dd>{g.problem}</dd>
         </div>
-        <div className="glance__cell glance__cell--wide">
-          <dt>Approach</dt>
+        <div className="glance__cell">
+          <dt>{g.approachLabel ?? "Approach"}</dt>
           <dd>
-            <ul className="glance__chips">
+            <ol className="glance__list">
               {g.approach.map((a) => (
                 <li key={a}>{a}</li>
               ))}
-            </ul>
+            </ol>
           </dd>
         </div>
-        <div className="glance__cell glance__cell--wide">
+        <div className="glance__cell">
           <dt>Stack</dt>
-          <dd className="mono">{g.stack.join(" · ")}</dd>
+          <dd className="glance__stack mono">
+            {g.stack.map((t) => (
+              <span key={t}>{t}</span>
+            ))}
+          </dd>
         </div>
-        <div className="glance__cell glance__cell--wide">
+        <div className="glance__cell">
           <dt>Evidence</dt>
           <dd>
             <ul className="glance__evidence">
@@ -109,7 +123,10 @@ export function CaseStudy({ study, labHref, architecture, accent = "signal", dec
   return (
     <article className={`case-study case-study--${accent}`}>
       <header className="cs-header">
-        <p className="cs-header__kicker mono">Case study · {study.lab}</p>
+        <p className="cs-header__kicker mono">
+          <span>Case study · {study.lab}</span>
+          <span>{accent === "research" ? "Research report" : "Engineering report"}</span>
+        </p>
         <h1 className="cs-header__title">
           {study.name} <span className="cs-header__full">{study.fullName}</span>
         </h1>

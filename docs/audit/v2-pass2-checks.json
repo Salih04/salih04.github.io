@@ -1,0 +1,489 @@
+{
+ "pages": [
+  {
+   "name": "01-entry",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1033
+  },
+  {
+   "name": "02-entry-hover",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1033
+  },
+  {
+   "name": "02b-entry-transition",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1033
+  },
+  {
+   "name": "03b-control-room-arrival",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1036
+  },
+  {
+   "name": "03-control-room",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1036
+  },
+  {
+   "name": "04-control-room-room-active",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1036
+  },
+  {
+   "name": "05-control-room-camera",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1036
+  },
+  {
+   "name": "06-sams-initial",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1074
+  },
+  {
+   "name": "07-sams-disconnected",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1074
+  },
+  {
+   "name": "08-sams-replay",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1074
+  },
+  {
+   "name": "09-sams-converged",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1074
+  },
+  {
+   "name": "09b-sams-worker-stopped",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1074
+  },
+  {
+   "name": "09c-sams-worker-verified",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1091
+  },
+  {
+   "name": "10-financeiq-pit",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1557
+  },
+  {
+   "name": "11-financeiq-leakage",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1548
+  },
+  {
+   "name": "12-financeiq-reconstruction",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1979
+  },
+  {
+   "name": "12b-financeiq-negative-results",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 2142
+  },
+  {
+   "name": "13-sams-case-study",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 10121
+  },
+  {
+   "name": "14-financeiq-case-study",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 10037
+  },
+  {
+   "name": "15-archive",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1000
+  },
+  {
+   "name": "desktop-console-errors",
+   "errors": []
+  },
+  {
+   "name": "w1440-entry",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 963
+  },
+  {
+   "name": "w1440-control-room",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 982
+  },
+  {
+   "name": "w1440-sams",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1097
+  },
+  {
+   "name": "w1440-financeiq",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1580
+  },
+  {
+   "name": "w1440-sams-case-study",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 10145
+  },
+  {
+   "name": "w1440-console-errors",
+   "errors": []
+  },
+  {
+   "name": "w1280-entry",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 815
+  },
+  {
+   "name": "w1280-control-room",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 901
+  },
+  {
+   "name": "w1280-sams",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1133
+  },
+  {
+   "name": "w1280-financeiq",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1661
+  },
+  {
+   "name": "w1280-sams-case-study",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 10546
+  },
+  {
+   "name": "w1280-console-errors",
+   "errors": []
+  },
+  {
+   "name": "w1024-entry",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 854
+  },
+  {
+   "name": "w1024-control-room",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 795
+  },
+  {
+   "name": "w1024-sams",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1375
+  },
+  {
+   "name": "w1024-financeiq",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 2047
+  },
+  {
+   "name": "w1024-sams-case-study",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 12883
+  },
+  {
+   "name": "w1024-console-errors",
+   "errors": []
+  },
+  {
+   "name": "16-mobile-entry",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1240
+  },
+  {
+   "name": "17-mobile-facility-directory",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1184
+  },
+  {
+   "name": "18-mobile-sams",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1988
+  },
+  {
+   "name": "19-mobile-sams-disconnected",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 2034
+  },
+  {
+   "name": "20-mobile-financeiq-pit",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 3077
+  },
+  {
+   "name": "21-mobile-financeiq-evidence",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 3077
+  },
+  {
+   "name": "22-mobile-case-study",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 15716
+  },
+  {
+   "name": "23-mobile-menu",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 15716
+  },
+  {
+   "name": "mobile-console-errors",
+   "errors": []
+  },
+  {
+   "name": "24-reduced-motion-sams",
+   "overflow": 0,
+   "smallTotal": 0,
+   "height": 1074
+  },
+  {
+   "name": "reduced-console-errors",
+   "errors": []
+  }
+ ],
+ "checks": [
+  {
+   "name": "Enter S//LAB reaches the Control Room within 900ms and plays the floor arrival",
+   "pass": true,
+   "detail": "340ms, arrive=facility"
+  },
+  {
+   "name": "Control Room: focusing a room dims the others",
+   "pass": true,
+   "detail": "opacity 0.45"
+  },
+  {
+   "name": "Control Room click navigates to the room after the camera move",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "disconnected: client cursor frozen at 041 while the server reaches 047; the cable is broken",
+   "pass": true,
+   "detail": "{\"server\":\"047\",\"client\":\"041\",\"sync\":\"Client behind by 6\",\"broken\":\"disconnected\"}"
+  },
+  {
+   "name": "reconnect sends last_seq=041 and replays through the cursor",
+   "pass": true,
+   "detail": "resume from last_seq=041 · {\"server\":\"048\",\"client\":\"044\",\"sync\":\"Replaying 045 → 047\"}"
+  },
+  {
+   "name": "replay converges: client equals server",
+   "pass": true,
+   "detail": "{\"server\":\"050\",\"client\":\"050\",\"sync\":\"State converged\"}"
+  },
+  {
+   "name": "every event delivered exactly once (no pending rows)",
+   "pass": true,
+   "detail": "live,replayed,replayed,replayed,replayed,replayed,replayed,live,live,live"
+  },
+  {
+   "name": "verification readout: continuity PASS, duplicates NONE, convergence PASS",
+   "pass": true,
+   "detail": "PASS,NONE,PASS"
+  },
+  {
+   "name": "stopped worker is replaced, the workflow resumes and no step is re-run",
+   "pass": true,
+   "detail": "Sequence continuity | Duplicate delivery | Client convergence | Steps re-run after recovery"
+  },
+  {
+   "name": "SAMS: focus stays on the connection control",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "FinanceIQ opens on point-in-time reconstruction",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "FinanceIQ: the timeline starts in the first viewport",
+   "pass": true,
+   "detail": "433px"
+  },
+  {
+   "name": "leakage moment: 31 Mar 2020 · naive 1.18 · actually known 1.31",
+   "pass": true,
+   "detail": "31 Mar 2020 / 1.18 / 1.31"
+  },
+  {
+   "name": "as-of slider is keyboard operable",
+   "pass": true,
+   "detail": "21 Apr 2020"
+  },
+  {
+   "name": "leaked rows are annotated with a pull back to the cursor",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "FinanceIQ: focus stays on the reconstruct control while running",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "reconstruction shows five checks ending in an accepted point-in-time record",
+   "pass": true,
+   "detail": "Period identified | Filing located | Availability checked | Revision excluded | Point-in-time record accepted"
+  },
+  {
+   "name": "reconstruction hands over to the experiment bench",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "as-of cursor is draggable on the timeline",
+   "pass": true,
+   "detail": "10 Oct 2020"
+  },
+  {
+   "name": "Case Study: contents link scrolls to its section",
+   "pass": true,
+   "detail": "152px"
+  },
+  {
+   "name": "paired routes preserve case mode (SAMS case → FinanceIQ case)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "unrelated route /resume/ opens in lab mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "unrelated route /vault/ opens in lab mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "unrelated route /about/ opens in lab mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "unrelated route /notes/ opens in lab mode",
+   "pass": true,
+   "detail": "lab"
+  },
+  {
+   "name": "first Tab reaches the skip link",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "ArrowRight moves to the next tab",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "keyboard reaches both project keys and Enter S//LAB on the entry",
+   "pass": true,
+   "detail": "Skip to content | S//LAB | About | Resume | Contact |  |  | Case study | 02 · Independent project | 03 · MSc research · in p | EnterS//LAB→ | Read the case studies →"
+  },
+  {
+   "name": "1440: SAMS shows system activity in the first viewport",
+   "pass": true,
+   "detail": "3 event rows visible"
+  },
+  {
+   "name": "1280: SAMS shows system activity in the first viewport",
+   "pass": true,
+   "detail": "3 event rows visible"
+  },
+  {
+   "name": "1024: SAMS shows system activity in the first viewport",
+   "pass": true,
+   "detail": "3 event rows visible"
+  },
+  {
+   "name": "mobile SAMS tab bar shows an overflow affordance and the active tab is fully visible",
+   "pass": true,
+   "detail": "{\"right\":true,\"left\":false,\"activeVisible\":true}"
+  },
+  {
+   "name": "mobile SAMS: client state, then events, then topology",
+   "pass": true,
+   "detail": "{\"client\":206.171875,\"events\":358.75,\"system\":850.53125}"
+  },
+  {
+   "name": "mobile PIT axis: no tick/cursor label collisions",
+   "pass": true,
+   "detail": "0 overlaps"
+  },
+  {
+   "name": "mobile: tapping a tab opens its panel",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "reduced motion: SAMS demo does not auto-start",
+   "pass": true,
+   "detail": "{\"server\":\"—\",\"client\":\"—\",\"sync\":\"Idle\"}"
+  },
+  {
+   "name": "reduced motion: reconstruction jumps to its final state",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "reduced motion: the entry trace stays still",
+   "pass": true,
+   "detail": "044"
+  },
+  {
+   "name": "reduced motion: Enter S//LAB navigates at once, without the floor animation",
+   "pass": true,
+   "detail": "none"
+  }
+ ]
+}

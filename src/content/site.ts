@@ -8,6 +8,8 @@
 export const site = {
   mark: "S//LAB",
   name: "Salih",
+  /** Full public name, for the resume and contact pages only. The hero stays "Salih". */
+  fullName: "Salih Camcı",
   labName: "Salih Research Lab",
   role: "Software Engineer",
   /** Current study. In progress: never present it as a completed degree. */
@@ -33,17 +35,25 @@ export interface NavItem {
   href: string;
   /** Where the link points while Case Study Mode is active. */
   caseHref?: string;
+  /** Shown quieter than the rest (drafts). */
+  quiet?: string;
 }
 
-/** Desktop left rail, in the order the brief defines. */
+/**
+ * The left rail is the facility directory: one line per room, numbered as
+ * on the Control Room floor plan. Lab Notes are drafts, so they sit quieter.
+ */
 export const primaryNav: NavItem[] = [
   { index: "01", label: "Lab", href: "/lab/" },
   { index: "02", label: "SAMS", href: "/sams/", caseHref: "/sams/case-study/" },
   { index: "03", label: "FinanceIQ", href: "/financeiq/", caseHref: "/financeiq/case-study/" },
-  { index: "04", label: "Case Studies", href: "/case-studies/" },
-  { index: "05", label: "Archive", href: "/archive/" },
-  { index: "06", label: "Lab Notes", href: "/notes/" },
+  { index: "04", label: "Archive", href: "/archive/" },
+  { index: "05", label: "Vault", href: "/vault/" },
+  { index: "06", label: "Notes", href: "/notes/", quiet: "draft" },
 ];
+
+/** Reports: the editorial view of the two flagship projects. */
+export const reportsNav: NavItem = { index: "", label: "Case studies", href: "/case-studies/" };
 
 export const secondaryNav: NavItem[] = [
   { index: "", label: "About", href: "/about/" },

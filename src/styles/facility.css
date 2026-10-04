@@ -1,0 +1,887 @@
+/* ==========================================================================
+   Control Room: an architectural floor plan on a perspective plane.
+   Mostly dark. Light only where something is happening: the two
+   flagship rooms, the corridor around "you are here", the room in focus.
+   ========================================================================== */
+
+.control {
+  display: grid;
+  gap: 4px;
+}
+
+/* Intro band: title and lead on the left, audience routes on the right. */
+.control__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 0 48px;
+  align-items: end;
+}
+
+.control__intro > :not(.control__routes) {
+  grid-column: 1;
+}
+
+.control__title {
+  margin-top: 8px;
+  font-size: clamp(28px, 2.8vw, 38px);
+}
+
+.control__lead {
+  max-width: 56ch;
+  margin-top: 8px;
+  color: var(--text-dim);
+}
+
+.control__routes {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-small);
+}
+
+.control__routes li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.control__routes span {
+  color: var(--text-faint);
+}
+
+.control__routes a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.control__routes a::after {
+  content: " →";
+  color: var(--text-faint);
+}
+
+.control__routes a:hover::after {
+  color: var(--signal);
+}
+
+.control__map {
+  min-width: 0;
+}
+
+.control__index {
+  display: none;
+  grid-column: 1 / -1;
+}
+
+/* ---- Facility ---------------------------------------------------------- */
+
+.facility {
+  container-type: inline-size;
+  position: relative;
+  margin: 0 auto;
+  /* Fit the plan below the intro band at any laptop height. */
+  max-width: max(560px, calc((100vh - var(--topbar-h) - 220px) * 2.083));
+  overflow: hidden;
+}
+
+.facility__stage {
+  position: relative;
+  aspect-ratio: 1 / 0.48;
+  perspective: 160cqw;
+  perspective-origin: 50% 50%;
+  transition: transform 520ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.facility__plane {
+  position: absolute;
+  left: 7%;
+  width: 86%;
+  top: -5.52cqw;
+  height: 55.04cqw;
+  transform: rotateX(40deg);
+  transform-origin: 50% 50%;
+}
+
+/* Depth: the far side of the plan recedes into darkness. */
+.facility__plane {
+  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.42), #000 58%);
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.42), #000 58%);
+}
+
+.plan {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.plan__floor {
+  fill: #0c1014;
+}
+
+.plan__grid {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.028);
+  stroke-width: 1;
+}
+
+.plan__grid--major {
+  stroke: rgb(255 255 255 / 0.05);
+}
+
+.plan__hatch {
+  stroke: rgb(155 150 244 / 0.25);
+  stroke-width: 1;
+}
+
+.plan__corridor {
+  fill: rgb(200 214 226 / 0.018);
+}
+
+/* Circulation: a dashed guide down the corridor. */
+.plan__guide {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.07);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 10;
+}
+
+/* Walls as poché: heavy, dark, architectural. */
+.plan__walls rect,
+.plan__walls path {
+  fill: none;
+  stroke: #2d3946;
+  stroke-width: 7;
+  stroke-linecap: square;
+}
+
+.plan__walls .plan__outer {
+  stroke: #36444f;
+  stroke-width: 10;
+}
+
+.plan__walls .plan__door {
+  stroke: #3a4858;
+  stroke-width: 1.2;
+  stroke-dasharray: 3 5;
+}
+
+.plan__marks path,
+.plan__marks circle {
+  fill: none;
+  stroke: #2f3b47;
+  stroke-width: 1.2;
+}
+
+.plan__marks text {
+  fill: #5d6b78;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-anchor: middle;
+}
+
+.plan__room {
+  cursor: pointer;
+  transition: opacity 220ms var(--ease);
+}
+
+.plan__space {
+  fill: transparent;
+}
+
+/* The room boundary: invisible at rest, strengthened when the room is in focus. */
+.plan__edge {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 2;
+  pointer-events: none;
+  transition: stroke 220ms var(--ease);
+}
+
+.plan__room--signal[data-active] .plan__edge {
+  stroke: var(--signal);
+}
+
+.plan__room--research[data-active] .plan__edge {
+  stroke: var(--research);
+}
+
+.plan__room--neutral[data-active] .plan__edge {
+  stroke: var(--text-faint);
+}
+
+.plan__glow {
+  opacity: 0.7;
+  transition: opacity 260ms var(--ease);
+}
+
+.plan__room[data-active] .plan__glow {
+  opacity: 1;
+}
+
+/* FOCUS: while one room is in focus, the others step back. */
+.facility[data-focus] .plan__room:not([data-active]) {
+  opacity: 0.45;
+}
+
+.facility[data-focus] .room-tag:not([data-active]) {
+  opacity: 0.5;
+}
+
+.plan__preview {
+  transform-box: view-box;
+  transition: transform 420ms var(--ease);
+}
+
+.plan__room[data-active] .plan__preview {
+  transform: scale(1.05);
+}
+
+.plan__wire {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2.5;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  opacity: 0;
+  transition:
+    stroke-dashoffset 480ms var(--ease),
+    opacity 220ms var(--ease);
+}
+
+.plan__wire[data-active] {
+  stroke-dashoffset: 0;
+  opacity: 0.85;
+}
+
+.plan__hub {
+  fill: rgb(92 208 203 / 0.04);
+  stroke: var(--signal-line);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 6;
+}
+
+.plan__hub-dot {
+  fill: var(--signal);
+}
+
+/* ---- Floor instruments ------------------------------------------------- */
+
+.floor text {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  text-anchor: middle;
+  fill: #6f7d8a;
+}
+
+.floor .floor__note {
+  font-size: 14px;
+  text-anchor: start;
+}
+
+.floor--sams .floor__rail,
+.floor--sams .floor__drop {
+  fill: none;
+  stroke: rgb(92 208 203 / 0.5);
+  stroke-width: 2;
+}
+
+.floor--sams .floor__ev rect {
+  fill: #0c1014;
+  stroke: rgb(92 208 203 / 0.7);
+  stroke-width: 1.6;
+}
+
+.floor--sams .floor__ev[data-head] rect {
+  fill: var(--signal);
+  stroke: var(--signal);
+}
+
+.floor--sams .floor__ev[data-head] text {
+  fill: var(--signal);
+}
+
+.floor--sams .floor__agent {
+  fill: #0c1014;
+  stroke: var(--signal);
+  stroke-width: 2;
+}
+
+.floor--sams .floor__client {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 1.6;
+}
+
+.floor--sams .floor__note--client {
+  fill: var(--signal);
+  opacity: 0.8;
+}
+
+/* One ambient element: a signal travels the rail now and then (FLOW). */
+.floor__pulse {
+  fill: var(--signal);
+  opacity: 0;
+  animation: rail-pulse 7.5s var(--ease) infinite 1.2s;
+}
+
+@keyframes rail-pulse {
+  0%,
+  72% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  76% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 1;
+    transform: translateX(330px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(330px);
+  }
+}
+
+.floor--fiq .floor__axis {
+  fill: none;
+  stroke: #3a4553;
+  stroke-width: 1.5;
+}
+
+.floor--fiq .floor__lag {
+  fill: none;
+  stroke: rgb(155 150 244 / 0.6);
+  stroke-width: 2;
+}
+
+.floor--fiq .floor__lag--later {
+  stroke: #3a4553;
+  stroke-dasharray: 5 6;
+}
+
+.floor--fiq .floor__period {
+  fill: #0c1014;
+  stroke: #8794a2;
+  stroke-width: 1.8;
+}
+
+.floor--fiq .floor__known {
+  fill: var(--research);
+}
+
+.floor--fiq .floor__known--later {
+  fill: #0c1014;
+  stroke: #56606d;
+  stroke-width: 1.6;
+}
+
+.floor--fiq .floor__future {
+  fill: url(#plan-hatch);
+}
+
+.floor--fiq .floor__asof {
+  stroke: var(--research);
+  stroke-width: 2.5;
+}
+
+.floor--fiq .floor__note--asof {
+  fill: var(--research);
+}
+
+/* The second ambient element: the as-of marker breathes slowly (STATE). */
+.floor--fiq .floor__asof,
+.floor--fiq .floor__note--asof {
+  animation: asof-breathe 4.8s ease-in-out infinite;
+}
+
+@keyframes asof-breathe {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.floor__sheet,
+.floor__drawer {
+  fill: #0e1318;
+  stroke: #4b5967;
+  stroke-width: 1.5;
+}
+
+.floor__ink {
+  fill: none;
+  stroke: #2f3a46;
+  stroke-width: 2;
+}
+
+.floor__specimen {
+  fill: none;
+  stroke: #66737f;
+  stroke-width: 1.5;
+}
+
+.plan__room--neutral[data-active] .floor__sheet,
+.plan__room--neutral[data-active] .floor__drawer {
+  stroke: #8794a2;
+}
+
+/* ---- Upright labels ---------------------------------------------------- */
+
+.facility__labels {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.facility__here {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  text-shadow: 0 0 12px var(--bg);
+}
+
+.facility__here-k {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.facility__here-t {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* A room label: no box. An index, a name and a status against a hairline. */
+.room-tag {
+  position: absolute;
+  display: grid;
+  gap: 0;
+  padding: 2px 0 3px 12px;
+  border-left: 1px solid var(--line-strong);
+  transform: translate(0, -100%);
+  pointer-events: auto;
+  text-decoration: none;
+  white-space: nowrap;
+  text-shadow: 0 1px 10px var(--bg), 0 0 2px var(--bg);
+  transition:
+    border-color 220ms var(--ease),
+    opacity 220ms var(--ease);
+}
+
+.room-tag[data-hang="down"] {
+  transform: none;
+}
+
+.room-tag:hover {
+  color: inherit;
+}
+
+.room-tag--signal[data-active] {
+  border-color: var(--signal);
+}
+
+.room-tag--research[data-active] {
+  border-color: var(--research);
+}
+
+.room-tag--neutral[data-active] {
+  border-color: var(--text-dim);
+}
+
+.room-tag__k {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+}
+
+.room-tag--signal .room-tag__k {
+  color: var(--signal);
+}
+
+.room-tag--research .room-tag__k {
+  color: var(--research);
+}
+
+.room-tag__t {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.room-tag--research .room-tag__t {
+  font-family: var(--font-serif);
+}
+
+.room-tag--neutral .room-tag__t {
+  font-size: 17px;
+  color: var(--text-dim);
+}
+
+.room-tag--neutral[data-active] .room-tag__t {
+  color: var(--text);
+}
+
+.room-tag__s {
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+}
+
+/* Title block, as on a drawing sheet. */
+.facility__title {
+  position: absolute;
+  right: 1%;
+  bottom: 1%;
+  z-index: 1;
+  display: grid;
+  justify-items: end;
+  margin: 0;
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.facility__title span {
+  color: #5d6b78;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Walking toward a room (SPACE) ------------------------------------ */
+
+.facility[data-moving] .facility__labels,
+.facility[data-moving] .facility__title {
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+}
+
+/* ---- Arriving from the entry (SPACE) ----------------------------------
+   The entry's trace folded into a line; the floor opens from that line. */
+
+:root[data-arrive="facility"] .facility__plane {
+  animation: floor-open 760ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+}
+
+:root[data-arrive="facility"] .facility__labels,
+:root[data-arrive="facility"] .facility__title {
+  animation: labels-in 360ms var(--ease) 420ms both;
+}
+
+@keyframes floor-open {
+  from {
+    transform: rotateX(89deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes labels-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- Facility directory (below desktop) ------------------------------- */
+
+.directory {
+  display: none;
+}
+
+.directory__head {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 0;
+  padding: 0 0 8px;
+  border-bottom: 2px solid var(--line-strong);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.directory__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.directory__room {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "floor body glyph"
+    "floor status glyph";
+  gap: 0 14px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+
+.directory__floor {
+  grid-area: floor;
+  align-self: start;
+  padding-top: 5px;
+  font-size: 14px;
+  color: var(--text-faint);
+}
+
+.directory__room--signal .directory__floor {
+  color: var(--signal);
+}
+
+.directory__room--research .directory__floor {
+  color: var(--research);
+}
+
+.directory__body {
+  grid-area: body;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 10px;
+}
+
+.directory__title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.directory__room--research .directory__title {
+  font-family: var(--font-serif);
+}
+
+.directory__room--neutral .directory__title {
+  font-size: 18px;
+  color: var(--text-dim);
+}
+
+.directory__area {
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+}
+
+.directory__status {
+  grid-area: status;
+  font-size: var(--fs-meta);
+  color: var(--text-dim);
+}
+
+.directory__glyph {
+  grid-area: glyph;
+  width: 96px;
+}
+
+/* ---- Glyphs (directory previews) -------------------------------------- */
+
+.glyph {
+  overflow: visible;
+}
+
+.directory__glyph .glyph {
+  width: 100%;
+  height: auto;
+}
+
+.glyph path,
+.glyph rect,
+.glyph circle {
+  vector-effect: non-scaling-stroke;
+}
+
+.glyph--sams .glyph__edges path,
+.glyph--sams .glyph__rail {
+  fill: none;
+  stroke: var(--signal-line);
+  stroke-width: 1.2;
+}
+
+.glyph--sams .glyph__node {
+  fill: var(--bg);
+  stroke: var(--signal);
+  stroke-width: 1.2;
+}
+
+.glyph--sams .glyph__node--core {
+  fill: var(--signal);
+}
+
+.glyph--sams .glyph__event rect {
+  fill: var(--signal-soft);
+  stroke: var(--signal-line);
+}
+
+.glyph--sams .glyph__event .glyph__text {
+  fill: var(--line-strong);
+  stroke: none;
+}
+
+.glyph--sams .glyph__cursor {
+  stroke: var(--success);
+  stroke-width: 2;
+}
+
+.glyph--fiq .glyph__axis,
+.glyph--fiq .glyph__lag {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+}
+
+.glyph--fiq .glyph__lag {
+  stroke: var(--research-line);
+}
+
+.glyph--fiq .glyph__future {
+  fill: rgb(155 150 244 / 0.08);
+}
+
+.glyph--fiq .glyph__period {
+  fill: var(--bg);
+  stroke: var(--text-faint);
+}
+
+.glyph--fiq .glyph__known {
+  fill: var(--research);
+}
+
+.glyph--fiq .glyph__asof {
+  stroke: var(--research);
+  stroke-width: 1.6;
+}
+
+.glyph__sheet,
+.glyph__slot {
+  fill: var(--bg-raised);
+  stroke: var(--text-faint);
+  stroke-width: 1;
+}
+
+.glyph .glyph__text {
+  fill: none;
+  stroke: var(--line-strong);
+}
+
+.glyph__specimen {
+  fill: none;
+  stroke: var(--text-dim);
+}
+
+/* ---- Index list: the conventional view (Case Study Mode) -------------- */
+
+.index-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.index-list a {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) 1fr auto;
+  gap: 8px 24px;
+  align-items: baseline;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+
+.index-list__label {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.index-list__detail {
+  color: var(--text-dim);
+}
+
+.index-list__arrow {
+  color: var(--text-faint);
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.index-list a:hover .index-list__arrow {
+  transform: translateX(4px);
+  color: var(--signal);
+}
+
+:root[data-mode="case"] .control {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+}
+
+:root[data-mode="case"] .control__map {
+  display: none;
+}
+
+:root[data-mode="case"] .control__index {
+  display: block;
+}
+
+/* ---- Responsive -------------------------------------------------------- */
+
+@media (max-width: 1279px) {
+  .control__intro {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  }
+}
+
+@container (max-width: 860px) {
+  .room-tag__area,
+  .facility__title span {
+    display: none;
+  }
+
+  /* Small plans: labels become plaques so they stay legible over the floor drawings. */
+  .room-tag {
+    padding-right: 10px;
+    background: linear-gradient(90deg, rgb(12 16 20 / 0.92), rgb(12 16 20 / 0.7));
+  }
+
+  .room-tag__t {
+    font-size: 17px;
+  }
+}
+
+/* Mobile: no pseudo-3D. The directory replaces the plan. */
+@media (max-width: 1023px) {
+  .control__intro {
+    display: block;
+  }
+
+  .control__routes {
+    margin-top: 20px;
+  }
+
+  .facility {
+    display: none;
+  }
+
+  .directory {
+    display: block;
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .directory__glyph {
+    width: 72px;
+  }
+
+  .directory__area {
+    flex-basis: 100%;
+  }
+}

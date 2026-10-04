@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { FIGURE_KINDS } from "@/components/records/FigureLabel";
-import { primaryNav, secondaryNav, site } from "@/content/site";
+import { primaryNav, reportsNav, secondaryNav, site } from "@/content/site";
 import { isActive, normalizePath } from "@/lib/paths";
 import { LabLink } from "./LabLink";
 import { useLab } from "./LabProvider";
@@ -62,13 +62,25 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
         const active = isActive(pathname, item.href);
         return (
           <li key={item.href}>
-            <LabLink href={href} className="rail-nav__link" aria-current={active ? "page" : undefined} onClick={onNavigate}>
+            <LabLink href={href} className="rail-nav__link" data-quiet={item.quiet ? "" : undefined} aria-current={active ? "page" : undefined} onClick={onNavigate}>
               <span className="rail-nav__index">{item.index}</span>
               <span className="rail-nav__label">{item.label}</span>
+              {item.quiet ? <span className="rail-nav__quiet">{item.quiet}</span> : null}
             </LabLink>
           </li>
         );
       })}
+      <li className="rail-nav__reports">
+        <LabLink
+          href={reportsNav.href}
+          className="rail-nav__link"
+          aria-current={isActive(pathname, reportsNav.href) ? "page" : undefined}
+          onClick={onNavigate}
+        >
+          <span className="rail-nav__index" aria-hidden="true" />
+          <span className="rail-nav__label">{reportsNav.label}</span>
+        </LabLink>
+      </li>
     </ol>
   );
 }
@@ -100,6 +112,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="rail__mark-sub">{site.labName}</span>
         </LabLink>
         <nav aria-label="Primary">
+          <p className="rail__dir mono" aria-hidden="true">
+            Directory
+          </p>
           <NavLinks />
         </nav>
         <p className="rail__foot mono">{mode === "case" ? "Case study mode" : "Lab mode"}</p>
@@ -147,9 +162,6 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <LabLink href={item.href}>{item.label}</LabLink>
               </li>
             ))}
-            <li>
-              <LabLink href="/vault/">Experiment Vault</LabLink>
-            </li>
           </ul>
         </nav>
         <div className="pocket-menu__tools">

@@ -59,9 +59,15 @@ export interface EvidenceGroup {
 /** The "At a glance" plate: everything a reader needs in under 30 seconds. */
 export interface Glance {
   role: string;
+  /** What the role covered, in one line. */
+  roleDetail?: string;
   project: string;
+  team?: string;
   status: string;
+  /** "Core challenge" for engineering, "Research question" for research. */
+  problemLabel?: string;
   problem: string;
+  approachLabel?: string;
   approach: string[];
   stack: string[];
   evidence: { text: string; href?: string }[];

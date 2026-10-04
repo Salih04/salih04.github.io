@@ -10,13 +10,13 @@ import type { Observation } from "@/lib/pit";
  *
  * Every dataset and number rendered by the interactive lab is synthetic and
  * labelled as such. The only real results quoted here come from the public
- * FinanceIQ repository and are cited to it.
+ * supporting research repository (public) and are cited to it.
  */
 
 const REPO = "https://github.com/Salih04/capstone-financeIQ";
 
 export const financeSources = {
-  repository: { label: "Public FinanceIQ repository", href: REPO },
+  repository: { label: "Supporting research repository", href: REPO },
   results: { label: "RESULTS.md", href: `${REPO}/blob/main/RESULTS.md` },
   protocol: { label: "Point-in-time protocol", href: `${REPO}/blob/main/docs/PIT_PROTOCOL.md` },
 } satisfies Record<string, SourceLink>;
@@ -94,7 +94,9 @@ export interface NegativeResult {
   provenance: "documented" | "synthetic";
   hypothesis: string;
   observation: string;
-  why: string;
+  interpretation: string;
+  /** Why the record stays in the archive. */
+  keep: string;
   status: string;
   source?: SourceLink;
 }
@@ -106,7 +108,8 @@ export const negativeResults: NegativeResult[] = [
     hypothesis: "One year of public company data ranks BIST stocks by their next-year return (equal-weight baseline).",
     observation:
       "The baseline looked like a weak signal: IC +0.150 (p = 0.017). An audit found that 31 of 40 features were annual statements used weeks before they were published. Re-evaluated point-in-time, the IC is +0.031 (p = 0.63).",
-    why: "The apparent signal came from information that did not exist yet on the simulated date. Both results are kept, with the audit.",
+    interpretation: "The apparent signal came from information that did not exist yet on the simulated date.",
+    keep: "Both results are kept, with the audit, so the correction can be checked.",
     status: "Original reading withdrawn · corrected result kept",
     source: financeSources.results,
   },
@@ -115,7 +118,8 @@ export const negativeResults: NegativeResult[] = [
     provenance: "documented",
     hypothesis: "The original dataset guards would catch timing leakage.",
     observation: "In a registered defect-injection check, timing leakage was not detected by the original guards.",
-    why: "A guard only protects against what it checks. The point-in-time guard now refuses any value whose availability timestamp is after the prediction time.",
+    interpretation: "A guard only protects against what it checks.",
+    keep: "It records why the guard was replaced: the point-in-time guard now refuses any value whose availability timestamp is after the prediction time.",
     status: "Guard replaced",
     source: financeSources.results,
   },
@@ -124,7 +128,8 @@ export const negativeResults: NegativeResult[] = [
     provenance: "synthetic",
     hypothesis: "Shuffled k-fold cross-validation is a fair estimate on time-ordered data.",
     observation: "On the experiment bench's synthetic data, shuffled folds inflate the score; walk-forward evaluation removes the inflation.",
-    why: "Shuffling lets a model train on periods after its test window. The bench shows the mechanism; it is not a research result.",
+    interpretation: "Shuffling lets a model train on periods after its test window.",
+    keep: "The bench shows the mechanism. It is an illustration, not a research result.",
     status: "Illustration",
   },
 ];
@@ -221,10 +226,13 @@ export const financeCaseStudy: CaseStudy = {
   oneLiner:
     "An MSc Data Science research project in progress: point-in-time market-data and research infrastructure, so that historical experiments only use information that was actually available at the time.",
   glance: {
-    role: "Researcher. Research design, methodology and validation.",
+    role: "Researcher",
+    roleDetail: "Research design, methodology and validation.",
     project: "MSc Data Science research / semester project · University of Basel",
     status: "In progress · active development",
-    problem: "Historical experiments are only trustworthy when they use information that was actually available at the simulated point in time.",
+    problemLabel: "Research question",
+    problem: "How can a historical experiment be restricted to the information that was actually available on each date it simulates?",
+    approachLabel: "Method",
     approach: ["Availability-aware data", "Walk-forward evaluation", "Negative results preserved"],
     stack: ["Python", "scikit-learn", "FastAPI", "PostgreSQL"],
     evidence: [

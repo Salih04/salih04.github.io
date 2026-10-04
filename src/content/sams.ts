@@ -276,9 +276,12 @@ export const samsCaseStudy: CaseStudy = {
   oneLiner:
     "An independent engineering project: a multi-tenant system for long-running LLM agent workflows, built so that clients can disconnect, reconnect and resume without silently missing events.",
   glance: {
-    role: "Technical lead and maintainer. Led backend architecture, event replay, real-time state and reliability validation.",
-    project: "Independent engineering project · private codebase",
+    role: "Technical Lead / Maintainer",
+    roleDetail: "Led backend architecture, event replay, real-time state and reliability validation.",
+    project: "Independent project · private codebase",
+    team: "2-person project",
     status: "In development · not deployed to production",
+    problemLabel: "Core challenge",
     problem: "Agent workflows run for minutes, wait for human decisions and outlive worker processes, while clients whose connections drop must still see every event.",
     approach: ["Durable workflows", "Resumable, ordered event streams", "Durable state as the authority"],
     stack: ["FastAPI", "Temporal", "PostgreSQL", "Redis", "WebSockets"],
@@ -298,7 +301,7 @@ export const samsCaseStudy: CaseStudy = {
     ],
   },
   role: {
-    summary: "Technical lead and maintainer of the project.",
+    summary: "Technical Lead / Maintainer of a 2-person independent project.",
     items: [
       "Led backend architecture: workflow coordination, event delivery and replay, real-time state",
       "Set the engineering decisions and the acceptance criteria for each reliability guarantee",

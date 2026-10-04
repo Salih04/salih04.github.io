@@ -12,7 +12,7 @@ export default function ArchivePage() {
   return (
     <div className="editorial">
       <PageHeader
-        eyebrow="05 — Engineering Archive"
+        eyebrow="04 — Engineering Archive"
         title="Engineering records"
         lead="Professional work, described by role and kind of work. Confidential implementation stays confidential."
       />

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { engineeringRecords } from "@/content/archive";
 import { about, resume } from "@/content/about";
-import { financeCaseStudy, financeDecisions, negativeResults } from "@/content/financeiq";
+import { financeCaseStudy, financeDecisions, financeSources, negativeResults } from "@/content/financeiq";
 import { notes } from "@/content/notes";
 import { samsCaseStudy, samsDecisions } from "@/content/sams";
-import { site } from "@/content/site";
+import { primaryNav, site } from "@/content/site";
 import { vault } from "@/content/vault";
 
 /** Every human-readable string in a value, skipping link targets. */
@@ -63,5 +63,18 @@ describe("content guards against invented history", () => {
       if (r.provenance === "documented") expect(r.source?.href).toMatch(/^https:\/\/github\.com\//);
     }
     expect(negativeResults.some((r) => r.provenance === "synthetic")).toBe(true);
+  });
+
+  it("applies the Pass 2 content decisions", () => {
+    // Hero shows the first name only; the full public name is for the resume.
+    expect(site.name).toBe("Salih");
+    expect(samsCaseStudy.glance.role).toBe("Technical Lead / Maintainer");
+    expect(samsCaseStudy.glance.project).toMatch(/^Independent project/);
+    expect(samsCaseStudy.glance.team).toBe("2-person project");
+    // The public FinanceIQ repository is supporting evidence, never an MSc capstone.
+    expect(financeSources.repository.label).toMatch(/^(Supporting research repository|Public project repository)$/);
+    for (const s of strings({ financeSources, negativeResults })) expect(s, s).not.toMatch(/capstone/i);
+    // Lab Notes stay drafts and sit quiet in navigation.
+    expect(primaryNav.find((n) => n.href === "/notes/")?.quiet).toBe("draft");
   });
 });

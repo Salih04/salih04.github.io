@@ -43,11 +43,6 @@ export function FinanceLab() {
           </h1>
           <p className="lab-header__lede">{financeCaseStudy.oneLiner}</p>
         </div>
-        <div className="lab-header__actions">
-          <LabLink href="/financeiq/case-study/" className="btn btn--ghost">
-            Case study
-          </LabLink>
-        </div>
       </header>
 
       <div id="financeiq-tabs">
@@ -124,7 +119,7 @@ export function FinanceLab() {
           <h2>Negative results</h2>
           <p>
             Kept on purpose. Documented records are quoted from the{" "}
-            <a href={financeSources.repository.href}>public FinanceIQ repository</a>; the illustration is labelled as one.
+            <a href={financeSources.repository.href}>supporting research repository</a>; the illustration is labelled as one.
           </p>
         </div>
         <NegativeResults />

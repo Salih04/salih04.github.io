@@ -73,7 +73,7 @@ export const notes: LabNote[] = [
       { type: "h2", text: "A failed experiment is a record" },
       { type: "p", text: "Each archived run keeps its hypothesis, configuration, fingerprint and result. A negative result written down this way is evidence: it narrows the search space and documents what has already been ruled out." },
       { type: "h2", text: "A documented example" },
-      { type: "p", text: "The public FinanceIQ repository keeps one such record. An equal-weight baseline looked like a weak signal, IC +0.150 (p = 0.017). An audit then found that most of its features were annual statements used weeks before they were published. Re-evaluated point-in-time, the IC is +0.031 (p = 0.63). Both numbers stay in the record, with the audit between them." },
+      { type: "p", text: "The supporting public research repository keeps one such record. An equal-weight baseline looked like a weak signal, IC +0.150 (p = 0.017). An audit then found that most of its features were annual statements used weeks before they were published. Re-evaluated point-in-time, the IC is +0.031 (p = 0.63). Both numbers stay in the record, with the audit between them." },
       { type: "list", items: ["The withdrawn result shows what the leak looked like from the inside.", "The audit shows how it was found.", "The corrected result is the one to cite."] },
       { type: "p", text: "None of this is embarrassing. A negative result kept this way is a mistake that will not be repeated." },
     ],

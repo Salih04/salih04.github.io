@@ -48,7 +48,7 @@
 
   --rail-w: 208px;
   --topbar-h: 56px;
-  --radius: 4px;
+  --radius: 2px;
   --measure: 70ch;
   --gutter: clamp(16px, 4vw, 48px);
 
@@ -305,7 +305,7 @@ abbr[title] {
   gap: 6px;
   padding: 1px 8px;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border-radius: 1px;
   font-family: var(--font-mono);
   font-size: var(--fs-meta);
   letter-spacing: 0.02em;
@@ -442,7 +442,7 @@ abbr[title] {
   min-height: 32px;
   padding: 0 12px;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border-radius: 1px;
   background: transparent;
   font-size: var(--fs-label);
   color: var(--text-dim);
@@ -452,4 +452,25 @@ abbr[title] {
 .chip:hover {
   border-color: var(--research-line);
   color: var(--text);
+}
+
+/* Ruled data table (text alternatives, bench output). */
+.data-table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.data-table th {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--text-faint);
 }

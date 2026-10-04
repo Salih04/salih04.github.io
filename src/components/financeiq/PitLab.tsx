@@ -11,8 +11,8 @@ import {
   naive,
   pointInTime,
   reconstruct,
+  reconstructRecord,
   syntheticScores,
-  type Decision,
   type FactComparison,
   type Observation,
 } from "@/lib/pit";
@@ -33,13 +33,29 @@ export const fmtDate = (iso: string) => {
   const [y, m, d] = iso.split("-");
   return `${Number(d)} ${MONTHS[Number(m) - 1]} ${y}`;
 };
-const fmtMonth = (iso: string) => {
+/** Axis labels: the year appears on the first tick and on each January. */
+const fmtTick = (iso: string, first: boolean) => {
   const [y, m] = iso.split("-");
-  return `${MONTHS[Number(m) - 1]} ${y}`;
+  return first || m === "01" ? `${MONTHS[Number(m) - 1]} ’${y!.slice(2)}` : MONTHS[Number(m) - 1]!;
 };
 
-const TICKS = ["2019-07-01", "2019-10-01", "2020-01-01", "2020-04-01", "2020-07-01", "2020-10-01"];
-const REVEAL_MS = 650;
+/** Every month start on the axis; quarters carry a label. */
+const MONTH_TICKS = (() => {
+  const out: { iso: string; major: boolean; half: boolean }[] = [];
+  const [y0, m0] = pitRange.start.split("-").map(Number) as [number, number];
+  for (let i = 0; ; i++) {
+    const m = ((m0 - 1 + i) % 12) + 1;
+    const y = y0 + Math.floor((m0 - 1 + i) / 12);
+    const iso = `${y}-${String(m).padStart(2, "0")}-01`;
+    if (iso > pitRange.end) break;
+    out.push({ iso, major: (m - 1) % 3 === 0, half: (m - 1) % 6 === 0 });
+  }
+  return out;
+})();
+
+const STEP_MS = 560;
+/** The procedure, named before it runs; each check gets its specific outcome as it completes. */
+const PROCEDURE = ["Period identified", "Filing located", "Availability checked", "Revisions checked", "Point-in-time record accepted"];
 const PLAY_MS = 60;
 const PLAY_STEP_DAYS = 5;
 
@@ -55,7 +71,7 @@ function rowLabel(o: Observation) {
 /** Shorter label for the timeline rows; the full label is the accessible name. */
 function shortLabel(o: Observation) {
   if (o.kind === "membership") return { main: o.entity, sub: o.value ? "joins universe" : "leaves universe" };
-  return { main: `${o.entity} · ${o.period}`, sub: o.kind === "restatement" ? "EPS · corrected" : "EPS" };
+  return { main: `${o.entity} · ${o.period}`, sub: o.kind === "restatement" ? "EPS · correction" : "EPS" };
 }
 
 const valueText = (o: Observation) => (o.kind === "membership" ? (o.value ? "in" : "out") : o.value.toFixed(2));
@@ -75,13 +91,13 @@ function explain(c: FactComparison, asOf: string) {
     case "revision-leak":
       return { naiveText, availText, line: `${c.naive!.value.toFixed(2)} was published later, on ${fmtDate(c.naive!.knownAt)}.`, verdict: "Look-ahead leakage", tone: "leak" };
     case "look-ahead":
-      return { naiveText, availText, line: `${c.naive!.value.toFixed(2)} was published on ${fmtDate(c.naive!.knownAt)}, after ${fmtDate(asOf)}.`, verdict: "Look-ahead leakage", tone: "leak" };
+      return { naiveText, availText, line: `${c.naive!.value.toFixed(2)} was published on ${fmtDate(c.naive!.knownAt)}, after the simulated date.`, verdict: "Look-ahead leakage", tone: "leak" };
     case "survivorship":
-      return { naiveText, availText, line: `Built from today's list of companies, the naive dataset drops a company that later left the universe.`, verdict: "Survivorship bias", tone: "leak" };
+      return { naiveText, availText, line: `Built from today's list of companies, the naive history drops a company that later left the universe.`, verdict: "Survivorship bias", tone: "leak" };
     case "not-yet-available":
       return { naiveText, availText, line: `Nothing about this period had been published by ${fmtDate(asOf)}.`, verdict: "No leakage", tone: "ok" };
     default:
-      return { naiveText, availText, line: `Both datasets agree on ${fmtDate(asOf)}.`, verdict: "No leakage", tone: "ok" };
+      return { naiveText, availText, line: `Both histories agree on ${fmtDate(asOf)}.`, verdict: "No leakage", tone: "ok" };
   }
 }
 
@@ -107,6 +123,7 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
   const pitSet = useMemo(() => new Set([...pointInTime(pitObservations, asOf).values()].map((o) => o.id)), [asOf]);
   const naiveSet = useMemo(() => new Set([...naive(pitObservations, asOf).values()].map((o) => o.id)), [asOf]);
   const comparison = useMemo(() => compareFact(pitObservations, selected, asOf), [selected, asOf]);
+  const record = useMemo(() => reconstructRecord(pitObservations, selected, asOf), [selected, asOf]);
   const scores = syntheticScores(issues.length);
   const reading = explain(comparison, asOf);
 
@@ -121,6 +138,12 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
     setRevealed(null);
     setAsOf(iso);
   }, []);
+
+  const select = (key: string) => {
+    stopReveal();
+    setRevealed(null);
+    setSelected(key);
+  };
 
   // Play through time: the cursor walks forward; stops at the end of the range.
   useEffect(() => {
@@ -183,13 +206,13 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
     moveTo(toIso(next));
   };
 
+  const steps = record.steps;
   const startReveal = () => {
-    if (revealed !== null && revealed < decisions.length) return; // already running; the button stays focusable
+    if (revealed !== null && revealed < steps.length) return; // already running; the button stays focusable
     stopReveal();
     setPlaying(false);
-    setView("pit");
     if (prefersReducedMotion()) {
-      setRevealed(decisions.length);
+      setRevealed(steps.length);
       return;
     }
     setRevealed(0);
@@ -197,21 +220,20 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
     timer.current = window.setInterval(() => {
       i += 1;
       setRevealed(i);
-      if (i >= decisions.length) stopReveal();
-    }, REVEAL_MS);
+      if (i >= steps.length) stopReveal();
+    }, STEP_MS);
   };
 
   useEffect(() => {
     if (revealed === null || revealed === 0) return;
-    const d = decisions[revealed - 1];
-    if (revealed >= decisions.length) cue("complete");
-    else cue(d?.verdict === "accepted" ? "tick" : "warn");
-  }, [revealed, decisions, cue]);
+    const s = steps[revealed - 1];
+    if (revealed >= steps.length) cue("complete");
+    else cue(s?.outcome === "ok" ? "tick" : "warn");
+  }, [revealed, steps, cue]);
 
-  const reconstructing = revealed !== null && revealed < decisions.length;
-  const ready = revealed !== null && revealed >= decisions.length;
-  const shown: Decision[] = revealed === null ? [] : decisions.slice(0, revealed);
-  const currentId = reconstructing && revealed ? decisions[revealed - 1]?.observation.id : null;
+  const reconstructing = revealed !== null && revealed < steps.length;
+  const ready = revealed !== null && revealed >= steps.length;
+  const acceptedCount = decisions.filter((d) => d.verdict === "accepted").length;
 
   const rowState = (o: Observation) => {
     if (o.knownAt > asOf && view === "pit") return "future";
@@ -225,69 +247,60 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
 
   return (
     <div className="pit">
-      <div className="pit__premise">
-        <p className="pit__thesis">A backtest must only use information that had actually been published by the date it is simulating.</p>
-        <p className="pit__context">
-          Companies report their results weeks after a quarter ends, and sometimes correct them later. Drag the as-of cursor through time and
-          compare what a careless dataset contains with what anyone could actually have known.
-        </p>
-      </div>
-
       <div className="pit__bench">
-        <figure className="plate plate--paper pit__plate" aria-labelledby="pit-caption">
-          <FigureLabel fig="01" kind="synthetic" className="plate__label" />
-
-          <div className="pit__toolbar">
-            <div className="pit__asof" aria-live="off">
-              <span className="pit__asof-k">As of</span>
-              <span className="pit__asof-v">{fmtDate(asOf)}</span>
+        <figure className="plate plate--paper pit__plate" aria-labelledby="pit-title">
+          <header className="pit__head">
+            <FigureLabel fig="01" kind="synthetic" />
+            <h2 id="pit-title" className="pit__q">
+              What was known on <span className="pit__asof-v">{fmtDate(asOf)}</span>?
+            </h2>
+            <div className="pit__controls">
+              <div className="segmented" role="radiogroup" aria-label="Dataset">
+                {(["naive", "pit"] as const).map((v) => (
+                  <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)}>
+                    {v === "naive" ? "Naive history" : "Point-in-time"}
+                  </button>
+                ))}
+              </div>
+              <button type="button" className="pit__play" onClick={togglePlay} aria-pressed={playing}>
+                {playing ? "Pause" : "Play through time"}
+              </button>
             </div>
-            <div className="segmented" role="radiogroup" aria-label="Dataset">
-              {(["naive", "pit"] as const).map((v) => (
-                <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)}>
-                  {v === "naive" ? "Naive dataset" : "Point-in-time"}
-                </button>
-              ))}
-            </div>
-            <button type="button" className="btn btn--research btn--sm pit__play" onClick={togglePlay} aria-pressed={playing}>
-              {playing ? "❚❚ Pause" : "▶ Play through time"}
-            </button>
-          </div>
+          </header>
 
-          <p className={`pit__verdict${view === "naive" && issues.length ? " is-leak" : " is-ok"}`} role="status">
+          <p className={`pit__verdict${view === "naive" && issues.length ? " is-leak" : ""}`} role="status">
             {view === "naive" ? (
               issues.length ? (
                 <>
-                  <strong>Look-ahead leakage</strong> {issues.length} {issues.length === 1 ? "fact" : "facts"} in the naive dataset could not have been
-                  known on {fmtDate(asOf)}.
+                  <b aria-hidden="true">†</b> {issues.length} {issues.length === 1 ? "fact" : "facts"} in the naive history could not have been known on {fmtDate(asOf)}.
                 </>
               ) : (
-                <>
-                  <strong>No leakage on this date.</strong> Move the cursor later.
-                </>
+                <>No leakage on this date. Move the cursor later.</>
               )
             ) : (
-              <>
-                <strong>Point-in-time.</strong> Only the {pitSet.size} facts published by {fmtDate(asOf)} are used.
-              </>
+              <>Point-in-time: only the {pitSet.size} facts published by {fmtDate(asOf)} are used.</>
             )}
           </p>
 
-          <div className="tl" onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+          <div className="tl" data-view={view} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
             <div className="tl__row tl__row--axis">
-              <span className="tl__label tl__label--axis">Known on →</span>
+              <span className="tl__label tl__label--axis">Published on →</span>
               <div className="tl__track" data-track ref={axisRef}>
-                {TICKS.map((t, i) => (
-                  <span
-                    key={t}
-                    className={`tl__tick${i % 2 ? " tl__tick--minor" : ""}`}
-                    style={{ left: `${pct(t)}%` }}
-                    data-hidden={Math.abs(pct(t) - asOfPct) < 9 || undefined}
-                    aria-hidden="true"
-                  >
-                    {fmtMonth(t)}
+                {MONTH_TICKS.map((t) => (
+                  <span key={t.iso} className={`tl__tick${t.major ? "" : " tl__tick--minor"}`} data-half={t.half || undefined} style={{ left: `${pct(t.iso)}%` }} aria-hidden="true">
+                    {t.major ? fmtTick(t.iso, t.iso === MONTH_TICKS[0]!.iso) : null}
                   </span>
                 ))}
+                {asOfPct > 24 ? (
+                  <span className="tl__region tl__region--past" style={{ right: `${100 - asOfPct}%` }} aria-hidden="true">
+                    ← published
+                  </span>
+                ) : null}
+                {asOfPct < 74 ? (
+                  <span className="tl__region tl__region--future" style={{ left: `${asOfPct}%` }} aria-hidden="true">
+                    not yet published →
+                  </span>
+                ) : null}
               </div>
               <span />
             </div>
@@ -296,9 +309,17 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
               const state = rowState(o);
               const isMember = o.kind === "membership";
               const key = factKey(o);
+              const pulled = view === "naive" && state === "leak" && o.knownAt > asOf;
               return (
-                <div key={o.id} className="tl__row" data-state={state} data-selected={selected === key || undefined} data-current={currentId === o.id || undefined}>
-                  <button type="button" className="tl__label" aria-pressed={selected === key} aria-label={rowLabel(o)} onClick={() => setSelected(key)}>
+                <div
+                  key={o.id}
+                  className="tl__row"
+                  data-state={state}
+                  data-kind={o.kind}
+                  data-selected={selected === key || undefined}
+                  data-current={reconstructing && selected === key ? "" : undefined}
+                >
+                  <button type="button" className="tl__label" aria-pressed={selected === key} aria-label={rowLabel(o)} onClick={() => select(key)}>
                     <span className="tl__label-main">{shortLabel(o).main}</span>
                     <span className="tl__label-sub">{shortLabel(o).sub}</span>
                   </button>
@@ -310,6 +331,7 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
                         <span className="tl__period" style={{ left: `${pct(o.periodEnd)}%` }} />
                       </>
                     ) : null}
+                    {pulled ? <span className="tl__pull" style={{ left: `${asOfPct}%`, width: `${pct(o.knownAt) - asOfPct}%` }} /> : null}
                     <span className={`tl__known${isMember ? " tl__known--member" : ""}`} style={{ left: `${pct(o.knownAt)}%` }} />
                     <span className="tl__value" style={{ left: `${pct(o.knownAt)}%` }}>
                       {valueText(o)}
@@ -320,7 +342,7 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
               );
             })}
 
-            <div className="tl__cursorLayer" aria-hidden="false">
+            <div className="tl__cursorLayer">
               <div className="tl__cursor" style={{ left: `${asOfPct}%` }}>
                 <div
                   className="tl__handle"
@@ -334,26 +356,35 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
                   aria-valuetext={fmtDate(asOf)}
                   onKeyDown={onSliderKey}
                 >
-                  as of
+                  <span className="tl__handle-k">As of</span>
+                  <span className="tl__handle-v">{fmtDate(asOf)}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <figcaption id="pit-caption" className="pit__legend">
-            <span>
-              <i className="lg lg--period" /> period ends
-            </span>
-            <span>
-              <i className="lg lg--lag" /> publication delay
-            </span>
-            <span>
-              <i className="lg lg--known" /> published
-            </span>
-            <span>
-              <i className="lg lg--asof" /> as-of cursor · the future is hatched
-            </span>
-            <span className="pit__legend-note">Companies A–C and all values are invented.</span>
+          <figcaption className="pit__caption">
+            <p className="pit__thesis">A backtest must only use information that had actually been published by the date it is simulating.</p>
+            <p className="pit__legend">
+              <span>
+                <i className="lg lg--period" /> period ends
+              </span>
+              <span>
+                <i className="lg lg--lag" /> publication delay
+              </span>
+              <span>
+                <i className="lg lg--known" /> published
+              </span>
+              <span>
+                <i className="lg lg--fix" /> correction
+              </span>
+              <span>
+                <i className="lg lg--asof" /> as-of cursor · the future is hatched
+              </span>
+            </p>
+            <p className="pit__legend-note">
+              Drag the cursor, or focus it and use the arrow keys. Companies A–C and all values are invented.
+            </p>
           </figcaption>
 
           <details className="text-alt">
@@ -385,7 +416,7 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
 
         <aside className="pit__side" aria-label="Selected record and consequence">
           <section className="compare" data-tone={reading.tone} aria-live="polite">
-            <p className="compare__k">Selected record · as of {fmtDate(asOf)}</p>
+            <p className="compare__k">Evidence · selected record</p>
             <h3 className="compare__title">
               {factTitle(selected)}
               {selected.includes("|EPS|") ? (
@@ -396,18 +427,25 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
               ) : null}
             </h3>
             <dl className="compare__rows">
-              <div data-tone={reading.tone === "leak" ? "leak" : undefined}>
-                <dt>Naive historical record</dt>
+              <div data-k="date">
+                <dt>Simulated date</dt>
+                <dd>{fmtDate(asOf)}</dd>
+              </div>
+              <div data-tone={reading.tone === "leak" ? "leak" : undefined} data-k="naive">
+                <dt>Naive history</dt>
                 <dd data-text={/[a-z]/i.test(reading.naiveText) || undefined}>{reading.naiveText}</dd>
               </div>
-              <div>
-                <dt>Actually available then</dt>
+              <div data-k="known">
+                <dt>What was actually known</dt>
                 <dd data-text={/[a-z]/i.test(reading.availText) || undefined}>{reading.availText}</dd>
               </div>
             </dl>
-            <p className="compare__line">{reading.line}</p>
+            <p className="compare__line">
+              {reading.tone === "leak" ? <b aria-hidden="true">† </b> : null}
+              {reading.line}
+            </p>
             <p className="compare__verdict">{reading.verdict}</p>
-            {selected.includes("|EPS|") ? <p className="compare__def">EPS — earnings per share: a company&apos;s profit divided by its number of shares.</p> : null}
+            {selected.includes("|EPS|") ? <p className="compare__def">EPS: earnings per share, a company&apos;s profit divided by its number of shares.</p> : null}
             <p className="compare__hint">Select any row on the timeline to inspect it.</p>
           </section>
 
@@ -419,7 +457,7 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
             <dl className="consequence__bars">
               {(
                 [
-                  ["Naive data", scores.naive, "naive"],
+                  ["Naive history", scores.naive, "naive"],
                   ["Point-in-time", scores.pit, "pit"],
                 ] as const
               ).map(([label, v, k]) => (
@@ -435,9 +473,7 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
               ))}
             </dl>
             <p className="consequence__line">
-              {issues.length
-                ? "The apparent signal weakens when future information is removed."
-                : "No fact leaks on this date, so both datasets give the same score."}
+              {issues.length ? "The apparent signal weakens when future information is removed." : "No fact leaks on this date, so both histories give the same score."}
             </p>
             <p className="consequence__fine">Toy score: a fixed baseline plus a fixed lift for every leaked fact. Not a FinanceIQ research result.</p>
             <button type="button" className="linkish" onClick={onOpenResults}>
@@ -447,39 +483,63 @@ export function PitLab({ onRunExperiment, onOpenResults }: Props) {
         </aside>
       </div>
 
-      <section className="reconstruct" aria-labelledby="reconstruct-title">
-        <div className="reconstruct__head">
+      <section className="recon" aria-labelledby="recon-title" data-state={ready ? "done" : reconstructing ? "running" : "idle"}>
+        <div className="recon__head">
           <div>
-            <h3 id="reconstruct-title">Reconstruct history</h3>
-            <p>Rebuild the dataset exactly as it was knowable on {fmtDate(asOf)}. Every rejection is explained.</p>
+            <h3 id="recon-title">Reconstruct history</h3>
+            <p>
+              Rebuild <b>{factTitle(selected)}{selected.includes("|EPS|") ? " EPS" : ""}</b> exactly as it was knowable on {fmtDate(asOf)}, check by check.
+            </p>
           </div>
           <button type="button" className="btn btn--research" onClick={startReveal} aria-disabled={reconstructing || undefined}>
             {reconstructing ? "Reconstructing…" : ready ? "Reconstruct again" : "Reconstruct history"}
           </button>
         </div>
-        {revealed !== null ? (
-          <ol className="reconstruct__log" aria-live="polite">
-            {shown.map((d) => (
-              <li key={d.observation.id} data-verdict={d.verdict}>
-                <span className={`tag ${d.verdict === "accepted" ? "tag--success" : d.verdict === "superseded" ? "tag--warning" : "tag--failure"}`}>
-                  {d.verdict === "accepted" ? "Accepted" : d.verdict === "superseded" ? "Superseded" : "Rejected"}
-                </span>
-                <span className="reconstruct__what">{rowLabel(d.observation)}</span>
-                <span className="reconstruct__why">{d.reason.replace(/(\d{4}-\d{2}-\d{2})/g, (m) => fmtDate(m))}</span>
+
+        <ol className="recon__steps" aria-live="polite">
+          {steps.map((s, i) => {
+            const shown = revealed !== null && i < revealed;
+            return (
+              <li key={s.n} data-shown={shown || undefined} data-outcome={shown ? s.outcome : undefined} data-current={reconstructing && i === (revealed ?? 0) - 1 ? "" : undefined}>
+                <span className="recon__n mono">{s.n}</span>
+                <span className="recon__label">{shown ? s.label : PROCEDURE[i]}</span>
+                <span className="recon__detail">{shown ? s.detail : ""}</span>
               </li>
-            ))}
-          </ol>
-        ) : null}
+            );
+          })}
+        </ol>
+
         {ready ? (
-          <div className="reconstruct__ready">
-            <p>
-              Point-in-time dataset ready · {decisions.filter((d) => d.verdict === "accepted").length} accepted ·{" "}
-              {decisions.filter((d) => d.verdict !== "accepted").length} rejected
+          <div className="recon__done">
+            <p className="recon__done-k mono">Historical state reconstructed</p>
+            <p className="recon__done-t">
+              On {fmtDate(asOf)} the point-in-time dataset holds {acceptedCount} records; {decisions.length - acceptedCount} are excluded as unpublished or superseded.
             </p>
             <button type="button" className="btn" onClick={onRunExperiment}>
-              Run it on the experiment bench
+              Open experiment bench
             </button>
           </div>
+        ) : null}
+
+        {ready ? (
+          <table className="ledger" aria-label={`Dataset ledger as of ${fmtDate(asOf)}`}>
+            <thead>
+              <tr>
+                <th scope="col">Record</th>
+                <th scope="col">Verdict</th>
+                <th scope="col">Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {decisions.map((d) => (
+                <tr key={d.observation.id} data-verdict={d.verdict}>
+                  <td>{rowLabel(d.observation)}</td>
+                  <td className="mono">{d.verdict === "accepted" ? "accepted" : d.verdict === "superseded" ? "superseded" : "excluded"}</td>
+                  <td>{d.reason.replace(/(\d{4}-\d{2}-\d{2})/g, (m) => fmtDate(m))}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         ) : null}
       </section>
     </div>

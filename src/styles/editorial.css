@@ -47,16 +47,15 @@
   gap: 18px;
 }
 
+/* A report on the shelf: a ruled region with an accent rule, no card. */
 .study-card {
-  padding: 26px;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--signal);
-  border-radius: 2px;
-  background: var(--panel);
+  padding: 18px 0 24px;
+  border-top: 2px solid var(--signal);
+  border-bottom: 1px solid var(--line);
 }
 
 .study-card--research {
-  border-left-color: var(--research);
+  border-top-color: var(--research);
 }
 
 .study-card h2 {
@@ -120,14 +119,24 @@
 }
 
 .cs-header {
-  max-width: 960px;
+  max-width: 1080px;
 }
 
+/* Masthead: a ruled document strip, then the title. */
 .cs-header__kicker {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-strong);
   font-size: var(--fs-meta);
   letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--cs-accent);
+}
+
+.cs-header__kicker span + span {
+  color: var(--text-faint);
 }
 
 .cs-header__title {
@@ -135,8 +144,8 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 4px 18px;
-  margin-top: 8px;
-  font-size: clamp(40px, 5vw, 60px);
+  margin-top: 16px;
+  font-size: clamp(38px, 4.4vw, 56px);
   letter-spacing: -0.03em;
 }
 
@@ -147,107 +156,151 @@
 
 .cs-header__full {
   font-family: var(--font-sans);
-  font-size: clamp(16px, 1.6vw, 20px);
+  font-size: clamp(16px, 1.5vw, 19px);
   font-weight: 400;
   letter-spacing: 0;
   color: var(--text-dim);
 }
 
 .cs-header__one {
-  max-width: 70ch;
-  margin-top: 12px;
-  font-size: clamp(17px, 1.6vw, 19px);
+  max-width: 72ch;
+  margin-top: 8px;
+  font-size: clamp(16px, 1.4vw, 18px);
   line-height: 1.5;
   color: var(--text-dim);
 }
 
-/* At a glance: a ruled spec plate, readable in under 30 seconds. */
+/* At a glance: a specification plate. Ruled, no fill, three columns. */
 .glance {
   max-width: 1080px;
-  margin-top: 22px;
-  border: 1px solid var(--line-strong);
-  border-top: 3px solid var(--cs-accent);
-  border-radius: 2px;
-  background: var(--panel);
+  margin-top: 20px;
+  border-top: 3px double var(--cs-accent);
+  border-bottom: 1px solid var(--line-strong);
   scroll-margin-top: calc(var(--topbar-h) + 24px);
 }
 
-.case-study--research .glance {
-  background:
-    repeating-linear-gradient(to bottom, transparent 0 31px, var(--paper-rule) 31px 32px),
-    var(--paper);
-}
-
 .glance__title {
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--line);
+  padding: 8px 0 6px;
   font-family: var(--font-mono);
   font-size: var(--fs-meta);
   font-weight: 500;
   letter-spacing: var(--track-meta);
   text-transform: uppercase;
-  color: var(--cs-accent);
+  color: var(--text-faint);
 }
 
 .glance__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
+  border-top: 1px solid var(--line);
 }
 
 .glance__cell {
   display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  gap: 14px;
-  padding: 10px 16px;
+  align-content: start;
+  gap: 3px;
+  padding: 10px 18px 12px 0;
   border-bottom: 1px solid var(--line);
 }
 
-.glance__cell--wide {
-  grid-column: 1 / -1;
-}
-
-.glance__cell:not(.glance__cell--wide) + .glance__cell:not(.glance__cell--wide) {
+.glance__cell:nth-child(3n + 2),
+.glance__cell:nth-child(3n + 3) {
+  padding-left: 18px;
   border-left: 1px solid var(--line);
 }
 
-.glance__cell:last-child {
+/* The central problem spans the plate. */
+.glance__cell--problem {
+  grid-column: 1 / -1;
+  padding-left: 0 !important;
+  border-left: 0 !important;
+}
+
+.glance__cell--problem dd {
+  max-width: 80ch;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.case-study--research .glance__cell--problem dd {
+  font-family: var(--font-serif);
+  font-size: 20px;
+}
+
+.glance__cell--problem ~ .glance__cell:nth-child(3n + 2) {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.glance__cell--problem ~ .glance__cell:nth-child(3n),
+.glance__cell--problem ~ .glance__cell:nth-child(3n + 1) {
+  padding-left: 18px;
+  border-left: 1px solid var(--line);
+}
+
+.glance__cell:nth-last-child(-n + 3) {
   border-bottom: 0;
 }
 
 .glance dt {
-  padding-top: 2px;
-  font-family: var(--font-mono);
-  font-size: var(--fs-meta);
-  letter-spacing: var(--track-meta);
-  text-transform: uppercase;
+  font-size: var(--fs-label);
+  font-weight: 600;
   color: var(--text-faint);
 }
 
 .glance dd {
   margin: 0;
-  font-size: 16px;
+  font-size: 15.5px;
+  line-height: 1.45;
   color: var(--text);
 }
 
-.glance__chips,
+.glance dd strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.glance__sub {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+}
+
+.glance__list,
 .glance__evidence {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.glance__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+.glance__list {
+  counter-reset: g;
 }
 
-.glance__chips li {
-  padding: 1px 10px;
-  border: 1px solid var(--line-strong);
-  border-radius: 2px;
-  font-size: 15px;
+.glance__list li {
+  counter-increment: g;
+}
+
+.glance__list li::before {
+  content: counter(g) "  ";
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--cs-accent);
+}
+
+.glance__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  font-size: 14px;
+}
+
+.glance__evidence {
+  font-size: var(--fs-small);
 }
 
 .glance__evidence li + li {
@@ -256,7 +309,7 @@
 
 .cs-layout {
   display: grid;
-  grid-template-columns: 200px minmax(0, var(--measure));
+  grid-template-columns: 190px minmax(0, 880px);
   gap: clamp(28px, 5vw, 72px);
   margin-top: 36px;
 }
@@ -332,7 +385,7 @@
 }
 
 .cs-section + .cs-section {
-  padding-top: 40px;
+  padding-top: 36px;
   border-top: 1px solid var(--line);
 }
 
@@ -345,8 +398,21 @@
 }
 
 .cs-section > h2 {
+  display: flex;
+  align-items: baseline;
   margin: 0 0 16px;
   font-size: clamp(24px, 2.6vw, 30px);
+}
+
+/* Reading rhythm: prose keeps a narrow measure; figures, records and tables use the full width. */
+.cs-section > p,
+.cs-section > ul,
+.cs-section > ol,
+.cs-section > h3,
+.cs-section > .cs-defs,
+.cs-section > .cs-aside,
+.cs-lesson {
+  max-width: 64ch;
 }
 
 .case-study--research .cs-section > h2 {
@@ -362,9 +428,33 @@
   color: var(--warning);
 }
 
+/* Evidence: one ruled row per kind, its label in the margin. */
 .cs-evidence {
   display: grid;
-  gap: 20px;
+  gap: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.cs-evidence__group {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 4px 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cs-evidence__group > :not(.cs-label) {
+  grid-column: 2;
+}
+
+@media (max-width: 760px) {
+  .cs-evidence__group {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cs-evidence__group > :not(.cs-label) {
+    grid-column: 1;
+  }
 }
 
 .cs-evidence ul {
@@ -526,9 +616,9 @@
 
   .cs-toc {
     position: static;
-    padding: 12px 16px;
-    border: 1px solid var(--line);
-    border-radius: 2px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
   .cs-toc ol {
@@ -541,19 +631,29 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 760px) {
+  .cs-header__kicker span + span {
+    display: none;
+  }
+
   .glance__grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .glance__cell {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
+  .glance__cell,
+  .glance__cell:nth-child(n) {
+    padding: 9px 0 10px !important;
     border-left: 0 !important;
+    border-bottom: 1px solid var(--line) !important;
   }
 
-  .glance__cell:not(.glance__cell--wide) {
-    grid-column: 1 / -1;
+  .glance__cell:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .glance__cell--problem dd,
+  .case-study--research .glance__cell--problem dd {
+    font-size: 17px;
   }
 }
 
@@ -565,13 +665,15 @@
 
 /* ---- Engineering archive --------------------------------------------- */
 
+/* An engineering record: a ruled sheet. */
 .eng-record {
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background:
-    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 100% 100% no-repeat,
-    var(--panel);
+  padding: 0 0 24px;
+  border-top: 3px double var(--line-strong);
+  border-bottom: 1px solid var(--line);
+}
+
+.eng-record .eng-record__head {
+  padding-top: 10px;
 }
 
 .eng-record__head {
@@ -623,7 +725,7 @@
 .eng-record__focus li {
   padding: 4px 10px;
   border: 1px solid var(--line-strong);
-  border-radius: 4px;
+  border-radius: 0;
   color: var(--text-dim);
 }
 
@@ -647,28 +749,26 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  gap: 8px 28px;
 }
 
+/* A specimen slot: a labelled drawer front, not a card. */
 .sample {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 22px 20px 20px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--panel);
+  padding: 14px 0 18px;
+  border-top: 1px solid var(--line-strong);
 }
 
 .sample::before {
   content: "";
   position: absolute;
   top: -1px;
-  left: 20px;
+  left: 0;
   width: 44px;
   height: 3px;
-  border-radius: 0 0 2px 2px;
-  background: var(--line-strong);
+  background: var(--text-faint);
 }
 
 .sample__id {
@@ -726,7 +826,7 @@
   min-height: 34px;
   padding: 0 12px;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border-radius: 1px;
   background: transparent;
   font-size: var(--fs-label);
   color: var(--text-dim);
@@ -874,7 +974,7 @@
   overflow-x: auto;
   padding: 16px 18px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   background: var(--bg-raised);
   font-size: 14px;
   line-height: 1.6;
@@ -1024,10 +1124,8 @@
 }
 
 .principles dl > div {
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--panel);
+  padding: 14px 0 16px;
+  border-top: 1px solid var(--line-strong);
 }
 
 .principles dt {

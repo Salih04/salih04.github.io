@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { DecisionBrowser } from "@/components/records/DecisionBrowser";
 import { LabLink } from "@/components/shell/LabLink";
 import { TabBar } from "@/components/shell/TabBar";
@@ -15,7 +14,6 @@ const LABELS: Record<Tab, string> = { demo: "Failure demo", architecture: "Archi
 
 export function SamsLab() {
   const [tab, setTab] = useHashTab(TABS, "demo");
-  const [startToken, setStartToken] = useState(0);
 
   return (
     <div className="lab lab--sams">
@@ -28,21 +26,6 @@ export function SamsLab() {
             SAMS <span className="lab-header__full">{samsCaseStudy.fullName}</span>
           </h1>
           <p className="lab-header__lede">{samsCaseStudy.oneLiner}</p>
-        </div>
-        <div className="lab-header__actions">
-          <button
-            type="button"
-            className="btn"
-            onClick={() => {
-              setTab("demo");
-              setStartToken((n) => n + 1);
-            }}
-          >
-            Run failure demo
-          </button>
-          <LabLink href="/sams/case-study/" className="btn btn--ghost">
-            Case study
-          </LabLink>
         </div>
       </header>
 
@@ -60,7 +43,7 @@ export function SamsLab() {
       />
 
       <div key={tab} id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`} className="tab-panel" tabIndex={-1}>
-        {tab === "demo" ? <FailureDemo startToken={startToken} /> : null}
+        {tab === "demo" ? <FailureDemo /> : null}
         {tab === "architecture" ? (
           <>
             <div className="section-head">

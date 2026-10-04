@@ -4,8 +4,9 @@ type GlyphProps = Omit<SVGProps<SVGSVGElement>, "viewBox">;
 
 /**
  * Tiny line-art previews of what is inside each room. Purely decorative
- * (aria-hidden); each one draws the signature structure of its lab, and
- * animates only while `data-active` is set on an ancestor.
+ * (aria-hidden); each one draws the signature structure of its lab. They
+ * are used by the facility directory below desktop; the desktop floor plan
+ * draws its own, larger floor instruments.
  */
 
 export function SamsGlyph(props: GlyphProps) {
@@ -21,7 +22,7 @@ export function SamsGlyph(props: GlyphProps) {
       <circle cx="52" cy="46" r="3" className="glyph__node" />
       <path d="M66 6 V54" className="glyph__rail" />
       {[10, 20, 30, 40, 50].map((y, i) => (
-        <g key={y} className="glyph__event" style={{ animationDelay: `${i * 0.25}s` }}>
+        <g key={y} className="glyph__event">
           <rect x="72" y={y - 3} width="10" height="6" />
           <rect x="86" y={y - 1.5} width={22 - (i % 3) * 5} height="3" className="glyph__text" />
         </g>

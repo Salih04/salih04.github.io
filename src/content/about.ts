@@ -30,8 +30,8 @@ export const resume = {
       points: ["Go services for the live game backend of Hunt: Showdown"],
     },
     {
-      role: "Technical lead and maintainer — SAMS",
-      organisation: "Independent engineering project",
+      role: "Technical Lead / Maintainer — SAMS",
+      organisation: "Independent project · 2-person team",
       period: "",
       points: [
         "Durable LLM agent workflows (Temporal)",

@@ -19,7 +19,7 @@ export default function CaseStudiesPage() {
   return (
     <div className="editorial">
       <PageHeader
-        eyebrow="04 — Case Studies"
+        eyebrow="Reports — Case studies"
         title="The research reports"
         lead="Each project as an engineering report that opens with role, status and evidence, then the problem, architecture, decisions and what didn't work."
       />

@@ -16,7 +16,7 @@ export default function VaultPage() {
   return (
     <div className="editorial editorial--wide">
       <PageHeader
-        eyebrow="Experiment Vault"
+        eyebrow="05 — Experiment Vault"
         title="Specimens"
         lead="Small technical experiments made while building this site. Each one is real and can be inspected in the repository."
       />

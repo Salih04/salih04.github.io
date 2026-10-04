@@ -63,13 +63,32 @@
   color: var(--text-faint);
 }
 
+.rail__dir {
+  margin: 0 0 10px;
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* The rail is a facility directory: a vertical line with one stop per room. */
 .rail-nav {
+  position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+}
+
+.rail-nav::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--line);
 }
 
 .rail-nav__link {
@@ -77,37 +96,49 @@
   display: flex;
   align-items: baseline;
   gap: 12px;
-  padding: 9px 10px;
-  border-radius: var(--radius);
+  padding: 7px 0 7px 16px;
   font-size: 15px;
   text-decoration: none;
   color: var(--text-dim);
-  transition:
-    background-color var(--dur-fast) var(--ease),
-    color var(--dur-fast) var(--ease);
+  transition: color var(--dur-fast) var(--ease);
 }
 
 .rail-nav__link:hover {
-  background: var(--panel);
   color: var(--text);
+}
+
+/* Active: a marker on the rail and a short coordinate line, no filled row. */
+.rail-nav__link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 1px;
+  background: var(--signal);
+  transition: width var(--dur) var(--ease);
 }
 
 .rail-nav__link[aria-current="page"] {
   color: var(--text);
-  background: var(--panel);
 }
 
 .rail-nav__link[aria-current="page"]::before {
+  width: 9px;
+}
+
+.rail-nav__link[aria-current="page"]::after {
   content: "";
   position: absolute;
-  left: -22px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
+  left: -2px;
+  top: calc(50% - 7px);
+  width: 5px;
+  height: 14px;
   background: var(--signal);
 }
 
 .rail-nav__index {
+  min-width: 18px;
   font-family: var(--font-mono);
   font-size: var(--fs-meta);
   color: var(--text-faint);
@@ -115,6 +146,26 @@
 
 .rail-nav__link[aria-current="page"] .rail-nav__index {
   color: var(--signal);
+}
+
+.rail-nav__link[data-quiet] {
+  color: var(--text-faint);
+}
+
+.rail-nav__quiet {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+}
+
+.rail-nav__reports {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.rail-nav__reports .rail-nav__link {
+  font-size: 14px;
 }
 
 .rail__foot {
@@ -318,14 +369,9 @@
 }
 
 .pocket-menu .rail-nav__link {
-  padding: 14px 6px;
+  padding: 13px 6px 13px 18px;
   font-size: 16px;
   border-bottom: 1px solid var(--line);
-  border-radius: 0;
-}
-
-.pocket-menu .rail-nav__link[aria-current="page"]::before {
-  display: none;
 }
 
 .pocket-menu__secondary {
@@ -371,7 +417,7 @@
 }
 
 .page {
-  padding: clamp(24px, 3.5vw, 44px) var(--gutter) 72px;
+  padding: clamp(20px, 2.4vw, 34px) var(--gutter) 72px;
   animation: page-in var(--dur) var(--ease) backwards;
   transition:
     opacity 160ms var(--ease),
@@ -580,7 +626,7 @@ kbd {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line-strong);
-  border-radius: 8px;
+  border-radius: 2px;
   background: #07090b;
   box-shadow: 0 24px 80px rgb(0 0 0 / 0.6);
   animation: terminal-in var(--dur) var(--ease);

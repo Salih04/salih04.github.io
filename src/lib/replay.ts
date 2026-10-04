@@ -191,3 +191,31 @@ export function stopWorker(s: ReplayState, script: ScriptEvent[] = replayScript)
     narration: `Worker stopped during step ${currentStep(s)}. No new events until a replacement worker picks up the workflow.`,
   };
 }
+
+/**
+ * Checks the demo can actually make about one simulated run. They are computed
+ * from the simulated log and the client's applied list, nothing else; they say
+ * what this simulation did, not how a production system behaves.
+ */
+export interface Verification {
+  /** The client applied every sequence number from the first to its position, in order, with no gap. */
+  continuity: boolean;
+  /** Sequence numbers the client applied more than once. */
+  duplicates: number;
+  /** The client's position equals the server's head and the workflow is done. */
+  convergence: boolean;
+  /** Plan steps completed more than once after a worker was replaced, or null if no worker was replaced. */
+  stepsRerun: number | null;
+}
+
+export function verify(s: ReplayState): Verification {
+  const expected = Array.from({ length: s.clientSeq - FIRST_SEQ + 1 }, (_, i) => FIRST_SEQ + i);
+  const unique = new Set(s.applied);
+  const steps = s.log.filter((e) => e.type === "STEP_COMPLETED").map((e) => e.step);
+  return {
+    continuity: [...unique].length === expected.length && [...unique].every((seq, i) => seq === expected[i]),
+    duplicates: s.applied.length - unique.size,
+    convergence: converged(s),
+    stepsRerun: s.resumedAtStep === null ? null : steps.length - new Set(steps).size,
+  };
+}

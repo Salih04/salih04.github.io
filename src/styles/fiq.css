@@ -1,0 +1,1138 @@
+/* ==========================================================================
+   FinanceIQ: a research instrument, a digital notebook in a dark lab.
+   Time runs left to right. Serif for findings and figures; mono for dates
+   and measurements; ruled plates, tick marks, annotations; restrained
+   violet. A problem is annotated (†), not alarmed.
+   ========================================================================== */
+
+/* ---- The plate --------------------------------------------------------- */
+
+.pit__bench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 310px);
+  gap: 18px;
+  align-items: start;
+}
+
+.pit__plate.plate {
+  min-width: 0;
+  padding: 12px 18px 14px;
+}
+
+.pit__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.pit__q {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 1.9vw, 26px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.pit__asof-v {
+  font-weight: 650;
+  color: #d9d7ff;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.pit__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+}
+
+.segmented button {
+  min-height: 32px;
+  padding: 0 11px;
+  border: 0;
+  background: transparent;
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.segmented button[aria-checked="true"] {
+  background: var(--research-soft);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--research-line);
+}
+
+.pit__play {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  font-size: var(--fs-label);
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.pit__play:hover,
+.pit__play[aria-pressed="true"] {
+  border-color: var(--research-line);
+  color: var(--text);
+}
+
+/* The verdict is an annotation under the title, never a banner. */
+.pit__verdict {
+  margin: 8px 0 4px;
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  font-style: italic;
+  color: var(--text-dim);
+}
+
+.pit__verdict b {
+  font-style: normal;
+  color: #d98f8e;
+}
+
+/* ---- The timeline: label | track | state; the cursor spans every track */
+
+.tl {
+  --tl-label: 182px;
+  --tl-state: 44px;
+  --tl-gap: 12px;
+  position: relative;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.tl__row {
+  display: grid;
+  grid-template-columns: var(--tl-label) minmax(0, 1fr) var(--tl-state);
+  gap: var(--tl-gap);
+  align-items: center;
+  min-height: 38px;
+  border-bottom: 1px solid var(--paper-rule);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.tl__row--axis {
+  min-height: 58px;
+  align-items: stretch;
+  border-bottom: 1px solid rgb(155 150 244 / 0.28);
+}
+
+.tl__row[data-selected] {
+  background: rgb(155 150 244 / 0.06);
+}
+
+.tl__row[data-current] {
+  background: var(--research-soft);
+}
+
+.tl__label {
+  display: grid;
+  padding: 3px 8px;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: var(--fs-small);
+  line-height: 1.3;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+
+.tl__label-main {
+  white-space: nowrap;
+}
+
+.tl__label-sub {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+}
+
+.tl__label:hover {
+  color: var(--text);
+}
+
+.tl__label[aria-pressed="true"] {
+  color: var(--text);
+  box-shadow: inset 2px 0 0 var(--research);
+}
+
+.tl__label--axis {
+  align-self: end;
+  padding-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+  cursor: default;
+}
+
+.tl__track {
+  position: relative;
+  height: 38px;
+  cursor: ew-resize;
+}
+
+.tl__row--axis .tl__track {
+  height: auto;
+}
+
+/* Measurement marks: every month, a label every quarter. */
+.tl__tick {
+  position: absolute;
+  bottom: 9px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.tl__tick::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 1px;
+  height: 7px;
+  background: rgb(155 150 244 / 0.45);
+}
+
+.tl__tick--minor::after {
+  height: 4px;
+  background: rgb(155 150 244 / 0.25);
+}
+
+.tl__tick:first-child {
+  transform: none;
+}
+
+.tl__tick:first-child::after {
+  left: 0;
+}
+
+/* Region annotations either side of the cursor. */
+.tl__region {
+  position: absolute;
+  top: 6px;
+  padding: 0 84px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+  white-space: nowrap;
+  pointer-events: none;
+  transition:
+    left 90ms linear,
+    right 90ms linear;
+}
+
+.tl__region--future {
+  color: rgb(155 150 244 / 0.7);
+}
+
+.tl__future {
+  position: absolute;
+  top: 0;
+  bottom: -1px;
+  right: 0;
+  background: repeating-linear-gradient(135deg, rgb(155 150 244 / 0.075) 0 1px, transparent 1px 7px);
+}
+
+.tl__lag {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--line-strong);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.tl__period,
+.tl__known {
+  position: absolute;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  transition:
+    background-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.tl__period {
+  border: 1.5px solid var(--text-faint);
+  background: var(--paper);
+}
+
+.tl__known {
+  background: var(--text-faint);
+  border: 2px solid var(--paper);
+}
+
+/* A correction is a different mark: a diamond. */
+.tl__row[data-kind="restatement"] .tl__known,
+.tl__known--member {
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+.tl__value {
+  position: absolute;
+  top: 50%;
+  transform: translate(10px, -50%);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums lining-nums;
+  pointer-events: none;
+  transition: color var(--dur) var(--ease);
+}
+
+.tl__state {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+  transition: color var(--dur) var(--ease);
+}
+
+/* Records enter the available region as the cursor passes them (STATE). */
+.tl__row[data-state="used"] .tl__known {
+  background: var(--research);
+}
+
+.tl__row[data-state="used"] .tl__lag {
+  background: var(--research-line);
+}
+
+.tl__row[data-state="used"] .tl__label,
+.tl__row[data-state="used"] .tl__value {
+  color: var(--text);
+}
+
+.tl__row[data-state="used"] .tl__state {
+  color: var(--research);
+}
+
+/* A leaked record is annotated: muted red, with the dashed pull back to the cursor. */
+.tl__row[data-state="leak"] .tl__known {
+  background: #d98f8e;
+}
+
+.tl__row[data-state="leak"] .tl__lag {
+  background: rgb(217 143 142 / 0.45);
+}
+
+.tl__row[data-state="leak"] .tl__value,
+.tl__row[data-state="leak"] .tl__state {
+  color: #d98f8e;
+}
+
+.tl__row[data-state="leak"] .tl__label-main::after {
+  content: "\00a0†";
+  color: #d98f8e;
+}
+
+.tl__pull {
+  position: absolute;
+  top: calc(50% + 8px);
+  height: 0;
+  border-top: 1px dashed rgb(217 143 142 / 0.75);
+  pointer-events: none;
+}
+
+.tl__pull::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4.5px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 6px solid rgb(217 143 142 / 0.85);
+}
+
+.tl__row[data-state="excluded"] .tl__label,
+.tl__row[data-state="future"] .tl__label {
+  color: var(--text-faint);
+}
+
+/* The as-of cursor: a physical control with a generous handle. */
+.tl__cursorLayer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--tl-label) + var(--tl-gap));
+  right: calc(var(--tl-state) + var(--tl-gap));
+  pointer-events: none;
+}
+
+.tl__cursor {
+  position: absolute;
+  top: 26px;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--research);
+  transition: left 90ms linear;
+}
+
+.tl__handle {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 26px;
+  padding: 4px 10px 3px;
+  border: 1px solid var(--research);
+  background: #1a1834;
+  color: #ecebff;
+  white-space: nowrap;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* Grip and a larger invisible hit area. */
+.tl__handle::before {
+  content: "";
+  position: absolute;
+  inset: -10px -8px;
+}
+
+.tl__handle:active {
+  cursor: grabbing;
+}
+
+.tl__handle-k {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--research);
+}
+
+.tl__handle-v {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tl__handle:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+/* ---- Caption: the thesis as the figure's caption ----------------------- */
+
+.pit__caption {
+  margin-top: 14px;
+}
+
+.pit__thesis {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.pit__thesis::before {
+  content: "Fig. 01 — ";
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.pit__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 8px;
+  font-size: var(--fs-label);
+  color: var(--text-dim);
+}
+
+.pit__legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pit__legend-note {
+  margin-top: 4px;
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+}
+
+.lg {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.lg--period {
+  border: 1.5px solid var(--text-faint);
+}
+
+.lg--lag {
+  width: 18px;
+  height: 2px;
+  border-radius: 0;
+  background: var(--line-strong);
+}
+
+.lg--known {
+  background: var(--research);
+}
+
+.lg--fix {
+  border-radius: 1px;
+  background: var(--research);
+  transform: rotate(45deg) scale(0.85);
+}
+
+.lg--asof {
+  width: 2px;
+  height: 14px;
+  border-radius: 0;
+  background: var(--research);
+}
+
+.lg--train {
+  border-radius: 0;
+  background: rgb(155 150 244 / 0.5);
+}
+
+.lg--test {
+  border-radius: 0;
+  background: var(--research);
+}
+
+/* ---- Evidence sheet: the leakage moment -------------------------------- */
+
+.pit__side {
+  display: grid;
+  gap: 18px;
+}
+
+.compare {
+  padding: 14px 16px 16px;
+  border-top: 2px solid var(--research-line);
+  background: var(--paper);
+}
+
+.compare__k {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.compare__title {
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.compare__rows {
+  display: grid;
+  margin: 12px 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.compare__rows > div {
+  display: grid;
+  gap: 0;
+  padding: 7px 0 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.compare__rows dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.compare__rows dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.compare__rows [data-k="date"] dd {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.compare__rows dd[data-text] {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.compare__rows > div[data-tone="leak"] dd {
+  color: #d98f8e;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.compare__line {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.compare__line b {
+  font-style: normal;
+  color: #d98f8e;
+}
+
+/* The finding: a ruled annotation, discovered rather than alarmed. */
+.compare__verdict {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid currentColor;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.compare[data-tone="leak"] .compare__verdict {
+  color: #d98f8e;
+}
+
+.compare__def,
+.compare__hint {
+  margin-top: 10px;
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+}
+
+.consequence {
+  display: grid;
+  gap: 8px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.consequence .fig-label {
+  justify-self: start;
+}
+
+.consequence__title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.consequence__bars {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.consequence__bars dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--text-faint);
+}
+
+.consequence__bars dd {
+  display: grid;
+  gap: 3px;
+  margin: 2px 0 0;
+}
+
+.consequence__score {
+  font-size: var(--fs-label);
+  color: var(--text-dim);
+}
+
+.consequence__score b {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.consequence__bar {
+  display: block;
+  height: 4px;
+  background: var(--research);
+  transition: width var(--dur) var(--ease);
+}
+
+.consequence__bars [data-k="naive"] .consequence__bar {
+  background: #b77a7a;
+}
+
+.consequence__line {
+  font-size: var(--fs-small);
+  color: var(--text);
+}
+
+.consequence__fine {
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+}
+
+.consequence .linkish {
+  justify-self: start;
+}
+
+/* ---- Reconstruct history: evidence, check by check --------------------- */
+
+.recon {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.recon__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.recon__head h3 {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.recon__head p {
+  margin-top: 2px;
+  color: var(--text-dim);
+}
+
+.recon__head b {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.recon__steps {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid var(--line-strong);
+}
+
+.recon__steps li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-height: 112px;
+  padding: 10px 14px 12px 0;
+  color: var(--text-faint);
+}
+
+.recon__steps li + li {
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+}
+
+/* The step's tick on the rule above it. */
+.recon__steps li::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  background: var(--bg);
+}
+
+.recon__steps li + li::before {
+  left: -4px;
+}
+
+.recon__n {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.recon__label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.recon__detail {
+  font-size: var(--fs-label);
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+
+.recon__steps li[data-shown] {
+  color: var(--text);
+  animation: step-in 320ms var(--ease);
+}
+
+.recon__steps li[data-shown]::before {
+  border-color: var(--research);
+  background: var(--research);
+}
+
+.recon__steps li[data-outcome="excluded"]::before {
+  border-color: #d98f8e;
+  background: var(--bg);
+}
+
+.recon__steps li[data-outcome="excluded"] .recon__label {
+  color: #d98f8e;
+}
+
+.recon__steps li[data-outcome="none"]::before {
+  background: var(--bg);
+}
+
+.recon__steps li[data-current] {
+  background: linear-gradient(to bottom, var(--research-soft), transparent);
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0.3;
+  }
+}
+
+.recon__done {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  margin-top: 6px;
+  padding: 12px 0;
+  border-top: 2px solid var(--research-line);
+  border-bottom: 1px solid var(--line);
+}
+
+.recon__done-k {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--research);
+}
+
+.recon__done-t {
+  flex: 1 1 320px;
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+}
+
+/* The dataset ledger: an evidence sheet. */
+.ledger {
+  width: 100%;
+  margin-top: 6px;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+}
+
+.ledger th,
+.ledger td {
+  padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--paper-rule);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.ledger th {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.ledger td:nth-child(2) {
+  font-size: var(--fs-label);
+  color: var(--research);
+}
+
+.ledger tr[data-verdict="unpublished"] td,
+.ledger tr[data-verdict="superseded"] td {
+  color: var(--text-faint);
+}
+
+.ledger tr[data-verdict="unpublished"] td:nth-child(2) {
+  color: #d98f8e;
+}
+
+/* ---- Negative results: research records -------------------------------- */
+
+.negatives {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  border-top: 2px solid var(--research-line);
+}
+
+.negative {
+  padding: 16px 0 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.negative__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
+}
+
+.negative__tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.negative__status {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-dim);
+}
+
+.negative__fields {
+  display: grid;
+  gap: 8px;
+  max-width: 92ch;
+  margin: 12px 0 0;
+}
+
+.negative__fields > div {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.negative__fields dt {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-faint);
+}
+
+.negative__fields dd {
+  margin: 0;
+  color: var(--text-dim);
+}
+
+.negative__source {
+  margin-top: 10px;
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+}
+
+.negative__source a {
+  color: var(--text-dim);
+}
+
+.negative__prov {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ---- Responsive -------------------------------------------------------- */
+
+@media (max-width: 1439px) {
+  .pit__bench {
+    grid-template-columns: minmax(0, 1fr) 270px;
+  }
+
+  .tl {
+    --tl-label: 166px;
+  }
+
+  .tl__label {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .pit__bench {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pit__side {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .recon__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .recon__steps li:nth-child(4) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .recon__steps li:nth-child(4)::before {
+    left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .pit__plate.plate {
+    padding: 10px 12px 12px;
+  }
+
+  .pit__controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .segmented {
+    display: flex;
+  }
+
+  .segmented button {
+    flex: 1;
+    padding: 0 8px;
+  }
+
+  .pit__side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Timeline on a phone: the label sits above a full-width track. */
+  .tl {
+    --tl-label: 0px;
+    --tl-state: 0px;
+    --tl-gap: 0px;
+  }
+
+  .tl__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "label state"
+      "track track";
+    row-gap: 0;
+    padding-top: 4px;
+  }
+
+  .tl__row--axis {
+    grid-template-areas: "track track";
+    min-height: 62px;
+  }
+
+  .tl__row--axis .tl__label--axis {
+    display: none;
+  }
+
+  .tl__label {
+    grid-area: label;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 2px 0;
+  }
+
+  .tl__track {
+    grid-area: track;
+    height: 30px;
+  }
+
+  .tl__row--axis .tl__track {
+    height: 62px;
+  }
+
+  .tl__state {
+    grid-area: state;
+  }
+
+  .tl__tick:not([data-half]) {
+    color: transparent;
+  }
+
+  .tl__region {
+    display: none;
+  }
+
+  .tl__value {
+    font-size: 14px;
+  }
+
+  .recon__steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .recon__steps li,
+  .recon__steps li + li {
+    min-height: 0;
+    padding: 10px 0 10px 18px;
+    border-left: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .recon__steps li::before,
+  .recon__steps li + li::before,
+  .recon__steps li:nth-child(4)::before {
+    top: 16px;
+    left: 0;
+  }
+
+  .ledger td:nth-child(3) {
+    display: none;
+  }
+
+  .ledger th:nth-child(3) {
+    display: none;
+  }
+
+  .negative__fields > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}

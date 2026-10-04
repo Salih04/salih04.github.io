@@ -14,8 +14,8 @@ The same content can be read two ways:
 
 | Route | What it is |
 | --- | --- |
-| `/` | Entry: who, what, and the two flagship projects, over a shared instrument trace |
-| `/lab` | Control Room: 2.5D facility floor plan (building directory below desktop) |
+| `/` | Entry: a nameplate, then one shared time axis on which SAMS and FinanceIQ are the two traces |
+| `/lab` | Control Room: 2.5D architectural floor plan (facility directory below desktop) |
 | `/sams` | SAMS Agent Systems Lab: **Failure demo** (default), Architecture, Engineering decisions |
 | `/sams/case-study` | SAMS case study |
 | `/financeiq` | FinanceIQ: **Point-in-time reconstruction** (default), Experiment bench, Validation, Data pipeline, Results |
@@ -41,10 +41,12 @@ lab mode. A toggle on an unpaired page applies to that page only. Nothing is res
   `out/`, so deep links work on any static host and the first screen is useful before any JavaScript runs.
 - **No WebGL and no 3D library.** The control room is an SVG floor plan on a CSS-perspective plane, with
   upright DOM labels placed by a projection that mirrors the CSS transform. The entry trace is plain DOM.
-- **Two materials.** SAMS is a running machine (rails, event slots, cursors, cold signal cyan). FinanceIQ is a
-  research instrument (a ruled paper plate, serif readouts, violet accents).
-- **Hand-written CSS** with design tokens in `src/styles/base.css`. Nothing renders below 12px; small uppercase
-  mono is reserved for instrument metadata.
+- **Two materials.** SAMS is a running machine (system / events / client state, cursors, a cable that breaks on
+  disconnect, cold signal cyan). FinanceIQ is a research notebook (a question-led ruled plate, measurement ticks,
+  serif findings, † annotations, violet accents).
+- **Hand-written CSS** with design tokens in `src/styles/base.css`, one stylesheet per world (`entry.css`,
+  `facility.css`, `sams.css`, `fiq.css`) plus shared `shell.css`, `lab.css` and `editorial.css`. Nothing renders
+  below 12px; small uppercase mono is reserved for instrument metadata.
 - **Fonts are self-hosted** through `@fontsource-variable` (Inter, JetBrains Mono, Space Grotesk, Source Serif 4),
   with no third-party font requests.
 - **Code that loads only when used:** the terminal is loaded on demand.
@@ -54,8 +56,8 @@ lab mode. A toggle on an unpaired page applies to that page only. Nothing is res
 - **Sound is off by default.** When turned on, the tones are synthesized at runtime; no audio files are shipped.
 - **Accessibility:** semantic landmarks, a skip link, keyboard-operable tabs (arrow keys), focus-trapped dialogs
   that close on Esc, visible focus states, and a text or table alternative for every diagram.
-- **Pocket interface (below 1024px):** the rail becomes a menu, the facility map becomes an index, and the
-  diagrams stay interactive.
+- **Pocket interface (below 1024px):** the rail becomes a menu, the facility map becomes a facility directory
+  (no pseudo-3D), and the diagrams stay interactive.
 
 ## Honesty rules built into the interface
 
@@ -73,7 +75,7 @@ Every figure carries one plate label in its top-left corner (`<FigureLabel />`),
 - The FinanceIQ bench runs a **deterministic simulator** (`src/lib/experiment.ts`) on synthetic data. The PIT
   reconstruction uses a tiny **fictional** dataset (companies A–C), resolved by a tested as-of engine
   (`src/lib/pit.ts`). The only real FinanceIQ results quoted are cited to the public
-  [FinanceIQ repository](https://github.com/Salih04/capstone-financeIQ).
+  [supporting research repository](https://github.com/Salih04/capstone-financeIQ).
 - Status labels describe the lab, not production: "Simulation ready", "In progress", "Open".
 - Records use letters (Engineering decision A, Research decision B); notes are drafts with no number or date.
 
