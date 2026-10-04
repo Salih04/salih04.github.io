@@ -28,3 +28,7 @@ pnpm-debug.log*
 # OS and editor files
 .DS_Store
 *.pem
+
+# Playwright / local screenshots
+test-results/
+playwright-report/
