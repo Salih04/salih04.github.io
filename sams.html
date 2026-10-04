@@ -37,7 +37,6 @@
       <tr><td>A committed decision reaches the workflow even if its signal is lost</td><td>Approvals row is the only verdict; signals only wake</td><td><span class="state ok">real Temporal server</span></td></tr>
       <tr><td>A decision and the deadline cannot both win</td><td>Deadline claimed through the same row lock</td><td><span class="state ok">real PostgreSQL race</span></td></tr>
       <tr><td>Refresh tokens are single-use; reuse revokes the session family</td><td>Claim and consume in one conditional UPDATE</td><td><span class="state ok">real PostgreSQL</span></td></tr>
-      <tr><td>A declared execution tier never silently downgrades</td><td>Tier is configuration; failed launch → 503, task FAILED, audited</td><td><span class="state gap">private repository only</span></td></tr>
     </tbody></table></div>
 </div></section>
 
@@ -123,7 +122,6 @@
     <div class="fcard"><h3>Redis restarts without persistence</h3><p>Epoch rotates; resuming clients get <code>stream_reset</code>, never another stream's entries as their history.</p><span class="ev">integration/test_redis_stream_epochs.py</span></div>
     <div class="fcard"><h3>An event's room has no resolvable owner</h3><p>The whole replay is withheld (<code>tenant_resolution_failed</code>) rather than a prefix the client would trust.</p><span class="ev">integration/test_redis_stream_epochs.py</span></div>
     <div class="fcard"><h3>Refresh token replayed</h3><p>The session family is revoked, including the replacement just issued. Two concurrent refreshes from one tab also revoke — a deliberate trade-off.</p><span class="ev">integration/test_postgres_races.py</span></div>
-    <div class="fcard"><h3>Temporal unreachable on the declared tier</h3><p>503 with a machine-readable code, task FAILED, <code>execution_launch_failed</code> audited. Never run in-process instead.</p><span class="ev">private repository; not in the public extract</span></div>
     <div class="fcard"><h3>Worker dies during an approval wait</h3><p>The decision is recorded while no worker runs; a new worker resumes the workflow and completes the task.</p><span class="ev">integration/test_temporal_workflow.py</span></div>
     <div class="fcard"><h3>Activity keeps failing</h3><p>Retried by policy (3 attempts, exponential backoff), then the task is marked FAILED and the workflow fails.</p><span class="ev">integration/test_temporal_workflow.py</span></div>
   </div>
@@ -152,7 +150,7 @@
     <li><span class="when"><span class="state gap">design</span></span><div>Tenant isolation is enforced in application queries, not row-level security; roles are account-level.</div></li>
     <li><span class="when"><span class="state gap">out of scope</span></span><div>Agent output quality is not evaluated; the infrastructure around the agents is.</div></li>
   </ul>
-  <p style="margin-top:1.25rem">The full system is private. <a href="https://github.com/Salih04/sams-reliability-core">sams-reliability-core</a> is a curated public extract of its reliability layer: the code and tests behind every guarantee above except the execution-tier row, with a hash manifest tying each file to the private source.</p>
+  <p style="margin-top:1.25rem">The full system is private. <a href="https://github.com/Salih04/sams-reliability-core">sams-reliability-core</a> is a curated public extract of its reliability layer: the code and tests behind every guarantee above, with a hash manifest tying each file to the private source.</p>
   </div>
 </div></section>
 </main>
