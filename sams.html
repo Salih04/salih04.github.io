@@ -27,23 +27,24 @@
 
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="offset">01 · guarantees</span><h2>What is guaranteed, and what checks it</h2></div>
-  <div class="body tbl"><table>
+  <div class="body tbl" tabindex="0"><table>
     <thead><tr><th>Guarantee</th><th>Mechanism</th><th>Checked against</th></tr></thead>
     <tbody>
-      <tr><td>An event's tenant comes from the database, never the event</td><td>Owner resolved as room → space → organisation</td><td><span class="state ok">real Redis + PostgreSQL</span></td></tr>
+      <tr><td>Tenancy fails closed: an event's tenant comes from the database, never the event</td><td>Owner resolved as room → space → organisation; unresolvable owner withholds delivery</td><td><span class="state ok">real Redis + PostgreSQL</span></td></tr>
       <tr><td>A reconnecting client gets the full missed interval or a named gap</td><td>Stream epochs (atomic Lua), bounded replay with typed statuses</td><td><span class="state ok">real Redis 7</span></td></tr>
       <tr><td>Nothing lost, duplicated or reordered at the replay → live boundary</td><td>Capture armed at a watermark before history is read</td><td><span class="state ok">real Redis, concurrent writers</span></td></tr>
       <tr><td>Concurrent approve/reject: exactly one wins</td><td>One conditional upsert</td><td><span class="state ok">real PostgreSQL, 8 × 40 races</span></td></tr>
       <tr><td>A committed decision reaches the workflow even if its signal is lost</td><td>Approvals row is the only verdict; signals only wake</td><td><span class="state ok">real Temporal server</span></td></tr>
+      <tr><td>A decision and the deadline cannot both win</td><td>Deadline claimed through the same row lock</td><td><span class="state ok">real PostgreSQL race</span></td></tr>
       <tr><td>Refresh tokens are single-use; reuse revokes the session family</td><td>Claim and consume in one conditional UPDATE</td><td><span class="state ok">real PostgreSQL</span></td></tr>
-      <tr><td>A declared execution tier never silently downgrades</td><td>Tier is configuration; failed launch → 503, task FAILED, audited</td><td><span class="state ok">unreachable Temporal endpoint</span></td></tr>
+      <tr><td>A declared execution tier never silently downgrades</td><td>Tier is configuration; failed launch → 503, task FAILED, audited</td><td><span class="state gap">private repository only</span></td></tr>
     </tbody></table></div>
 </div></section>
 
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="offset">02 · resume</span><h2>Replay, then live, with no gap and no duplicate</h2></div>
   <div class="body">
-    <figure><div class="fig"><svg viewBox="0 0 760 150" role="img" aria-labelledby="sams-hero-t sams-hero-d" xmlns="http://www.w3.org/2000/svg">
+    <figure><div class="fig" tabindex="0"><svg viewBox="0 0 760 150" role="img" aria-labelledby="sams-hero-t sams-hero-d" xmlns="http://www.w3.org/2000/svg">
 <title id="sams-hero-t">Replay to live handoff on a Redis stream</title>
 <desc id="sams-hero-d">Entries already delivered end at the client cursor. The server takes a watermark, replays entries after the cursor up to the watermark, buffers entries that arrive during replay, then hands off to live delivery under one lock.</desc>
 <line x1="30" y1="71" x2="740" y2="71" class="s-rule" stroke-width="1"/>
@@ -59,7 +60,7 @@
 <text x="40" y="24" font-size="11" class="t-muted">delivered</text>
 </svg></div>
     <figcaption>Replay reads <code>(cursor, W]</code>, live capture reads <code>&gt; W</code>, so the ranges are disjoint; capture is armed before history is read, so nothing written during replay is missed; the terminal <code>event_sync</code> and the switch to live happen under one lock, so a live frame cannot overtake it.</figcaption></figure>
-    <figure><div class="fig"><svg viewBox="0 0 760 170" role="img" aria-labelledby="ep-t" xmlns="http://www.w3.org/2000/svg">
+    <figure><div class="fig" tabindex="0"><svg viewBox="0 0 760 170" role="img" aria-labelledby="ep-t" xmlns="http://www.w3.org/2000/svg">
 <title id="ep-t">A stream reset changes the epoch, so an old cursor is answered with stream_reset</title>
 <text x="10" y="30" font-size="11" class="t-muted">epoch E1</text>
 <g><rect x="90" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="116" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="142" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="168" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="194" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="220" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="246" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="272" y="40" width="14" height="22" rx="1" class="f-rule"/><rect x="298" y="40" width="14" height="22" rx="1" class="f-rule"/></g>
@@ -77,7 +78,7 @@
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="offset">03 · decisions</span><h2>Humans race; the database decides</h2></div>
   <div class="body">
-    <figure><div class="fig"><svg viewBox="0 0 760 210" role="img" aria-labelledby="race-t" xmlns="http://www.w3.org/2000/svg">
+    <figure><div class="fig" tabindex="0"><svg viewBox="0 0 760 210" role="img" aria-labelledby="race-t" xmlns="http://www.w3.org/2000/svg">
 <title id="race-t">Two concurrent approval decisions arbitrated by one conditional upsert</title>
 <defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" class="f-ink"/></marker></defs>
 <rect x="10" y="30" width="170" height="44" rx="3" class="f-surface s-rule" stroke-width="1"/><text x="22" y="50" font-size="12">Operator A</text><text x="22" y="66" font-size="11" class="t-muted">POST …/approve</text>
@@ -95,7 +96,7 @@
 <rect x="562" y="128" width="188" height="48" rx="3" class="f-fails"/><text x="574" y="148" font-size="12" class="t-fail">conflict → 409</text><text x="574" y="165" font-size="10.5" class="t-muted">names the recorded decision</text>
 </svg></div>
     <figcaption>Both requests pass the route's status check, so arbitration has to happen inside one statement. Replacing it with read-then-write produced two applied decisions on the first of forty real-PostgreSQL rounds.</figcaption></figure>
-    <figure><div class="fig"><svg viewBox="0 0 760 230" role="img" aria-labelledby="lost-t lost-d" xmlns="http://www.w3.org/2000/svg">
+    <figure><div class="fig" tabindex="0"><svg viewBox="0 0 760 230" role="img" aria-labelledby="lost-t lost-d" xmlns="http://www.w3.org/2000/svg">
 <title id="lost-t">A committed approval reaches the workflow although its signal is lost</title>
 <desc id="lost-d">The API commits the decision to PostgreSQL, then the Temporal signal fails. The waiting workflow re-reads the approvals row on its poll interval, finds the decision, and completes the task.</desc>
 <text x="10" y="44" font-size="11" class="t-muted">API</text>
@@ -120,25 +121,25 @@
   <div class="sec-head"><span class="offset">04 · failures</span><h2>Failure cases, and what happens</h2></div>
   <div class="body fails">
     <div class="fcard"><h3>Redis restarts without persistence</h3><p>Epoch rotates; resuming clients get <code>stream_reset</code>, never another stream's entries as their history.</p><span class="ev">integration/test_redis_stream_epochs.py</span></div>
-    <div class="fcard"><h3>An event's room has no resolvable owner</h3><p>The whole replay is withheld (<code>tenant_resolution_failed</code>) rather than a prefix the client would trust.</p><span class="ev">integration · unit</span></div>
+    <div class="fcard"><h3>An event's room has no resolvable owner</h3><p>The whole replay is withheld (<code>tenant_resolution_failed</code>) rather than a prefix the client would trust.</p><span class="ev">integration/test_redis_stream_epochs.py</span></div>
     <div class="fcard"><h3>Refresh token replayed</h3><p>The session family is revoked, including the replacement just issued. Two concurrent refreshes from one tab also revoke — a deliberate trade-off.</p><span class="ev">integration/test_postgres_races.py</span></div>
-    <div class="fcard"><h3>Temporal unreachable on the declared tier</h3><p>503 with a machine-readable code, task FAILED, <code>execution_launch_failed</code> audited. Never run in-process instead.</p><span class="ev">integration/test_temporal_real_server.py</span></div>
-    <div class="fcard"><h3>Worker dies during an approval wait</h3><p>The decision is recorded while no worker runs; a new worker resumes the workflow and completes the task.</p><span class="ev">integration/test_temporal_real_server.py</span></div>
-    <div class="fcard"><h3>Activity keeps failing</h3><p>Retried by policy (3 attempts, exponential backoff), then the task is marked FAILED and the workflow fails.</p><span class="ev">integration/test_temporal_real_server.py</span></div>
+    <div class="fcard"><h3>Temporal unreachable on the declared tier</h3><p>503 with a machine-readable code, task FAILED, <code>execution_launch_failed</code> audited. Never run in-process instead.</p><span class="ev">private repository; not in the public extract</span></div>
+    <div class="fcard"><h3>Worker dies during an approval wait</h3><p>The decision is recorded while no worker runs; a new worker resumes the workflow and completes the task.</p><span class="ev">integration/test_temporal_workflow.py</span></div>
+    <div class="fcard"><h3>Activity keeps failing</h3><p>Retried by policy (3 attempts, exponential backoff), then the task is marked FAILED and the workflow fails.</p><span class="ev">integration/test_temporal_workflow.py</span></div>
   </div>
 </div></section>
 
 <section class="sec"><div class="wrap">
   <div class="sec-head"><span class="offset">05 · evidence</span><h2>How the claims are tested</h2></div>
   <div class="body">
-    <div class="tbl"><table>
+    <div class="tbl" tabindex="0"><table>
       <thead><tr><th>Layer</th><th>What it runs</th><th>Result</th></tr></thead>
       <tbody>
-        <tr><td>Unit suite</td><td>Fakes that parse the executed SQL and honour only its predicates, so a dropped tenant filter leaks rows and fails</td><td class="num">2,890 passed</td></tr>
-        <tr><td>Integration</td><td>Real Redis 7, PostgreSQL 16, Temporal dev server; refuses to run without all three</td><td class="num">26 passed</td></tr>
+        <tr><td>Unit suites</td><td>Fakes that parse the executed SQL and honour only its predicates, so a dropped tenant filter leaks rows and fails</td><td class="num">all pass</td></tr>
+        <tr><td>Integration</td><td>Real Redis 7, PostgreSQL 16, Temporal dev server; refuses to run without all three</td><td class="num">all pass</td></tr>
         <tr><td>Negative controls</td><td>Each guarantee deliberately broken, failures recorded, original bytes restored and hash-checked</td><td class="num">every control failed as expected</td></tr>
       </tbody></table></div>
-    <p class="muted">Counts measured 4 Oct 2026. The CI integration job with service containers is added but has not yet run on a hosted runner.</p>
+    <p class="muted">Measured 4 Oct 2026 on a local machine; counts are in the repository's design notes.</p>
   </div>
 </div></section>
 
@@ -151,7 +152,7 @@
     <li><span class="when"><span class="state gap">design</span></span><div>Tenant isolation is enforced in application queries, not row-level security; roles are account-level.</div></li>
     <li><span class="when"><span class="state gap">out of scope</span></span><div>Agent output quality is not evaluated; the infrastructure around the agents is.</div></li>
   </ul>
-  <p style="margin-top:1.25rem">The source repository is private. A curated public extract of the reliability layer, with its tests and a hash manifest tying it to the private code, is being prepared.</p>
+  <p style="margin-top:1.25rem">The full system is private. <a href="https://github.com/Salih04/sams-reliability-core">sams-reliability-core</a> is a curated public extract of its reliability layer: the code and tests behind every guarantee above except the execution-tier row, with a hash manifest tying each file to the private source.</p>
   </div>
 </div></section>
 </main>

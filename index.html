@@ -29,7 +29,7 @@
   </ul>
   <div class="links"><a href="sams.html">SAMS case study →</a><a href="financeiq.html">FinanceIQ case study →</a><a href="https://github.com/Salih04">GitHub</a></div>
   <figure>
-    <div class="fig"><svg viewBox="0 0 760 150" role="img" aria-labelledby="hero-t hero-d" xmlns="http://www.w3.org/2000/svg">
+    <div class="fig" tabindex="0"><svg viewBox="0 0 760 150" role="img" aria-labelledby="hero-t hero-d" xmlns="http://www.w3.org/2000/svg">
 <title id="hero-t">Replay to live handoff on a Redis stream</title>
 <desc id="hero-d">Entries already delivered end at the client cursor. The server takes a watermark, replays entries after the cursor up to the watermark, buffers entries that arrive during replay, then hands off to live delivery under one lock.</desc>
 <line x1="30" y1="71" x2="740" y2="71" class="s-rule" stroke-width="1"/>
@@ -54,13 +54,13 @@
     <a class="case" href="sams.html">
       <span class="kind">case study · backend reliability</span>
       <h3>SAMS — durable, multi-tenant execution for LLM workflows</h3>
-      <p>Resumable event delivery over Redis Streams, first-write-wins human approvals, single-use refresh tokens, and a Temporal workflow verified on a real server — each guarantee with a test that fails when it breaks.</p>
+      <p>Resumable event delivery over Redis Streams, first-write-wins human approvals, single-use refresh tokens, fail-closed tenancy and a Temporal workflow verified on a real server — each guarantee with a test that fails when it breaks.</p>
       <span class="go">Read: guarantees, failure cases, evidence →</span>
     </a>
     <a class="case" href="financeiq.html">
       <span class="kind">case study · ML evaluation</span>
-      <h3>FinanceIQ — a pre-registered evaluation harness with a null result</h3>
-      <p>Walk-forward evaluation of BIST equity ranking with permutation tests, power analysis and planted-defect controls. An audit of its own published number found a publication-lag look-ahead; the corrected result is null.</p>
+      <h3>FinanceIQ — an apparent signal that did not survive its own audit</h3>
+      <p>Walk-forward evaluation of BIST equity ranking with permutation tests, power analysis and planted-defect controls. Its one positive result used annual statements before they were public; re-evaluated point-in-time, it disappeared.</p>
       <span class="go">Read: method, audit, what changed →</span>
     </a>
   </div>
@@ -95,7 +95,7 @@
 <section class="sec" id="how"><div class="wrap">
   <div class="sec-head"><span class="offset">05 · method</span><h2>How I work</h2></div>
   <div class="body">
-    <p>I build with AI coding agents under a spec → review → CI-gate workflow. I own the architecture, the engineering decisions, the acceptance criteria and the validation: I write the specifications and invariants, review changes before they merge, and require negative controls — deliberately breaking a concurrency, tenancy or authentication guard to show its tests fail.</p>
+    <p>Built with AI coding agents under a spec → review → CI-gate workflow. I own the system architecture, engineering decisions, acceptance criteria and technical validation.</p>
   </div>
 </div></section>
 
