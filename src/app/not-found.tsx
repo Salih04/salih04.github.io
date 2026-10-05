@@ -1,4 +1,8 @@
+import type { Metadata } from "next";
 import { LabLink } from "@/components/shell/LabLink";
+
+// Next.js adds noindex to the 404 page itself.
+export const metadata: Metadata = { title: "Not found" };
 
 export default function NotFound() {
   return (

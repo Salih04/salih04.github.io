@@ -1,0 +1,2496 @@
+{
+ "matrix": [
+  {
+   "size": "d1600",
+   "scenario": "entry",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "control-room",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "sams-initial",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "sams-disconnect",
+   "notes": {
+    "server": "047",
+    "client": "041"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "sams-converged",
+   "notes": {
+    "verification": "PASS,NONE,PASS"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "sams-architecture",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "sams-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "financeiq-pit",
+   "ok": true,
+   "notes": [
+    "31 Mar 2020",
+    "1.18",
+    "1.31"
+   ],
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "financeiq-reconstruction",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "financeiq-negative-results",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "financeiq-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "archive",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "about",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "resume",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "contact",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "not-found",
+   "status": 404,
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1600",
+   "scenario": "mobile-menu",
+   "skipped": "menu button hidden at this width (rail visible)",
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "entry",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "control-room",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-initial",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-disconnect",
+   "notes": {
+    "server": "047",
+    "client": "041"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-converged",
+   "notes": {
+    "verification": "PASS,NONE,PASS"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-architecture",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "financeiq-pit",
+   "ok": true,
+   "notes": [
+    "31 Mar 2020",
+    "1.18",
+    "1.31"
+   ],
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "financeiq-reconstruction",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "financeiq-negative-results",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "financeiq-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "archive",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "about",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "resume",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "contact",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "not-found",
+   "status": 404,
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "mobile-menu",
+   "skipped": "menu button hidden at this width (rail visible)",
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "entry",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "control-room",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "sams-initial",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "sams-disconnect",
+   "notes": {
+    "server": "047",
+    "client": "041"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "sams-converged",
+   "notes": {
+    "verification": "PASS,NONE,PASS"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "sams-architecture",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "sams-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "financeiq-pit",
+   "ok": true,
+   "notes": [
+    "31 Mar 2020",
+    "1.18",
+    "1.31"
+   ],
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "financeiq-reconstruction",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "financeiq-negative-results",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "financeiq-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "archive",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "about",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "resume",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "contact",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "not-found",
+   "status": 404,
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1280",
+   "scenario": "mobile-menu",
+   "skipped": "menu button hidden at this width (rail visible)",
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "entry",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "control-room",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "sams-initial",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "sams-disconnect",
+   "notes": {
+    "server": "047",
+    "client": "041"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "sams-converged",
+   "notes": {
+    "verification": "PASS,NONE,PASS"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "sams-architecture",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "sams-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "financeiq-pit",
+   "ok": true,
+   "notes": [
+    "31 Mar 2020",
+    "1.18",
+    "1.31"
+   ],
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "financeiq-reconstruction",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "financeiq-negative-results",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "financeiq-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "archive",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "about",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "resume",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "contact",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "not-found",
+   "status": 404,
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "d1024",
+   "scenario": "mobile-menu",
+   "skipped": "menu button hidden at this width (rail visible)",
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "entry",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "control-room",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-initial",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-disconnect",
+   "notes": {
+    "server": "047",
+    "client": "041"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-converged",
+   "notes": {
+    "verification": "PASS,NONE,PASS"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-architecture",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "financeiq-pit",
+   "ok": true,
+   "notes": [
+    "31 Mar 2020",
+    "1.18",
+    "1.31"
+   ],
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "financeiq-reconstruction",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "financeiq-negative-results",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "financeiq-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "archive",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "about",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "resume",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "contact",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "not-found",
+   "status": 404,
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "m390",
+   "scenario": "mobile-menu",
+   "ok": true,
+   "notes": {
+    "open": {
+     "expanded": "true",
+     "hidden": false
+    },
+    "closedByEscape": true
+   },
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "entry",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "control-room",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "sams-initial",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "sams-disconnect",
+   "notes": {
+    "server": "047",
+    "client": "041"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "sams-converged",
+   "notes": {
+    "verification": "PASS,NONE,PASS"
+   },
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "sams-architecture",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "sams-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "financeiq-pit",
+   "ok": true,
+   "notes": [
+    "31 Mar 2020",
+    "1.18",
+    "1.31"
+   ],
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "financeiq-reconstruction",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "financeiq-negative-results",
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "financeiq-case-study",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "archive",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "about",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "resume",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "contact",
+   "status": 200,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "not-found",
+   "status": 404,
+   "ok": true,
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  },
+  {
+   "size": "r1440",
+   "scenario": "mobile-menu",
+   "skipped": "menu button hidden at this width (rail visible)",
+   "overflow": 0,
+   "small": 0,
+   "clipped": [],
+   "brokenImages": [],
+   "errors": [],
+   "failed": []
+  }
+ ],
+ "links": {
+  "samsControls": [
+   "Restart task",
+   "Reconnect client",
+   "Stop worker",
+   "Pause",
+   "Step"
+  ],
+  "internal": [
+   "#main",
+   "/",
+   "/lab/",
+   "/sams/",
+   "/financeiq/",
+   "/archive/",
+   "/vault/",
+   "/notes/",
+   "/case-studies/",
+   "/about/",
+   "/resume/",
+   "/contact/",
+   "/sams/case-study/",
+   "/financeiq/case-study/",
+   "#glance",
+   "#problem",
+   "#role",
+   "#status",
+   "#architecture",
+   "#decisions",
+   "#evidence",
+   "#didnt-work",
+   "#details",
+   "/notes/designing-replayable-event-systems/",
+   "/notes/point-in-time-data-is-a-correctness-problem/",
+   "/notes/why-negative-results-stay-in-the-archive/"
+  ],
+  "external": [
+   "https://github.com/Salih04/sams-reliability-core",
+   "https://github.com/Salih04/sams-reliability-core/blob/main/results/CI_2026-10-04.md",
+   "https://github.com/Salih04/sams-reliability-core/blob/main/docs/LIMITATIONS.md",
+   "https://github.com/Salih04/sams-reliability-core/blob/main/docs/VERIFICATION.md",
+   "https://github.com/Salih04/capstone-financeIQ",
+   "https://github.com/Salih04/capstone-financeIQ/blob/main/RESULTS.md",
+   "https://github.com/Salih04/capstone-financeIQ/blob/main/docs/PIT_PROTOCOL.md",
+   "https://github.com/Salih04"
+  ],
+  "externalStatus": {
+   "https://github.com/Salih04/sams-reliability-core": 200,
+   "https://github.com/Salih04/sams-reliability-core/blob/main/results/CI_2026-10-04.md": 200,
+   "https://github.com/Salih04/sams-reliability-core/blob/main/docs/LIMITATIONS.md": 200,
+   "https://github.com/Salih04/sams-reliability-core/blob/main/docs/VERIFICATION.md": 200,
+   "https://github.com/Salih04/capstone-financeIQ": 200,
+   "https://github.com/Salih04/capstone-financeIQ/blob/main/RESULTS.md": 200,
+   "https://github.com/Salih04/capstone-financeIQ/blob/main/docs/PIT_PROTOCOL.md": 200,
+   "https://github.com/Salih04": 200
+  },
+  "broken": [],
+  "malformed": [],
+  "sitemapUrls": 0,
+  "assets": {
+   "/og.png": "200 image/png",
+   "/favicon.ico": "200 image/x-icon",
+   "/icon.svg": "200 image/svg+xml",
+   "/apple-icon.png": "200 image/png",
+   "/robots.txt": "200 text/plain",
+   "/sitemap.xml": "200 application/xml"
+  }
+ },
+ "a11y": [
+  {
+   "size": "d1440",
+   "scenario": "entry",
+   "lang": "en",
+   "title": "S//LAB — Salih’s Interactive Research Portfolio",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 35,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "control-room",
+   "lang": "en",
+   "title": "Control Room — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 2,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-initial",
+   "lang": "en",
+   "title": "SAMS — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 10,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-architecture",
+   "lang": "en",
+   "title": "SAMS — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 38,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "sams-case-study",
+   "lang": "en",
+   "title": "SAMS Case Study — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket",
+     "Case study sections"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 4,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "financeiq-pit",
+   "lang": "en",
+   "title": "FinanceIQ — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 23,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "financeiq-negative-results",
+   "lang": "en",
+   "title": "FinanceIQ — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 2,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "financeiq-case-study",
+   "lang": "en",
+   "title": "FinanceIQ Case Study — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket",
+     "Case study sections"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 6,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "archive",
+   "lang": "en",
+   "title": "Engineering Archive — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 2,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "about",
+   "lang": "en",
+   "title": "About — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 2,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "resume",
+   "lang": "en",
+   "title": "Salih Camcı · Resume",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 2,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "contact",
+   "lang": "en",
+   "title": "Contact — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 3,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "d1440",
+   "scenario": "not-found",
+   "lang": "en",
+   "title": "Not found — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 2,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": []
+  },
+  {
+   "size": "m390",
+   "scenario": "entry",
+   "lang": "en",
+   "title": "S//LAB — Salih’s Interactive Research Portfolio",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 32,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "a.entry__reports \"Read the case studie\" 162×22",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "control-room",
+   "lang": "en",
+   "title": "Control Room — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 44,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "a. \"Read the case studie\" 162×22",
+    "a. \"Run the SAMS failure\" 198×22",
+    "a. \"Reconstruct history \" 232×22",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-initial",
+   "lang": "en",
+   "title": "SAMS — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 29,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-architecture",
+   "lang": "en",
+   "title": "SAMS — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 78,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "sams-case-study",
+   "lang": "en",
+   "title": "SAMS Case Study — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket",
+     "Case study sections"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 308,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "a. \"Public reliability e\" 243×17",
+    "a.record__source \"Source: Verification\" 190×22",
+    "a.record__source \"Source: Verification\" 190×22",
+    "a.record__source \"Source: Verification\" 190×22",
+    "a.record__source \"Source: Verification\" 190×22",
+    "a.record__source \"Source: Verification\" 190×22",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "financeiq-pit",
+   "lang": "en",
+   "title": "FinanceIQ — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 68,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "button.tl__label \"Company A · Q3 2019 \" 303×22",
+    "button.tl__label \"Company A · Q4 2019 \" 325×22",
+    "button.tl__label \"Company A · Q4 2019 \" 303×22",
+    "button.tl__label \"Company A · Q1 2020 \" 303×22",
+    "button.tl__label \"Company B · Q4 2019 \" 303×22",
+    "button.tl__label \"Company B · Q1 2020 \" 303×22",
+    "button.tl__label \"Company C · joins un\" 325×22",
+    "button.tl__label \"Company C · leaves u\" 296×22",
+    "button.linkish \"A documented instanc\" 260×22",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "financeiq-negative-results",
+   "lang": "en",
+   "title": "FinanceIQ — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 98,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "a.record__source \"Source: Point-in-tim\" 214×22",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "financeiq-case-study",
+   "lang": "en",
+   "title": "FinanceIQ Case Study — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket",
+     "Case study sections"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 286,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "a.record__source \"Source: Point-in-tim\" 214×22",
+    "a.record__source \"Source: RESULTS.md ↗\" 156×22",
+    "a.record__source \"Source: RESULTS.md ↗\" 156×22",
+    "a.record__source \"Source: RESULTS.md ↗\" 156×22",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "archive",
+   "lang": "en",
+   "title": "Engineering Archive — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 69,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "a. \"Experiment Vault\" 128×20",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "about",
+   "lang": "en",
+   "title": "About — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 41,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "resume",
+   "lang": "en",
+   "title": "Salih Camcı · Resume",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 53,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "a. \"github.com/Salih04\" 140×17",
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "contact",
+   "lang": "en",
+   "title": "Contact — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 21,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  },
+  {
+   "size": "m390",
+   "scenario": "not-found",
+   "lang": "en",
+   "title": "Not found — S//LAB",
+   "h1": 1,
+   "skips": [],
+   "landmarks": {
+    "main": 1,
+    "nav": [
+     "Primary",
+     "Secondary",
+     "Pocket"
+    ]
+   },
+   "unnamed": [],
+   "imgsNoAlt": 0,
+   "dupIds": [],
+   "brokenRefs": [],
+   "contrast": {
+    "measured": 18,
+    "failures": [],
+    "count": 0
+   },
+   "smallTargets": [],
+   "undersizedButSpaced": [
+    "button.footer__term \"Press ~ for terminal\" 158×19"
+   ]
+  }
+ ],
+ "focus": [
+  {
+   "path": "/",
+   "stops": 28,
+   "order": [
+    "Skip to content",
+    "S//LAB, entry",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "02 · Independent projectSAMS",
+    "03 · MSc research · in progr",
+    "EnterS//LAB→",
+    "Read the case studies →",
+    "Press ~ for terminal",
+    "Skip to content",
+    "S//LAB, entry",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "02 · Independent projectSAMS",
+    "03 · MSc research · in progr",
+    "EnterS//LAB→",
+    "Read the case studies →",
+    "Press ~ for terminal",
+    "Skip to content",
+    "S//LAB, entry"
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  },
+  {
+   "path": "/lab/",
+   "stops": 29,
+   "order": [
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "Read the case studies",
+    "Run the SAMS failure demo",
+    "Reconstruct history in Finan",
+    "02 · Agent Systems LabSAMSSi",
+    "03 · Market Data Research La",
+    "04 · Engineering ArchiveArch",
+    "05 · Experiment VaultVault4 ",
+    "06 · Lab NotesNotes3 drafts",
+    "Press ~ for terminal",
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ"
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  },
+  {
+   "path": "/sams/",
+   "stops": 30,
+   "order": [
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "Failure demo",
+    "Case study →",
+    "Restart task",
+    "Disconnect client",
+    "Stop worker",
+    "Pause",
+    "Step",
+    "API",
+    "Workflowworker running",
+    "Planner",
+    "Research",
+    "Analysis",
+    "Approvalhuman",
+    "Execution",
+    "Press ~ for terminal"
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  },
+  {
+   "path": "/financeiq/",
+   "stops": 30,
+   "order": [
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "Point-in-time reconstruction",
+    "Case study →",
+    "Naive history",
+    "Point-in-time",
+    "Play through time",
+    "Company A · Q3 2019 EPS",
+    "Company A · Q4 2019 EPS",
+    "Company A · Q4 2019 EPS (cor",
+    "Company A · Q1 2020 EPS",
+    "Company B · Q4 2019 EPS",
+    "Company B · Q1 2020 EPS",
+    "Company C · joins universe",
+    "Company C · leaves universe",
+    "As-of date",
+    "Timeline as a table"
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  },
+  {
+   "path": "/sams/case-study/",
+   "stops": 30,
+   "order": [
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "Public reliability evidence ",
+    "Historical CI run, 4 Oct 202",
+    "Contents",
+    "At a glance",
+    "Problem",
+    "My role",
+    "Result / current status",
+    "Architecture",
+    "Key decisions",
+    "Evidence",
+    "What didn't work",
+    "Technical details",
+    "Open the interactive lab →",
+    "Limitations of the evidence ",
+    "Source: Verification matrix "
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  },
+  {
+   "path": "/archive/",
+   "stops": 29,
+   "order": [
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "Public GitHub profile ↗",
+    "02SAMSIndependent engineerin",
+    "03FinanceIQMSc research proj",
+    "Experiment Vault",
+    "Press ~ for terminal",
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies"
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  },
+  {
+   "path": "/contact/",
+   "stops": 29,
+   "order": [
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "github.com/Salih04",
+    "Press ~ for terminal",
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact"
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  },
+  {
+   "path": "/resume/",
+   "stops": 29,
+   "order": [
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft",
+    "Case studies",
+    "About",
+    "Resume",
+    "Contact",
+    "Sound off",
+    "Open terminal",
+    "Case study",
+    "github.com/Salih04",
+    "Print / save as PDF",
+    "SAMS",
+    "FinanceIQ",
+    "Engineering Archive",
+    "Press ~ for terminal",
+    "Skip to content",
+    "S//LAB — Salih’s Interactive",
+    "01Lab",
+    "02SAMS",
+    "03FinanceIQ",
+    "04Archive",
+    "05Vault",
+    "06Notesdraft"
+   ],
+   "offScreen": [],
+   "noIndicator": []
+  }
+ ],
+ "checks": [
+  {
+   "name": "Case Study Mode toggle is a switch; on /sams/ it moves to /sams/case-study/ and the rail follows",
+   "pass": true,
+   "detail": "{\"before\":\"false\",\"after\":\"true\",\"railSams\":\"/sams/case-study/\"}"
+  },
+  {
+   "name": "Case Study Mode toggles back to the lab",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "FinanceIQ as-of cursor: role=slider, arrow keys and End move it",
+   "pass": true,
+   "detail": "{\"v0\":274,\"v1\":281,\"vEnd\":549,\"vMax\":549,\"text\":\"31 Dec 2020\"}"
+  },
+  {
+   "name": "SAMS controls work from the keyboard (Enter on Disconnect client)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Terminal is optional: ~ opens a modal dialog with focus inside, Escape closes it",
+   "pass": true,
+   "detail": "{\"dialog\":true,\"focusInside\":true,\"closed\":true}"
+  },
+  {
+   "name": "Every room is reachable without the terminal (rail links)",
+   "pass": true,
+   "detail": "7 rail links"
+  },
+  {
+   "name": "link audit: every internal link resolves (200, trailing slash, hash target present)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "link audit: no malformed hrefs; external links use https",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "link audit: external public links respond 200",
+   "pass": true,
+   "detail": "{\"https://github.com/Salih04/sams-reliability-core\":200,\"https://github.com/Salih04/sams-reliability-core/blob/main/results/CI_2026-10-04.md\":200,\"https://github.com/Salih04/sams-reliability-core/blob/main/docs/LIMITATIONS.md\":200,\"https://github.com/Salih04/sams-reliability-core/blob/main/docs/VERIFICATION.md\":200,\"https://github.com/Salih04/capstone-financeIQ\":200,\"https://github.com/Salih04/capstone-financeIQ/blob/main/RESULTS.md\":200,\"https://github.com/Salih04/capstone-financeIQ/blob/main/docs/PIT_PROTOCOL.md\":200,\"https://github.com/Salih04\":200}"
+  },
+  {
+   "name": "brand and crawler assets are served (og.png, favicon.ico, icon.svg, apple-icon.png, robots.txt, sitemap.xml)",
+   "pass": true,
+   "detail": "{\"/og.png\":\"200 image/png\",\"/favicon.ico\":\"200 image/x-icon\",\"/icon.svg\":\"200 image/svg+xml\",\"/apple-icon.png\":\"200 image/png\",\"/robots.txt\":\"200 text/plain\",\"/sitemap.xml\":\"200 application/xml\"}"
+  },
+  {
+   "name": "head links the favicon, SVG icon and Apple touch icon",
+   "pass": true,
+   "detail": "/favicon.ico?favicon.0q1h52483cwel.ico /icon.svg?icon.0ewzia2xm2hbx.svg /apple-icon.png?apple-icon.3g--bikp0_lsk.png"
+  },
+  {
+   "name": "hosting headers present (nosniff, referrer policy, permissions policy, frame-ancestors)",
+   "pass": true,
+   "detail": "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+  },
+  {
+   "name": "mobile: the Case Study switch keeps its full accessible name while showing the short label",
+   "pass": true,
+   "detail": "{\"name\":\"Case study\",\"visible\":1}"
+  },
+  {
+   "name": "reduced motion: Enter S//LAB navigates at once, no bridge or floor animation",
+   "pass": true,
+   "detail": "{\"arrive\":\"none\",\"bridge\":false}"
+  },
+  {
+   "name": "matrix: every scenario ran without a script error",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "matrix: scenario expectations hold (SAMS states, PIT values, 404 status, menu)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "matrix: no page-level horizontal overflow",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "matrix: no console errors",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "matrix: no missing assets or failed requests",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "matrix: no broken images",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "matrix: no visible text under 12px",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "matrix: no clipped text",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: html lang set and one h1 per page",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: no skipped heading levels",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: one main landmark; every nav is labelled",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: every visible control has an accessible name",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: no duplicate ids; aria references resolve",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: text contrast meets WCAG AA (4.5:1, 3:1 for large text)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: mobile touch targets meet WCAG 2.5.8 (24×24 px, or spaced)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: every keyboard focus stop has a visible indicator",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "a11y: first Tab on every page reaches the skip link",
+   "pass": true,
+   "detail": "Skip to content,Skip to content,Skip to content,Skip to content,Skip to content,Skip to content,Skip to content,Skip to content"
+  }
+ ]
+}

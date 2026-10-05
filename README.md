@@ -1,7 +1,15 @@
-# S//LAB — Salih Research Lab
+# S//LAB — Salih’s Interactive Research Portfolio
 
-An interactive research portfolio built as a working lab rather than a personal website. Each project is an
-experiment, each architecture is an instrument, and each engineering decision is a research record.
+The portfolio of Salih Camcı, software engineer and MSc Data Science student at the University of Basel. It is
+built as a working lab rather than a personal website: each project is an experiment, each architecture is an
+instrument, and each engineering decision is a research record.
+
+Two flagship projects carry the site:
+
+- **SAMS** — an independent, 2-person engineering project: a multi-tenant system for long-running LLM agent
+  workflows, built so that clients can disconnect, reconnect and resume without silently missing events.
+- **FinanceIQ** — an MSc Data Science research project in progress: point-in-time market data, so that historical
+  experiments only use information that was knowable at each simulated date.
 
 The same content can be read two ways:
 
@@ -49,6 +57,8 @@ lab mode. A toggle on an unpaired page applies to that page only. Nothing is res
   below 12px; small uppercase mono is reserved for instrument metadata.
 - **Fonts are self-hosted** through `@fontsource-variable` (Inter, JetBrains Mono, Space Grotesk, Source Serif 4),
   with no third-party font requests.
+- **Brand assets are rendered from source:** `scripts/brand/render.mjs` turns `scripts/brand/og-image.html` into the
+  1200×630 social preview (`public/og.png`) and `src/app/icon.svg` into `apple-icon.png` and `favicon.ico`.
 - **Code that loads only when used:** the terminal is loaded on demand.
 - **Motion carries meaning:** events append to the log, cursors move, the as-of cursor scrubs through time.
   `prefers-reduced-motion` turns animation off; the SAMS demo waits for the visitor, and reconstructions jump
@@ -100,23 +110,39 @@ All content is in `src/content/` as typed data. Lab mode and Case Study Mode ren
 | `notes.ts` | Lab Notes, all drafts (structured blocks, no Markdown parser shipped) |
 | `about.ts` | About page and resume |
 
-> **Review before publishing.** V2 Pass 1 grounded the content in Salih's approved facts and his public
-> repositories, and removed invented identifiers, dates and incidents. Remaining open items are listed in
-> `docs/V2_PASS1_REPORT.md`. The Lab Notes are drafts and stay marked as drafts until reviewed. Set
-> `site.contact.email` when you have a public address; until then the contact page shows GitHub only.
+Content is grounded in Salih's approved facts and his public repositories (see `docs/CONTENT_VERIFICATION.md`
+and `docs/LAUNCH_AUDIT.md`). The Lab Notes are drafts: they are marked as drafts, carry `noindex` and stay out of
+the sitemap until published. `site.contact.email` is empty until a public address is chosen; until then the
+contact page shows GitHub only.
 
-## Development
+Page titles and descriptions for every route are in `src/content/pages.ts`; the sitemap is generated from the
+same registry.
+
+## Development and testing
 
 ```bash
 npm install
-npm run dev          # local development
-npm run check        # typecheck + unit tests + boundary scan
+npm run dev          # local development on http://localhost:3000
+npm run check        # typecheck + unit tests (Vitest) + boundary scan of src/
 npm run build        # boundary scan → static export to out/ → boundary scan of the export
 npm start            # serve out/ locally
 ```
 
-Visual verification: `docs/audit/capture-v2.mjs` captures the V2 comparison set into
-`docs/audit/screenshots/v2-pass1/` and records checks (overflow, small type, focus, tab overflow, route modes,
-reconnect convergence) as JSON.
+Unit tests cover the replay and point-in-time engines, the experiment simulator, the terminal, the facility
+projection, the boundary scanner, page metadata and the content guard (`tests/content.test.ts`), which pins
+approved facts such as roles, periods and the FinanceIQ research question.
+
+Browser verification uses Playwright without making it a dependency: `docs/audit/capture-launch.mjs` runs the
+launch matrix (five viewports plus reduced motion), the link audit and the accessibility checks against a build
+served on port 4173, and records the results in `docs/audit/launch-checks.json`.
 
 Node 20.9 or newer.
+
+## Deployment
+
+The site is a static export and deploys to Vercel (or any static host) as is. Set **`SITE_URL`** to the production
+origin before a production build: it is the only place the domain is configured, and it turns on canonical links,
+Open Graph URLs and image, the sitemap and the sitemap line in robots.txt. A Vercel production build without it
+fails on purpose. Security headers for Vercel are in `vercel.json`. There is no analytics.
+
+Full instructions: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).

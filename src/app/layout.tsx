@@ -15,13 +15,21 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { AppShell } from "@/components/shell/AppShell";
 import { LabProvider } from "@/components/shell/LabProvider";
+import { pages } from "@/content/pages";
 import { modePairs, site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
+import { siteUrl } from "@/lib/siteUrl";
 
 export const metadata: Metadata = {
-  title: { default: `${site.mark} — ${site.labName}`, template: `%s · ${site.mark}` },
-  description: site.description,
+  // Defaults for every route; each page sets its own canonical link.
+  ...pageMetadata("/"),
+  alternates: undefined,
+  // Resolves the relative canonical, og:url and image paths. Unset, none are emitted.
+  metadataBase: siteUrl ?? undefined,
+  title: { default: pages["/"].title, template: `%s — ${site.mark}` },
   applicationName: site.mark,
-  openGraph: { title: `${site.mark} — ${site.labName}`, description: site.description, type: "website" },
+  authors: [{ name: site.fullName, url: site.contact.github }],
+  creator: site.fullName,
 };
 
 export const viewport: Viewport = {

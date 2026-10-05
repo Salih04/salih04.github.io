@@ -4,11 +4,9 @@ import { LabLink } from "@/components/shell/LabLink";
 import { engineeringRecords } from "@/content/archive";
 import { financeCaseStudy } from "@/content/financeiq";
 import { samsCaseStudy } from "@/content/sams";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Case Studies",
-  description: "Engineering case studies: SAMS and FinanceIQ, written for quick, complete reading.",
-};
+export const metadata: Metadata = pageMetadata("/case-studies/");
 
 const studies = [
   { study: samsCaseStudy, href: "/sams/case-study/", lab: "/sams/", accent: "signal" },

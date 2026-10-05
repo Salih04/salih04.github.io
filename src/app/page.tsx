@@ -2,6 +2,9 @@ import { EnterLab } from "@/components/entry/EnterLab";
 import { InstrumentTrace } from "@/components/entry/InstrumentTrace";
 import { LabLink } from "@/components/shell/LabLink";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
+
+export const metadata = pageMetadata("/");
 
 /*
  * The entry is an instrument panel opening onto the lab: who (name, role,

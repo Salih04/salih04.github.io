@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scanText } from "../scripts/public-boundary.mjs";
+import { ALLOWED_HOSTS, scanText, siteHost } from "../scripts/public-boundary.mjs";
 
 type Finding = { rule: string };
 const rulesFor = (text: string, allowedEmails: string[] = []) =>
@@ -24,6 +24,16 @@ describe("public boundary scanner", () => {
 
   it("allows the published contact address only", () => {
     expect(rulesFor("hello@lab.dev", ["hello@lab.dev"])).toEqual([]);
+  });
+
+  it("allows the configured site origin and nothing else", () => {
+    const allowedHosts = [...ALLOWED_HOSTS, siteHost("https://portfolio.example")!];
+    const scan = (text: string) => (scanText(text, { allowedHosts }) as Finding[]).map((f) => f.rule);
+    expect(scan('<link rel="canonical" href="https://portfolio.example/sams/"/>')).toEqual([]);
+    expect(scan("https://admin.portfolio.example/")).toContain("url");
+    expect(rulesFor("https://portfolio.example/")).toContain("url");
+    expect(siteHost("")).toBeNull();
+    expect(siteHost("not a url")).toBeNull();
   });
 
   it("honours an explicit per-line allowance", () => {

@@ -3,11 +3,9 @@ import { PrintButton } from "@/components/editorial/PrintButton";
 import { LabLink } from "@/components/shell/LabLink";
 import { resume } from "@/content/about";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Resume",
-  description: `Resume of ${site.name}: ${site.role}, ${site.study.degree} ${site.study.status} at the ${site.study.institution}.`,
-};
+export const metadata: Metadata = pageMetadata("/resume/");
 
 export default function ResumePage() {
   return (
@@ -20,6 +18,15 @@ export default function ResumePage() {
             {site.role} · {site.study.degree} {site.study.status}, {site.study.institution}
           </p>
           <p className="resume__line">{site.headline}</p>
+          <p className="resume__contact mono">
+            {site.contact.email ? (
+              <>
+                <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+                <span aria-hidden="true"> · </span>
+              </>
+            ) : null}
+            <a href={site.contact.github}>{site.contact.github.replace(/^https:\/\//, "")}</a>
+          </p>
         </div>
         <PrintButton />
       </header>

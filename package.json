@@ -2,11 +2,12 @@
   "name": "s-lab-portfolio",
   "version": "0.1.0",
   "private": true,
-  "description": "S//LAB — Salih Research Lab. An interactive research portfolio with a lab mode and a case study mode.",
+  "description": "S//LAB — Salih’s Interactive Research Portfolio, with a lab mode and a case study mode.",
   "scripts": {
     "dev": "next dev",
     "build": "npm run check:boundary && next build && node scripts/public-boundary.mjs out",
     "start": "npx --yes serve out",
+    "brand": "node scripts/brand/render.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "check:boundary": "node scripts/public-boundary.mjs src",

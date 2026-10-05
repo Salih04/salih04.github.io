@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import { NotesIndex } from "@/components/editorial/NotesIndex";
 import { PageHeader } from "@/components/editorial/PageHeader";
 import { notes } from "@/content/notes";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Lab Notes",
-  description: "Engineering and research writing from S//LAB.",
-};
+export const metadata: Metadata = pageMetadata("/notes/");
 
 export default function NotesPage() {
   return (

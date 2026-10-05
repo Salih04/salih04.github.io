@@ -10,6 +10,10 @@
  *   node scripts/public-boundary.mjs src   # source content and components
  *   node scripts/public-boundary.mjs out   # exported HTML after a build
  *
+ * The site's own origin, SITE_URL (docs/DEPLOYMENT.md), is the one host added
+ * to the allowlist at scan time: canonical links, Open Graph URLs and the
+ * sitemap must name it. Nothing else about the rules depends on it.
+ *
  * A line may opt out of a single rule with `boundary-allow: <rule-id>` and a
  * reason in a comment. Use sparingly; reviewers should question every one.
  */
@@ -18,13 +22,22 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** Hosts that may appear in public URLs. */
-export const ALLOWED_HOSTS = ["github.com", "www.w3.org", "w3.org"];
+/** Hosts that may appear in public URLs. w3.org and sitemaps.org appear as XML namespaces. */
+export const ALLOWED_HOSTS = ["github.com", "www.w3.org", "w3.org", "www.sitemaps.org"];
 
 /** @typedef {{ id: string, description: string, pattern: RegExp, allow?: (match: string) => boolean }} Rule */
 
-/** @param {string[]} allowedEmails @returns {Rule[]} */
-export function rules(allowedEmails = []) {
+/** The hostname of SITE_URL, if it is set and valid. */
+export function siteHost(raw = process.env.SITE_URL) {
+  try {
+    return raw ? new URL(raw).hostname : null;
+  } catch {
+    return null;
+  }
+}
+
+/** @param {string[]} allowedEmails @param {string[]} allowedHosts @returns {Rule[]} */
+export function rules(allowedEmails = [], allowedHosts = ALLOWED_HOSTS) {
   return [
     {
       id: "private-key",
@@ -53,7 +66,7 @@ export function rules(allowedEmails = []) {
       allow: (match) => {
         try {
           const host = new URL(match).hostname;
-          return ALLOWED_HOSTS.includes(host);
+          return allowedHosts.includes(host);
         } catch {
           return false;
         }
@@ -95,13 +108,13 @@ export function rules(allowedEmails = []) {
 
 /**
  * @param {string} text
- * @param {{ allowedEmails?: string[] }} [options]
+ * @param {{ allowedEmails?: string[], allowedHosts?: string[] }} [options]
  * @returns {{ rule: string, description: string, line: number, match: string }[]}
  */
 export function scanText(text, options = {}) {
   const findings = [];
   const lines = text.split(/\r?\n/);
-  const active = rules((options.allowedEmails ?? []).map((e) => e.toLowerCase()));
+  const active = rules((options.allowedEmails ?? []).map((e) => e.toLowerCase()), options.allowedHosts ?? ALLOWED_HOSTS);
   lines.forEach((line, i) => {
     for (const rule of active) {
       if (line.includes(`boundary-allow: ${rule.id}`)) continue;
@@ -126,7 +139,7 @@ export function publishedEmails(root) {
 }
 
 const SOURCE_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".mjs", ".css", ".md", ".json", ".txt"]);
-const EXPORT_EXTENSIONS = new Set([".html", ".txt", ".json", ".xml"]);
+const EXPORT_EXTENSIONS = new Set([".html", ".txt", ".json", ".xml", ".webmanifest"]);
 
 function* walk(dir) {
   for (const entry of readdirSync(dir)) {
@@ -147,13 +160,15 @@ function main() {
   const dir = join(root, target);
   const extensions = target === "out" ? EXPORT_EXTENSIONS : SOURCE_EXTENSIONS;
   const allowedEmails = publishedEmails(root);
+  const host = siteHost();
+  const allowedHosts = host ? [...ALLOWED_HOSTS, host] : ALLOWED_HOSTS;
 
   let count = 0;
   let files = 0;
   for (const file of walk(dir)) {
     if (!extensions.has(extname(file))) continue;
     files++;
-    for (const f of scanText(readFileSync(file, "utf8"), { allowedEmails })) {
+    for (const f of scanText(readFileSync(file, "utf8"), { allowedEmails, allowedHosts })) {
       count++;
       console.error(`${relative(root, file)}:${f.line}  [${f.rule}] ${f.description}: ${f.match}`);
     }
@@ -163,7 +178,7 @@ function main() {
     console.error(`\nPublic boundary check failed: ${count} finding(s) in ${target}/. See docs/PUBLIC_BOUNDARY.md.`);
     process.exit(1);
   }
-  console.log(`Public boundary check passed: ${files} file(s) in ${target}/.`);
+  console.log(`Public boundary check passed: ${files} file(s) in ${target}/${host ? ` (site origin: ${host})` : ""}.`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

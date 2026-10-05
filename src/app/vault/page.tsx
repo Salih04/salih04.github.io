@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/editorial/PageHeader";
 import { vault, type VaultOutcome } from "@/content/vault";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Experiment Vault",
-  description: "Small projects, prototypes and technical experiments made while building this site.",
-};
+export const metadata: Metadata = pageMetadata("/vault/");
 
 const tone: Record<VaultOutcome, string> = {
   Completed: "tag--success",

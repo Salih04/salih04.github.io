@@ -10,22 +10,23 @@ export const site = {
   name: "Salih",
   /** Full public name, for the resume and contact pages only. The hero stays "Salih". */
   fullName: "Salih Camcı",
-  labName: "Salih Research Lab",
+  labName: "Salih’s Interactive Research Portfolio",
   role: "Software Engineer",
   /** Current study. In progress: never present it as a completed degree. */
   study: { degree: "MSc Data Science", institution: "University of Basel", status: "student" },
   roles: ["Software Engineer", "MSc Data Science student, University of Basel"],
   headline: "I build reliable software systems, agentic infrastructure, and reproducible data research.",
   entryLine: "I build reliable software systems, agentic infrastructure, and reproducible data research.",
+  /** Default meta description: who, positioning, and what the work is. */
   description:
-    "S//LAB is the research portfolio of Salih, a software engineer and MSc Data Science student at the University of Basel, who builds reliable software systems, agentic infrastructure and reproducible data research.",
+    "The interactive research portfolio of Salih Camcı, software engineer and MSc Data Science student at the University of Basel: reliable systems and reproducible research.",
   /**
    * Public contact channels. Leave `email` empty until a public address is
    * chosen; the contact page and terminal only render channels that are set.
    */
   contact: {
     email: "",
-    github: "https://github.com/salih04",
+    github: "https://github.com/Salih04",
   } as { email: string; github: string },
 } as const;
 

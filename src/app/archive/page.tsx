@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/editorial/PageHeader";
 import { LabLink } from "@/components/shell/LabLink";
 import { crossReferences, engineeringRecords } from "@/content/archive";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Engineering Archive",
-  description: "Engineering records of professional work.",
-};
+export const metadata: Metadata = pageMetadata("/archive/");
 
 export default function ArchivePage() {
   return (

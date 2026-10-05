@@ -41,9 +41,9 @@ export function ArchitectureFigure({ fig = "1" }: { fig?: string }) {
 
       <div className="archfig__paths">
         <section className="archfig__col" aria-labelledby="archfig-a">
-          <h4 id="archfig-a" className="archfig__k mono">
+          <h3 id="archfig-a" className="archfig__k mono">
             A · Request and workflow path
-          </h4>
+          </h3>
           <Path steps={P.request} />
           <p className="archfig__note">
             <span className="mono">{P.activities.role}</span> {workflow.label} {P.activities.edge} on {workers.label.toLowerCase()}.
@@ -51,9 +51,9 @@ export function ArchitectureFigure({ fig = "1" }: { fig?: string }) {
         </section>
 
         <section className="archfig__col archfig__col--delivery" aria-labelledby="archfig-b">
-          <h4 id="archfig-b" className="archfig__k mono">
+          <h3 id="archfig-b" className="archfig__k mono">
             B · Event delivery path
-          </h4>
+          </h3>
           <Path steps={P.delivery} />
           <p className="archfig__note">
             <span className="mono">A → B</span> The workflow {P.crossing}.
@@ -62,7 +62,7 @@ export function ArchitectureFigure({ fig = "1" }: { fig?: string }) {
       </div>
 
       <div className="archfig__reconnect">
-        <h4 className="archfig__k mono">Reconnect</h4>
+        <h3 className="archfig__k mono">Reconnect</h3>
         <ol>
           {P.reconnect.map((r) => (
             <li key={r.k}>

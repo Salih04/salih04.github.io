@@ -68,7 +68,8 @@ export function TabBar<T extends string>({ tabs, labels, active, onSelect, label
               role="tab"
               id={`tab-${t}`}
               aria-selected={active === t}
-              aria-controls={`panel-${t}`}
+              // The SAMS lab mounts only the active panel; pointing only the active tab at its panel is valid for both labs.
+              aria-controls={active === t ? `panel-${t}` : undefined}
               tabIndex={active === t ? 0 : -1}
               className="tabs__tab"
               onClick={() => onSelect(t)}

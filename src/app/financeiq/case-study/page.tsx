@@ -4,11 +4,9 @@ import { NegativeResults } from "@/components/financeiq/NegativeResults";
 import { PipelineView } from "@/components/financeiq/PipelineView";
 import { WalkForward } from "@/components/financeiq/WalkForward";
 import { financeCaseStudy } from "@/content/financeiq";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "FinanceIQ — Case Study",
-  description: financeCaseStudy.oneLiner,
-};
+export const metadata: Metadata = pageMetadata("/financeiq/case-study/");
 
 export default function FinanceCaseStudyPage() {
   return (

@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/editorial/PageHeader";
 import { LabLink } from "@/components/shell/LabLink";
 import { about } from "@/content/about";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: "About Salih: software engineer and MSc Data Science student at the University of Basel.",
-};
+export const metadata: Metadata = pageMetadata("/about/");
 
 export default function AboutPage() {
   return (

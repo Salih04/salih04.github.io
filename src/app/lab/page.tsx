@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { FacilityDirectory, FacilityMap, type Room } from "@/components/lab/FacilityMap";
 import { LabLink } from "@/components/shell/LabLink";
-import { countLabel } from "@/lib/count";
 import { notes } from "@/content/notes";
 import { vault } from "@/content/vault";
+import { countLabel } from "@/lib/count";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Control Room",
-  description: "The S//LAB control room: navigation hub for SAMS, FinanceIQ, the Engineering Archive, the Experiment Vault and Lab Notes.",
-};
+export const metadata: Metadata = pageMetadata("/lab/");
 
 // Statuses describe the interface, never production telemetry. Counts are
 // derived from the content records, never typed in.

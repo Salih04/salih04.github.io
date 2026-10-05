@@ -1,0 +1,69 @@
+<!doctype html>
+<!--
+  Source of public/og.png (1200×630), the default social preview.
+  Rendered by scripts/brand/render.mjs with the site's own fonts and tokens.
+  Everything shown is already on the entry page: name, role, study, mark,
+  and the shared time axis with its two traces. No figures, no claims.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: "Space Grotesk"; src: url("../../node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2") format("woff2"); font-weight: 300 700; }
+  @font-face { font-family: "Inter"; src: url("../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; }
+  @font-face { font-family: "JetBrains Mono"; src: url("../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 800; }
+  :root { --bg: #0a0c0f; --line: #222b36; --line-strong: #314050; --text: #e4e9ee; --dim: #a8b3be; --faint: #7f8b97; --signal: #5cd0cb; --research: #9b96f4; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; background: var(--bg); overflow: hidden; }
+  body { position: relative; color: var(--text); font-family: "Inter", sans-serif;
+    background: radial-gradient(120% 90% at 18% 0%, #10151b 0%, var(--bg) 60%); }
+  .corner { position: absolute; width: 18px; height: 18px; border-color: var(--line-strong); border-style: solid; border-width: 0; }
+  .tl { left: 40px; top: 40px; border-left-width: 2px; border-top-width: 2px; }
+  .tr { right: 40px; top: 40px; border-right-width: 2px; border-top-width: 2px; }
+  .bl { left: 40px; bottom: 40px; border-left-width: 2px; border-bottom-width: 2px; }
+  .br { right: 40px; bottom: 40px; border-right-width: 2px; border-bottom-width: 2px; }
+  .mark { position: absolute; left: 80px; top: 76px; font: 700 30px/1 "Space Grotesk"; letter-spacing: 0.02em; }
+  .mark-sub { position: absolute; right: 80px; top: 84px; font: 500 15px/1 "JetBrains Mono"; letter-spacing: 0.08em; color: var(--faint); text-transform: uppercase; }
+  .name { position: absolute; left: 74px; top: 150px; font: 700 168px/0.82 "Space Grotesk"; letter-spacing: -0.045em; }
+  .who { position: absolute; left: 80px; top: 316px; display: flex; gap: 14px; align-items: baseline; }
+  .role { font: 600 34px/1.2 "Space Grotesk"; }
+  .sep { color: var(--faint); font-size: 26px; }
+  .study { font: 400 26px/1.2 "Inter"; color: var(--dim); }
+  svg { position: absolute; left: 80px; top: 404px; }
+  .k { font: 500 13px "JetBrains Mono"; letter-spacing: 0.1em; fill: var(--faint); }
+</style>
+</head>
+<body>
+  <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+  <p class="mark">S//LAB</p>
+  <p class="mark-sub">Interactive research portfolio</p>
+  <h1 class="name">SALIH</h1>
+  <p class="who"><span class="role">Software Engineer</span><span class="sep">·</span><span class="study">MSc Data Science student, University of Basel</span></p>
+  <!-- One shared time axis. Above: events a server appended (cyan ticks). Below: a result, its publication and the date it is read (violet). -->
+  <svg width="1040" height="150" viewBox="0 0 1040 150" aria-hidden="true">
+    <defs>
+      <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#1a222b" stroke-width="2"/></pattern>
+    </defs>
+    <rect x="800" y="0" width="240" height="150" fill="url(#hatch)" />
+    <line x1="800" y1="0" x2="800" y2="150" stroke="#314050" stroke-width="1.5" />
+    <!-- axis -->
+    <line x1="0" y1="72" x2="1040" y2="72" stroke="#314050" stroke-width="1.5" />
+    <g stroke="#314050" stroke-width="1.5">
+      <line x1="0" y1="66" x2="0" y2="78"/><line x1="100" y1="68" x2="100" y2="76"/><line x1="200" y1="66" x2="200" y2="78"/><line x1="300" y1="68" x2="300" y2="76"/><line x1="400" y1="66" x2="400" y2="78"/><line x1="500" y1="68" x2="500" y2="76"/><line x1="600" y1="66" x2="600" y2="78"/><line x1="700" y1="68" x2="700" y2="76"/><line x1="900" y1="68" x2="900" y2="76"/><line x1="1000" y1="66" x2="1000" y2="78"/>
+    </g>
+    <!-- event trace (SAMS): appended events -->
+    <g stroke="#5cd0cb" stroke-width="2.5" stroke-linecap="round">
+      <line x1="60" y1="20" x2="60" y2="60" opacity="0.35"/><line x1="140" y1="20" x2="140" y2="60" opacity="0.45"/><line x1="220" y1="20" x2="220" y2="60" opacity="0.55"/><line x1="300" y1="20" x2="300" y2="60" opacity="0.6"/><line x1="380" y1="20" x2="380" y2="60" opacity="0.7"/><line x1="460" y1="20" x2="460" y2="60" opacity="0.75"/><line x1="540" y1="20" x2="540" y2="60" opacity="0.8"/><line x1="620" y1="20" x2="620" y2="60" opacity="0.9"/><line x1="700" y1="20" x2="700" y2="60"/><line x1="780" y1="20" x2="780" y2="60"/>
+    </g>
+    <!-- historical trace (FinanceIQ): period end, reporting lag, publication, known until as-of -->
+    <circle cx="240" cy="104" r="5" fill="none" stroke="#9b96f4" stroke-width="2"/>
+    <line x1="248" y1="104" x2="452" y2="104" stroke="#9b96f4" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>
+    <circle cx="460" cy="104" r="6" fill="#9b96f4"/>
+    <polyline points="460,110 460,130 800,130" fill="none" stroke="#9b96f4" stroke-width="2.5"/>
+    <line x1="800" y1="124" x2="800" y2="136" stroke="#9b96f4" stroke-width="2.5"/>
+    <text class="k" x="814" y="20">NOT YET KNOWN</text>
+    <text class="k" x="0" y="150">SHARED TIME AXIS</text>
+    <text class="k" x="1040" y="150" text-anchor="end">t →</text>
+  </svg>
+</body>
+</html>

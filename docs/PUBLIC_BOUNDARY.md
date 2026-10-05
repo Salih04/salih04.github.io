@@ -27,7 +27,7 @@ S//LAB describes real systems, so a sanitization layer is part of the product. T
    | --- | --- |
    | `private-key`, `token`, `secret-assignment` | Key material, credential-shaped tokens, secrets assigned to literals |
    | `connection-string` | `postgres://`, `redis://`, `mongodb://`, `amqp://` and similar |
-   | `url` | Any URL whose host is not in `ALLOWED_HOSTS` |
+   | `url` | Any URL whose host is not in `ALLOWED_HOSTS` (GitHub, plus the w3.org and sitemaps.org XML namespaces), or the host of `SITE_URL` when it is set at build time (see `docs/DEPLOYMENT.md`) |
    | `localhost`, `ip-address`, `internal-host` | Local endpoints, IPv4 addresses, `*.internal` / `*.corp` / `*.lan` hosts |
    | `private-path` | `/home/<user>/`, `/Users/<user>/`, `C:\Users\` |
    | `uuid` | Internal identifiers |

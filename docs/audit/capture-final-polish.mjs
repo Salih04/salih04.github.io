@@ -4,7 +4,7 @@
 // Post-processing for committed images (ImageMagick): `convert f -colors 192 -strip PNG8:f`.
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? "playwright");
 const BASE = process.env.BASE ?? "http://localhost:4173";
-const OUT = new URL("./screenshots/final-polish", import.meta.url).pathname;
+const OUT = process.env.OUT_DIR ?? new URL("./screenshots/final-polish", import.meta.url).pathname;
 const report = { pages: [], checks: [] };
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const check = (name, pass, detail = "") => report.checks.push({ name, pass: Boolean(pass), detail });

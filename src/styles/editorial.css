@@ -1497,6 +1497,12 @@
   color: var(--text-dim);
 }
 
+.resume__contact {
+  margin-top: 12px;
+  font-size: var(--fs-label);
+  color: var(--text-faint);
+}
+
 .resume__section {
   padding: 28px 0;
   border-bottom: 1px solid var(--line);
@@ -1646,5 +1652,64 @@
 
   .cs-layout {
     display: block;
+  }
+
+  /* Resume as an A4 document: no app chrome, sections kept whole, links legible. */
+  @page {
+    size: A4;
+    margin: 16mm 18mm;
+  }
+
+  .main {
+    padding: 0 !important;
+  }
+
+  .resume {
+    max-width: none;
+    padding: 0 !important;
+  }
+
+  .resume__head,
+  .resume__section {
+    border-color: #bbb;
+  }
+
+  .resume__head {
+    padding-bottom: 14px;
+  }
+
+  .resume__head h1 {
+    font-size: 34px;
+  }
+
+  .resume__section {
+    padding: 14px 0;
+  }
+
+  .resume__item + .resume__item {
+    margin-top: 12px;
+  }
+
+  .resume__item h3 {
+    margin-top: 8px;
+    font-size: 16px;
+  }
+
+  .resume__skills {
+    break-inside: avoid;
+  }
+
+  .resume__section h2 {
+    break-after: avoid;
+  }
+
+  .resume__item {
+    break-inside: avoid;
+  }
+
+  .resume a {
+    color: #111;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 }

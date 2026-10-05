@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LabLink } from "@/components/shell/LabLink";
 import { notes, readingMinutes, type NoteBlock } from "@/content/notes";
+import { routeMetadata } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
@@ -14,7 +15,14 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const note = notes.find((n) => n.slug === slug);
-  return note ? { title: `${note.title} — Lab note (draft)`, description: note.summary } : {};
+  if (!note) return {};
+  const draft = note.status === "Draft";
+  // Drafts stay out of search indexes and the sitemap until published.
+  return routeMetadata(`/notes/${note.slug}/`, {
+    title: draft ? `${note.title} (draft)` : note.title,
+    description: note.summary,
+    index: !draft,
+  });
 }
 
 function Block({ block }: { block: NoteBlock }) {
