@@ -75,6 +75,14 @@ PLAYWRIGHT_MODULE=<path-to>/playwright/index.mjs node docs/audit/capture-launch.
 
 It expects the export on port 4173, served with `404.html` for unknown paths and the headers from `vercel.json`.
 
+### GitHub Pages (production)
+
+Production is https://salih04.github.io/, served by GitHub Pages from the `Salih04/salih04.github.io` repository
+(Settings → Pages → Source: **GitHub Actions**). `.github/workflows/pages.yml` runs on every push to `main`:
+`npm ci`, `npm run check`, then `npm run build` with `SITE_URL=https://salih04.github.io`, and publishes `out/`.
+GitHub Pages serves `out/404.html` for unknown paths. It does not send the custom headers in `vercel.json`; those
+apply only if the site is hosted on Vercel.
+
 ### Vercel
 
 The repository needs no Vercel-specific build settings: Vercel detects Next.js, runs `npm run build` and serves the
