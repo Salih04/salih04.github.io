@@ -11,12 +11,14 @@ Two flagship projects carry the site:
 - **FinanceIQ** — an MSc Data Science research project in progress: point-in-time market data, so that historical
   experiments only use information that was knowable at each simulated date.
 
-The same content can be read two ways:
+The projects have two views:
 
 - **Lab mode** lets you explore: a control room drawn as a 2.5D floor plan, a SAMS failure demo (a deterministic
   simulation of event replay and worker recovery), a point-in-time reconstruction instrument and an experiment bench.
-- **Case Study Mode** turns the same content into editorial case studies that open with an "At a glance" plate
-  (role, project, status, problem, approach, stack, evidence). Nothing is only available through an animation.
+- **Case Study Mode** opens written project reports with role, project and status, followed by methods,
+  results and public evidence. FinanceIQ includes a downloadable recount script and output. SAMS separates
+  historical verification from later local checks and production claims. The reports share the site's shell
+  and design tokens; they do not require interacting with a demonstration.
 
 ## Routes
 
@@ -98,13 +100,15 @@ unpublished email addresses.
 
 ## Content
 
-All content is in `src/content/` as typed data. Lab mode and Case Study Mode render the same records.
+All content is in `src/content/` as typed data. The lab views use the project records; the written case studies
+have their own narrative in `reports.ts`. The SAMS architecture figure shares the lab's architecture records.
 
 | File | Content |
 | --- | --- |
 | `site.ts` | Identity, navigation, contact channels |
 | `sams.ts` | Schematic topology, failure-demo script, architecture, decision records, case study, evidence links |
 | `financeiq.ts` | PIT dataset (fictional), pipeline, bench options, negative results, decisions, case study |
+| `reports.ts` | Written FinanceIQ and SAMS case studies, pinned sources, result tables and reproduction instructions |
 | `archive.ts` | Engineering records |
 | `vault.ts` | Experiment Vault specimens |
 | `notes.ts` | Lab Notes, all drafts (structured blocks, no Markdown parser shipped) |

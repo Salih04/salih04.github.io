@@ -39,9 +39,9 @@ export const pages = {
     index: true,
   },
   "/sams/case-study/": {
-    title: "SAMS Case Study",
+    title: "SAMS — Resumable Multi-Agent Execution",
     description:
-      "Engineering report on SAMS, an independent 2-person project: durable agent workflows, event replay with explicit gaps, design decisions, historical evidence and limits.",
+      "Project notes on SAMS: reconnects, concurrent decisions and worker recovery in a multi-agent system, with historical test evidence and unresolved checks.",
     index: true,
   },
   "/financeiq/": {
@@ -51,14 +51,14 @@ export const pages = {
     index: true,
   },
   "/financeiq/case-study/": {
-    title: "FinanceIQ Case Study",
+    title: "FinanceIQ — Reproducible ML Benchmarking",
     description:
-      "Research report on FinanceIQ, an MSc Data Science project in progress at the University of Basel: point-in-time market data, so historical experiments only use what was knowable.",
+      "A failed positive control, 1,000-repeat negative controls and a signal withdrawn after a timing audit. Methods, data and a downloadable recount script.",
     index: true,
   },
   "/case-studies/": {
     title: "Case Studies",
-    description: "Written reports on the two flagship projects, SAMS and FinanceIQ, for quick and complete reading.",
+    description: "Two project case studies: reproducible financial ML evaluation in FinanceIQ and resumable agent workflows in SAMS, with methods, evidence and open problems.",
     index: true,
   },
   "/archive/": {

@@ -1,0 +1,91 @@
+{
+  "scope": "Recomputed statistics from saved experiment data; no model refit or new scientific run",
+  "dataset_sha256": "3923888b548e6195b07e37b10efb38d0cd3e005a55070bc798139cda670eda78",
+  "artifact_hashes_verified": true,
+  "negative_controls": [
+    {
+      "control": "NC0_ROW_PERMUTED_MASK_RANK_GAUSSIAN",
+      "repetitions": 1000,
+      "model_rows": 6000,
+      "rejections": 26,
+      "rate": 0.026,
+      "wilson_95_pointwise": [
+        0.01780393820161633,
+        0.03782382884268992
+      ]
+    },
+    {
+      "control": "NC1_TARGET_PERMUTATION",
+      "repetitions": 1000,
+      "model_rows": 6000,
+      "rejections": 28,
+      "rate": 0.028,
+      "wilson_95_pointwise": [
+        0.01944227681277093,
+        0.04017018319759311
+      ]
+    }
+  ],
+  "calibration": [
+    {
+      "theta": 0.0,
+      "detections": 0,
+      "repetitions": 400,
+      "rate": 0.0,
+      "wilson_95_pointwise": [
+        0.0,
+        0.009512294334296501
+      ]
+    },
+    {
+      "theta": 0.1,
+      "detections": 1,
+      "repetitions": 400,
+      "rate": 0.0025,
+      "wilson_95_pointwise": [
+        0.0004414477868016353,
+        0.014023285075823384
+      ]
+    },
+    {
+      "theta": 0.2,
+      "detections": 45,
+      "repetitions": 400,
+      "rate": 0.1125,
+      "wilson_95_pointwise": [
+        0.0851484587859595,
+        0.14722356932312028
+      ]
+    },
+    {
+      "theta": 0.3,
+      "detections": 243,
+      "repetitions": 400,
+      "rate": 0.6075,
+      "wilson_95_pointwise": [
+        0.5588413833413011,
+        0.6541134733768252
+      ]
+    },
+    {
+      "theta": 0.35,
+      "detections": 347,
+      "repetitions": 400,
+      "rate": 0.8675,
+      "wilson_95_pointwise": [
+        0.8307536803033191,
+        0.897254783360973
+      ]
+    },
+    {
+      "theta": 0.4,
+      "detections": 384,
+      "repetitions": 400,
+      "rate": 0.96,
+      "wilson_95_pointwise": [
+        0.936017752282159,
+        0.9752309369302882
+      ]
+    }
+  ]
+}
